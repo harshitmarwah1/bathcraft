@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   BathCraft design tokens.
+
+   Blue and slate are sampled from the supplied logo raster; the rest of the
+   scale is the landing-page reference. Colour is never decorative here:
+
+     ink      #102B4E  headings, navigation
+     body     #42566F  running copy
+     brand    #078CC8  primary actions, active state, annotations
+     wash     #F3FAFE  section grounds that need to sit back from white
+
+   There is no dark theme. The page is a white/pale-blue system with the
+   warmth carried entirely by the photography.
+--------------------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #102b4e;
+  --color-ink-soft: #1d3a61;
+  --color-body: #42566f;
+  --color-body-soft: #6b7d94;
+
+  --color-brand: #078cc8;
+  --color-brand-dark: #0672a3;
+  --color-brand-soft: #7cc9e8;
+  --color-wash: #f3fafe;
+  --color-wash-deep: #e4f2fb;
+  --color-hairline: #e3ebf2;
+  --color-field: #e5edf4;
+
+  /* Validation. Soft, never alarming -- the reference asks for a quiet red. */
+  --color-danger: #d2554b;
+  --color-danger-dark: #a33c34;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: var(--font-caveat), "Segoe Script", cursive;
+
+  --radius-card: 14px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 1px 2px rgb(16 43 78 / 0.04), 0 8px 24px rgb(16 43 78 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(16 43 78 / 0.05), 0 18px 40px rgb(16 43 78 / 0.10);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  /* Anchor targets must clear the sticky navbar. */
+  scroll-padding-top: 88px;
+}
+
+body {
+  background: #fff;
+  color: var(--color-body);
+  font-family: var(--font-sans);
+}
+
+/* Focus is visible everywhere, in brand blue, never removed. */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Shared keyframes. These live here rather than in component <style jsx>
+   blocks because styled-jsx scopes keyframe names, which would silently break
+   the Tailwind arbitrary `animate-[name_…]` utilities that reference them.
+--------------------------------------------------------------------------- */
+
+@keyframes hero-settle {
+  from { transform: scale(1.03); }
+  to { transform: scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* Auth: the success tick and its ring. */
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.86); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes draw-tick {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Sign in <-> sign up: fade with a short horizontal slide. */
+@keyframes panel-in {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Video modal: backdrop fade and the frame rising into place. */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-rise {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

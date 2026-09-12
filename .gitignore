@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+
+# Local JSON user store (development only — see lib/db/store.ts)
+.data
