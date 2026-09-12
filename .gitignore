@@ -8,3 +8,6 @@ next-env.d.ts
 
 # Local JSON user store (development only — see lib/db/store.ts)
 .data
+
+.vercel
+.env*
