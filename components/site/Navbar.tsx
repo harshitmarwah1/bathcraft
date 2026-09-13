@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import BathCraftLogoAnimation from "@/components/BathCraftLogoAnimation";
 import Button from "@/components/ui/Button";
 import UserMenu from "@/components/auth/UserMenu";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/components/auth/AuthProvider";
 import Icon from "@/components/ui/Icon";
 import { NAV_LINKS } from "@/lib/content";
@@ -50,8 +51,8 @@ export default function Navbar() {
       className={[
         "fixed inset-x-0 top-0 z-50 transition-[box-shadow,background-color,backdrop-filter] duration-300",
         scrolled
-          ? "bg-white/90 shadow-[0_1px_0_rgb(227_235_242),0_6px_24px_rgb(16_43_78/0.06)] backdrop-blur-md"
-          : "bg-white",
+          ? "bg-surface/90 shadow-[0_1px_0_var(--color-hairline),0_6px_24px_rgb(16_43_78/0.06)] backdrop-blur-md"
+          : "bg-surface",
       ].join(" ")}
     >
       <nav
@@ -83,6 +84,8 @@ export default function Navbar() {
           >
             <Icon name="search" size={18} />
           </button>
+
+          <ThemeToggle />
 
           {/* Hold the slot until the stored profile has been read, so the
               signed-out pair never flashes in front of a signed-in user. */}
@@ -125,7 +128,7 @@ export default function Navbar() {
         id="mobile-nav"
         inert={!open ? true : undefined}
         className={[
-          "overflow-hidden border-t border-hairline bg-white transition-[max-height,opacity] duration-300 lg:hidden",
+          "overflow-hidden border-t border-hairline bg-surface transition-[max-height,opacity] duration-300 lg:hidden",
           open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >

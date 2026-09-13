@@ -11,7 +11,7 @@ import { TESTIMONIALS } from "@/lib/content";
  */
 export default function Testimonials() {
   return (
-    <section className="bg-white">
+    <section className="bg-surface">
       <div className="mx-auto max-w-[1280px] px-5 py-14 sm:px-6 lg:py-16">
         <SectionHeading
           align="center"
@@ -27,7 +27,7 @@ export default function Testimonials() {
               delay={i * 110}
               className="w-[86vw] shrink-0 snap-start sm:w-auto"
             >
-              <figure className="flex h-full gap-4 rounded-card bg-white p-4 shadow-soft ring-1 ring-hairline">
+              <figure className="flex h-full gap-4 rounded-card bg-surface-raised p-4 shadow-soft ring-1 ring-hairline">
                 <Image
                   src={src}
                   alt={alt}

@@ -17,7 +17,7 @@ import { Annotation, CurvedArrow } from "@/components/ui/Annotation";
  */
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-white lg:flex-row">
+    <div className="flex min-h-screen flex-col bg-surface lg:flex-row">
       {/* ---------------- Left: cinematic panel ---------------- */}
       <aside className="relative isolate h-[168px] shrink-0 overflow-hidden sm:h-[210px] lg:h-auto lg:w-[53%]">
         <Image

@@ -33,7 +33,7 @@ export default function AuthSuccess({ onStart }: { onStart: () => void }) {
       <button
         type="button"
         onClick={onStart}
-        className="mt-8 flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-brand text-[15px] font-semibold text-white shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
+        className="mt-8 flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-brand text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
       >
         Start My First Bathroom
         <Icon name="arrowRight" size={16} />
@@ -41,7 +41,7 @@ export default function AuthSuccess({ onStart }: { onStart: () => void }) {
 
       <Link
         href="/"
-        className="mt-3 flex h-[52px] w-full items-center justify-center rounded-[14px] border border-field bg-white text-[14.5px] font-semibold text-ink transition-colors duration-200 hover:bg-wash"
+        className="mt-3 flex h-[52px] w-full items-center justify-center rounded-[14px] border border-field bg-surface-raised text-[14.5px] font-semibold text-ink transition-colors duration-200 hover:bg-wash"
       >
         Explore BathCraft
       </Link>

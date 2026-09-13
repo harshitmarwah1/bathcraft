@@ -25,7 +25,7 @@ export default function BrandComparison() {
           <li key={brand} className="shrink-0">
             <a
               href="#brands"
-              className="flex h-[46px] min-w-[92px] items-center justify-center rounded-[10px] bg-white px-4 text-[13px] font-semibold tracking-[0.02em] text-body ring-1 ring-hairline transition-[color,box-shadow,transform] duration-200 hover:-translate-y-px hover:text-brand hover:shadow-soft hover:ring-brand/30 motion-reduce:hover:translate-y-0"
+              className="flex h-[46px] min-w-[92px] items-center justify-center rounded-[10px] bg-surface-raised px-4 text-[13px] font-semibold tracking-[0.02em] text-body ring-1 ring-hairline transition-[color,box-shadow,transform] duration-200 hover:-translate-y-px hover:text-brand hover:shadow-soft hover:ring-brand/30 motion-reduce:hover:translate-y-0"
             >
               {brand}
             </a>

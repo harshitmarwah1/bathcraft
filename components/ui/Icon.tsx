@@ -47,7 +47,9 @@ export type IconName =
   | "lightbulb"
   | "wallet"
   | "ruler"
-  | "sparkle";
+  | "sparkle"
+  | "sun"
+  | "moon";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   home: <path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z" />,
@@ -218,6 +220,13 @@ const PATHS: Record<IconName, React.ReactNode> = {
     </>
   ),
   sparkle: <path d="m12 4 1.9 4.6L18.5 10.5l-4.6 1.9L12 17l-1.9-4.6L5.5 10.5l4.6-1.9z" />,
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4" />
+    </>
+  ),
+  moon: <path d="M20 13.5A8 8 0 0 1 10.5 4a8 8 0 1 0 9.5 9.5Z" />,
 };
 
 const FILLED: IconName[] = ["star", "play", "home", "sparkle"];

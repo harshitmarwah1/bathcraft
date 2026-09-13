@@ -174,7 +174,7 @@ export default function OnboardingFlow() {
           type="button"
           onClick={next}
           disabled={saving}
-          className="ml-auto flex h-[52px] items-center justify-center gap-2 rounded-[14px] bg-brand px-7 text-[15px] font-semibold text-white shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
+          className="ml-auto flex h-[52px] items-center justify-center gap-2 rounded-[14px] bg-brand px-7 text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
         >
           {saving ? "Saving…" : step === 3 ? "Start Planning" : "Continue"}
           <Icon name="arrowRight" size={16} />
@@ -204,7 +204,7 @@ function ChoiceCard({
       aria-checked={selected}
       onClick={onSelect}
       className={[
-        "flex w-full items-center gap-3.5 rounded-[14px] border bg-white px-4 py-4 text-left",
+        "flex w-full items-center gap-3.5 rounded-[14px] border bg-surface-raised px-4 py-4 text-left",
         "transition-[border-color,background-color,transform] duration-200 hover:-translate-y-px motion-reduce:hover:translate-y-0",
         selected ? "border-brand bg-wash" : "border-field hover:border-brand/40",
       ].join(" ")}
@@ -212,7 +212,7 @@ function ChoiceCard({
       <span
         className={[
           "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors duration-200",
-          selected ? "bg-brand text-white" : "bg-wash text-brand",
+          selected ? "bg-brand text-on-brand" : "bg-wash text-brand",
         ].join(" ")}
       >
         <Icon name={icon} size={20} />
@@ -221,7 +221,7 @@ function ChoiceCard({
       <span
         className={[
           "ml-auto flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors duration-200",
-          selected ? "border-brand bg-brand text-white" : "border-field text-transparent",
+          selected ? "border-brand bg-brand text-on-brand" : "border-field text-transparent",
         ].join(" ")}
         aria-hidden="true"
       >

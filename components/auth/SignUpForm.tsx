@@ -252,7 +252,7 @@ function PasswordChecklist({ value }: { value: string }) {
             <span
               className={[
                 "flex h-4 w-4 items-center justify-center rounded-full transition-colors duration-200",
-                met ? "bg-brand text-white" : "bg-wash-deep text-transparent",
+                met ? "bg-brand text-on-brand" : "bg-wash-deep text-transparent",
               ].join(" ")}
             >
               <Icon name="check" size={10} strokeWidth={2.6} />

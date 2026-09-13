@@ -22,11 +22,11 @@ export default function HowItWorks() {
         <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map(({ n, title, body, visual }, i) => (
             <Reveal as="li" key={n} delay={i * 100} className="relative">
-              <span className="absolute -top-3 -left-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-brand text-[13px] font-bold text-white shadow-[0_4px_12px_rgb(7_140_200/0.35)]">
+              <span className="absolute -top-3 -left-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-brand text-[13px] font-bold text-on-brand shadow-[0_4px_12px_rgb(7_140_200/0.35)]">
                 {n}
               </span>
 
-              <div className="flex h-[188px] items-center justify-center overflow-hidden rounded-card bg-white p-4 shadow-soft ring-1 ring-hairline">
+              <div className="flex h-[188px] items-center justify-center overflow-hidden rounded-card bg-surface-raised p-4 shadow-soft ring-1 ring-hairline">
                 {visual === "phone" && <PhoneVisual />}
                 {visual === "floorplan" && <FloorPlanVisual />}
                 {visual === "moodboard" && <MoodboardVisual />}
@@ -47,7 +47,7 @@ export default function HowItWorks() {
 function PhoneVisual() {
   return (
     <div className="h-full w-[122px] rounded-[14px] bg-ink p-[3px] shadow-lift">
-      <div className="flex h-full flex-col rounded-[11px] bg-white px-2.5 py-2">
+      <div className="flex h-full flex-col rounded-[11px] bg-surface-raised px-2.5 py-2">
         <div className="mx-auto mb-2 h-[3px] w-7 rounded-full bg-hairline" />
         <p className="mb-1.5 text-[6px] font-semibold tracking-[0.12em] text-body-soft uppercase">
           Bathroom
@@ -63,7 +63,7 @@ function PhoneVisual() {
             </div>
           ))}
         </div>
-        <div className="mt-auto rounded-[5px] bg-brand py-[5px] text-center text-[7px] font-semibold text-white">
+        <div className="mt-auto rounded-[5px] bg-brand py-[5px] text-center text-[7px] font-semibold text-on-brand">
           Next
         </div>
       </div>

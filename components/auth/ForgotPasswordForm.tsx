@@ -41,7 +41,7 @@ export default function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
         <button
           type="button"
           onClick={onBack}
-          className="mt-8 flex h-[52px] w-full items-center justify-center rounded-[14px] bg-brand text-[15px] font-semibold text-white shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
+          className="mt-8 flex h-[52px] w-full items-center justify-center rounded-[14px] bg-brand text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
         >
           Back to Sign In
         </button>

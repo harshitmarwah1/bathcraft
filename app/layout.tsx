@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const inter = Inter({
@@ -25,7 +26,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${caveat.variable}`}>
+    <html lang="en" className={`${inter.variable} ${caveat.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Sets data-theme before first paint. Anything later — a component, an
+            effect, even a blocking <script src> — lands after the browser has
+            already painted, which reads as a white flash on a dark page. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="antialiased">
         <AuthProvider>{children}</AuthProvider>
       </body>

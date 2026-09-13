@@ -151,7 +151,7 @@ export default function PlannerDemo() {
 
         {/* Handwritten hint, riding along with the selection. */}
         <div className="pointer-events-none absolute -top-9 left-1/2 hidden -translate-x-1/2 items-center gap-1 sm:flex">
-          <span className="rounded-[6px] bg-white px-2.5 py-1 shadow-lift">
+          <span className="on-light rounded-[6px] bg-white px-2.5 py-1 shadow-lift">
             <Annotation className="block text-[15px] leading-tight whitespace-nowrap text-ink" rotate={-3}>
               Move
               <br />
@@ -162,7 +162,7 @@ export default function PlannerDemo() {
       </div>
 
       {/* Fixture toolbar. */}
-      <div className="absolute top-1/2 right-4 z-20 hidden -translate-y-1/2 rounded-[14px] bg-white/95 p-1.5 shadow-lift backdrop-blur sm:block">
+      <div className="on-light absolute top-1/2 right-4 z-20 hidden -translate-y-1/2 rounded-[14px] bg-white/95 p-1.5 shadow-lift backdrop-blur sm:block">
         <ul className="flex flex-col gap-0.5" role="listbox" aria-label="Bathroom fixtures">
           {PLANNER_TOOLS.map(({ id, label }) => {
             const active = id === tool;

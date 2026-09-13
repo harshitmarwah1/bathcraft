@@ -71,7 +71,7 @@ export default function AuthErrorNotice({
           <button
             type="button"
             onClick={onRetry}
-            className="mt-2.5 inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-danger/30 bg-white px-3.5 text-[12.5px] font-semibold text-danger-dark transition-colors hover:bg-danger/[0.06]"
+            className="mt-2.5 inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-danger/30 bg-surface-raised px-3.5 text-[12.5px] font-semibold text-danger-dark transition-colors hover:bg-danger/[0.06]"
           >
             <Icon name="arrowRight" size={13} />
             Try Again

@@ -10,7 +10,7 @@ export default function MetricsBar() {
         <dl className="grid grid-cols-2 gap-x-6 gap-y-6 rounded-card bg-wash px-6 py-6 lg:grid-cols-4 lg:px-10">
           {METRICS.map(({ icon, value, label }) => (
             <div key={label} className="flex items-center gap-3.5">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-soft">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface-raised text-brand shadow-soft">
                 <Icon name={icon} size={21} />
               </span>
               <div className="min-w-0">

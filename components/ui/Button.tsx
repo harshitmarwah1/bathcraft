@@ -11,9 +11,10 @@ type Variant = "primary" | "white" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-brand text-white hover:bg-brand-dark shadow-[0_6px_18px_rgb(7_140_200/0.28)]",
-  white: "bg-white text-ink hover:bg-white shadow-[0_8px_24px_rgb(16_43_78/0.18)]",
-  outline: "bg-white text-brand border border-brand/45 hover:border-brand hover:bg-wash",
+  primary: "bg-brand text-on-brand hover:bg-brand-dark shadow-[0_6px_18px_rgb(7_140_200/0.28)]",
+  // on-light: this variant only ever sits on a photograph. See globals.css.
+  white: "on-light bg-white text-ink hover:bg-white shadow-[0_8px_24px_rgb(16_43_78/0.18)]",
+  outline: "bg-surface-raised text-brand border border-brand/45 hover:border-brand hover:bg-wash",
   ghost: "bg-transparent text-white hover:bg-white/10",
 };
 

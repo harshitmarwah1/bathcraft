@@ -10,7 +10,7 @@ import BeforeAfterSlider from "./BeforeAfterSlider";
  */
 export default function BathroomPlanningSection() {
   return (
-    <section id="about" className="bg-white">
+    <section id="about" className="bg-surface">
       <div className="mx-auto grid max-w-[1280px] items-center gap-12 px-5 py-16 sm:px-6 lg:grid-cols-[45fr_55fr] lg:gap-14 lg:py-24">
         <div>
           <Reveal>

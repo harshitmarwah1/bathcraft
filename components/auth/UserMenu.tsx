@@ -63,7 +63,7 @@ export default function UserMenu() {
         <div
           role="menu"
           aria-label="Account"
-          className="absolute right-0 z-50 mt-2 w-[230px] animate-[panel-in_180ms_ease-out_both] overflow-hidden rounded-[14px] border border-field bg-white shadow-lift motion-reduce:animate-none"
+          className="absolute right-0 z-50 mt-2 w-[230px] animate-[panel-in_180ms_ease-out_both] overflow-hidden rounded-[14px] border border-field bg-surface-raised shadow-lift motion-reduce:animate-none"
         >
           <div className="border-b border-field px-4 py-3">
             <p className="truncate text-[13.5px] font-semibold text-ink">
@@ -133,7 +133,7 @@ function Avatar({ image, initials }: { image: string | null; initials: string })
   }
 
   return (
-    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-[12px] font-bold text-white">
+    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-[12px] font-bold text-on-brand">
       {initials}
     </span>
   );

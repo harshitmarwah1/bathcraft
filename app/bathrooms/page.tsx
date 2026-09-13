@@ -14,7 +14,7 @@ export default function BathroomsPage() {
   return (
     <AuthGate>
       <Navbar />
-      <main className="min-h-screen bg-white pt-[72px]">
+      <main className="min-h-screen bg-surface pt-[72px]">
         <div className="mx-auto max-w-[1280px] px-5 py-14 sm:px-6 lg:py-20">
           <h1 className="text-[30px] font-bold tracking-[-0.02em] text-ink sm:text-[34px]">
             My Bathrooms
@@ -26,7 +26,7 @@ export default function BathroomsPage() {
                 Picking up where you left off.
               </p>
               <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <li className="rounded-card border border-field bg-white p-5 shadow-soft">
+                <li className="rounded-card border border-field bg-surface-raised p-5 shadow-soft">
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-wash text-brand">
                     <Icon name="bathtub" size={22} />
                   </span>
@@ -85,7 +85,7 @@ function EmptyState() {
 
       <Link
         href="/onboarding"
-        className="mt-7 inline-flex h-[52px] items-center justify-center gap-2 rounded-[14px] bg-brand px-7 text-[15px] font-semibold text-white shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
+        className="mt-7 inline-flex h-[52px] items-center justify-center gap-2 rounded-[14px] bg-brand px-7 text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
       >
         <Icon name="plus" size={17} />
         Create Your First Bathroom

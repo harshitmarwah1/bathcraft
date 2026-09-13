@@ -4,7 +4,7 @@ import { useId, useState, type InputHTMLAttributes, type ReactNode } from "react
 import Icon from "@/components/ui/Icon";
 
 const BASE_INPUT =
-  "h-[52px] w-full rounded-[12px] border bg-white px-4 text-[14.5px] text-ink " +
+  "h-[52px] w-full rounded-[12px] border bg-surface-raised px-4 text-[14.5px] text-ink " +
   "placeholder:text-body-soft/70 transition-[border-color,box-shadow] duration-200 " +
   "focus:outline-none focus:border-brand focus:ring-4 focus:ring-brand/12";
 
@@ -128,7 +128,7 @@ export function Checkbox({
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
           className={[
-            "mt-0.5 h-[18px] w-[18px] shrink-0 cursor-pointer appearance-none rounded-[5px] border bg-white",
+            "mt-0.5 h-[18px] w-[18px] shrink-0 cursor-pointer appearance-none rounded-[5px] border bg-surface-raised",
             "transition-[background-color,border-color] duration-150",
             "checked:border-brand checked:bg-brand",
             "checked:bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><path d=%22M3.5 8.5l3 3 6-6.5%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>')] checked:bg-center checked:bg-no-repeat",
@@ -177,7 +177,7 @@ export function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-brand text-[15px] font-semibold text-white shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
+      className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-brand text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
     >
       {pending ? (
         <>
@@ -229,7 +229,7 @@ export function SocialButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex h-[52px] w-full items-center justify-center gap-3 rounded-[14px] border border-field bg-white text-[14.5px] font-semibold text-ink transition-[background-color,transform,border-color] duration-200 hover:-translate-y-px hover:bg-wash disabled:opacity-60 motion-reduce:hover:translate-y-0"
+      className="flex h-[52px] w-full items-center justify-center gap-3 rounded-[14px] border border-field bg-surface-raised text-[14.5px] font-semibold text-ink transition-[background-color,transform,border-color] duration-200 hover:-translate-y-px hover:bg-wash disabled:opacity-60 motion-reduce:hover:translate-y-0"
     >
       {children}
     </button>

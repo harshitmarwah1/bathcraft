@@ -6,7 +6,7 @@ import { FOOTER_LINKS, SOCIALS } from "@/lib/content";
 /** White footer. The logo here is the static lockup — it has already animated. */
 export default function Footer() {
   return (
-    <footer className="border-t border-hairline bg-white">
+    <footer className="border-t border-hairline bg-surface">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-8 px-5 py-10 sm:px-6 lg:flex-row lg:items-center lg:gap-10">
         <div className="shrink-0">
           <Image
