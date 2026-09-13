@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n/useT";
 import styles from "./BathCraftLogoAnimation.module.css";
 
 /**
@@ -41,6 +42,7 @@ type Props = {
 };
 
 export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
+  const t = useT();
   const isNavbar = variant === "navbar";
   const stageRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
@@ -364,8 +366,8 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
             sentences, never inside "Without renovation regrets." */}
         {!isNavbar && (
           <p className={styles.tagline}>
-            <span>See it. Plan it. Build it.</span>{" "}
-            <span>Without renovation regrets.</span>
+            <span>{t("See it. Plan it. Build it.")}</span>{" "}
+            <span>{t("Without renovation regrets.")}</span>
           </p>
         )}
       </div>

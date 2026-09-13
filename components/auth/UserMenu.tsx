@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Icon, { type IconName } from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/useT";
 import { useAuth } from "./AuthProvider";
 
 const ITEMS: { label: string; href: string; icon: IconName }[] = [
@@ -16,6 +17,7 @@ const ITEMS: { label: string; href: string; icon: IconName }[] = [
 /** Avatar + first name + chevron, with a dropdown that closes properly. */
 export default function UserMenu() {
   const { user, signOut } = useAuth();
+  const t = useT();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +64,7 @@ export default function UserMenu() {
       {open && (
         <div
           role="menu"
-          aria-label="Account"
+          aria-label={t("Account")}
           className="absolute right-0 z-50 mt-2 w-[230px] animate-[panel-in_180ms_ease-out_both] overflow-hidden rounded-[14px] border border-field bg-surface-raised shadow-lift motion-reduce:animate-none"
         >
           <div className="border-b border-field px-4 py-3">
@@ -82,7 +84,7 @@ export default function UserMenu() {
                   className="flex items-center gap-3 px-4 py-2.5 text-[13.5px] text-body transition-colors hover:bg-wash hover:text-brand"
                 >
                   <Icon name={icon} size={17} />
-                  {label}
+                  {t(label)}
                 </Link>
               </li>
             ))}
@@ -100,7 +102,7 @@ export default function UserMenu() {
               className="flex w-full items-center gap-3 px-4 py-2.5 text-[13.5px] text-body transition-colors hover:bg-wash hover:text-danger"
             >
               <Icon name="logout" size={17} />
-              Sign Out
+              {t("Sign Out")}
             </button>
           </div>
         </div>

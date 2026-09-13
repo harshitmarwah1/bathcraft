@@ -8,7 +8,8 @@ npm install
 npm run dev      # http://localhost:3000
 npm run build
 npm run lint
-npm run check:db # verify the Supabase connection
+npm run check:db   # verify the Supabase connection
+npm run check:i18n # report any untranslated string
 ```
 
 Next.js 16 (App Router) · React 19 · Tailwind v4 · Inter + Caveat. No animation
@@ -61,6 +62,42 @@ Sections, in page order: `Navbar` · `Hero` · `ValuePropositionBar` ·
 
 Cards 14px, buttons fully pill, two shadow steps (`--shadow-soft`,
 `--shadow-lift`). Warmth lives only inside the photographs.
+
+### English and Hindi
+
+A toggle in the navbar, next to the theme switch. The whole interface
+translates — navigation, hero, every section, auth, onboarding, the dashboard
+and the error states.
+
+```
+lib/i18n/dictionary.ts   Hindi, keyed by the English source string
+lib/i18n/locale.ts       the store, plus LOCALE_SCRIPT
+lib/i18n/useT.ts         useT() and useLocale()
+components/ui/LanguageToggle.tsx
+```
+
+**Keyed by the English, not by invented ids.** `t("Sign in")` rather than
+`t("auth.signIn")`: there is nothing to keep in sync, and an untranslated
+string falls back to correct English instead of showing a raw key to a user.
+`npm run check:i18n` reports any `t()` literal with no entry, because a silent
+fallback is otherwise invisible until someone switches language.
+
+**Devanagari is a real font, not a fallback.** Inter contains no Devanagari at
+all, so Hindi would otherwise render in whatever the OS supplies. Noto Sans
+Devanagari is loaded and sits *after* Inter in the stack, so Latin inside Hindi
+copy — BathCraft, Google, KOHLER — still sets in Inter.
+
+Not translated, deliberately: the BathCraft name, the brand names, numerals and
+units in the prototype figures, and the testimonial customer names.
+
+**TRADEOFF.** The locale lives in `localStorage`, not a cookie or a `/hi/` URL
+segment. That keeps the marketing pages static, but the server renders English
+and Hindi arrives after hydration, and search engines only ever see the English.
+Proper locale routing (next-intl with a `[locale]` segment) fixes both and is
+the right move if Hindi SEO matters. It is a much larger change than a toggle.
+
+One consequence worth knowing: any component that renders translated text has
+to be a client component, so nine presentational sections gained `"use client"`.
 
 ### Light and dark
 

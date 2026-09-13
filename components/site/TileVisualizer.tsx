@@ -4,6 +4,7 @@ import { useState } from "react";
 import Icon from "@/components/ui/Icon";
 import Reveal from "@/components/ui/Reveal";
 import { TILE_SWATCHES } from "@/lib/content";
+import { useT } from "@/lib/i18n/useT";
 import { SWATCH_STYLE } from "./swatches";
 
 /**
@@ -12,22 +13,23 @@ import { SWATCH_STYLE } from "./swatches";
  */
 export default function TileVisualizer() {
   const [active, setActive] = useState(TILE_SWATCHES[0].id);
+  const t = useT();
 
   return (
     <Reveal as="section">
       <div className="flex flex-col gap-5 overflow-hidden rounded-card bg-wash p-5 ring-1 ring-hairline sm:flex-row sm:items-center">
         <div className="min-w-0 flex-1">
           <h2 className="text-[17px] font-bold tracking-[-0.01em] text-ink">
-            Try tiles and wallpapers instantly
+            {t("Try tiles and wallpapers instantly")}
           </h2>
           <p className="mt-1.5 text-[13px] leading-relaxed text-body">
-            Upload a brochure or pick from our library.
+            {t("Upload a brochure or pick from our library.")}
           </p>
           <a
             href="#styles"
             className="group mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand"
           >
-            Try now
+            {t("Try now")}
             <Icon
               name="arrowRight"
               size={14}
@@ -54,7 +56,7 @@ export default function TileVisualizer() {
                   type="button"
                   onClick={() => setActive(sw.id)}
                   aria-pressed={isActive}
-                  title={sw.label}
+                  title={t(sw.label)}
                   className={[
                     "block h-[64px] w-[48px] rounded-[6px] shadow-soft transition-transform duration-300 ease-out",
                     "hover:-translate-y-1.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0",
@@ -62,7 +64,7 @@ export default function TileVisualizer() {
                   ].join(" ")}
                   style={SWATCH_STYLE[sw.id]}
                 >
-                  <span className="sr-only">{sw.label}</span>
+                  <span className="sr-only">{t(sw.label)}</span>
                 </button>
               </li>
             );

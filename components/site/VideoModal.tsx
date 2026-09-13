@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n/useT";
 import { createPortal } from "react-dom";
 import Icon from "@/components/ui/Icon";
 
@@ -29,6 +30,7 @@ export default function VideoModal({
   videoSrc: string;
   title: string;
 }) {
+  const t = useT();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -160,7 +162,7 @@ export default function VideoModal({
             ref={closeRef}
             type="button"
             onClick={close}
-            aria-label="Close video"
+            aria-label={t("Close video")}
             className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full bg-white/12 text-white transition-[background-color,transform] duration-200 hover:scale-105 hover:bg-white/22 motion-reduce:hover:scale-100"
           >
             <Icon name="close" size={20} />
@@ -182,7 +184,7 @@ export default function VideoModal({
             width={1920}
             height={1080}
           >
-            Your browser cannot play this video.
+            {t("Your browser cannot play this video.")}
           </video>
 
           {ended && (
@@ -210,10 +212,11 @@ export default function VideoModal({
  * and handing a child a ref to mutate makes ownership ambiguous.
  */
 function EndState({ onReplay, onClose }: { onReplay: () => void; onClose: () => void }) {
+  const t = useT();
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 flex animate-[fade-in_260ms_ease-out_both] flex-col items-center gap-3 bg-[linear-gradient(to_top,rgb(5_15_25/0.92),rgb(5_15_25/0))] px-5 pt-16 pb-6 sm:flex-row sm:justify-center motion-reduce:animate-none">
       <p className="pointer-events-auto text-[14px] font-medium text-white/85 sm:mr-2">
-        Ready to plan your bathroom?
+        {t("Ready to plan your bathroom?")}
       </p>
 
       <a
@@ -221,7 +224,7 @@ function EndState({ onReplay, onClose }: { onReplay: () => void; onClose: () => 
         onClick={onClose}
         className="pointer-events-auto inline-flex h-11 items-center gap-2 rounded-pill bg-white px-5 text-[14px] font-semibold text-ink transition-transform duration-200 hover:-translate-y-px motion-reduce:hover:translate-y-0"
       >
-        Start Planning Free
+        {t("Start Planning Free")}
         <Icon name="arrowRight" size={15} />
       </a>
 
@@ -230,7 +233,7 @@ function EndState({ onReplay, onClose }: { onReplay: () => void; onClose: () => 
         onClick={onReplay}
         className="pointer-events-auto inline-flex h-11 items-center gap-2 rounded-pill border border-white/35 px-5 text-[14px] font-medium text-white transition-[background-color,border-color] duration-200 hover:border-white/60 hover:bg-white/10"
       >
-        <span aria-hidden="true">↻</span> Watch Again
+        <span aria-hidden="true">↻</span> {t("Watch Again")}
       </button>
     </div>
   );

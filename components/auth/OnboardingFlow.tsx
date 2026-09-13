@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Icon, { type IconName } from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/useT";
 import { useAuth } from "./AuthProvider";
 import { TextField } from "./fields";
 
@@ -25,6 +26,7 @@ const PRIORITIES: { id: string; label: string; icon: IconName }[] = [
 export default function OnboardingFlow() {
   const router = useRouter();
   const { completeOnboarding } = useAuth();
+  const t = useT();
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState("");
@@ -39,7 +41,7 @@ export default function OnboardingFlow() {
     if (saving) return;
     if (step === 1) {
       if (!name.trim()) {
-        setNameError("Give this bathroom a name so you can find it later.");
+        setNameError(t("Give this bathroom a name so you can find it later."));
         return;
       }
       setNameError(null);
@@ -66,7 +68,7 @@ export default function OnboardingFlow() {
     <div className="mx-auto w-full max-w-[560px] px-5 py-12 sm:py-16">
       <div className="mb-8">
         <p className="text-[11px] font-semibold tracking-[0.2em] text-brand uppercase">
-          Step {step} of 3
+          {t("Step")} {step} {t("of")} 3
         </p>
         <div
           className="mt-3 flex gap-1.5"
@@ -74,7 +76,7 @@ export default function OnboardingFlow() {
           aria-valuemin={1}
           aria-valuemax={3}
           aria-valuenow={step}
-          aria-label="Onboarding progress"
+          aria-label={t("Onboarding progress")}
         >
           {[1, 2, 3].map((i) => (
             <span
@@ -92,10 +94,10 @@ export default function OnboardingFlow() {
         {step === 1 && (
           <>
             <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
-              Let&apos;s create your first bathroom.
+              {t("Let’s create your first bathroom.")}
             </h1>
             <p className="mt-3 text-[15px] text-body">
-              What would you like to call this bathroom?
+              {t("What would you like to call this bathroom?")}
             </p>
             <form
               className="mt-7"
@@ -105,8 +107,8 @@ export default function OnboardingFlow() {
               }}
             >
               <TextField
-                label="Bathroom name"
-                placeholder="e.g. Master Bathroom"
+                label={t("Bathroom name")}
+                placeholder={t("e.g. Master Bathroom")}
                 value={name}
                 autoFocus
                 onChange={(e) => setName(e.target.value)}
@@ -119,7 +121,7 @@ export default function OnboardingFlow() {
         {step === 2 && (
           <>
             <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
-              What are you planning?
+              {t("What are you planning?")}
             </h1>
             <ul className="mt-7 space-y-3">
               {INTENTS.map(({ id, label, icon }) => (
@@ -127,7 +129,7 @@ export default function OnboardingFlow() {
                   <ChoiceCard
                     selected={intent === id}
                     icon={icon}
-                    label={label}
+                    label={t(label)}
                     onSelect={() => setIntent(id)}
                     role="radio"
                   />
@@ -140,16 +142,16 @@ export default function OnboardingFlow() {
         {step === 3 && (
           <>
             <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
-              What matters most to you?
+              {t("What matters most to you?")}
             </h1>
-            <p className="mt-3 text-[15px] text-body">Choose as many as you like.</p>
+            <p className="mt-3 text-[15px] text-body">{t("Choose as many as you like.")}</p>
             <ul className="mt-7 grid gap-3 sm:grid-cols-2">
               {PRIORITIES.map(({ id, label, icon }) => (
                 <li key={id}>
                   <ChoiceCard
                     selected={priorities.includes(id)}
                     icon={icon}
-                    label={label}
+                    label={t(label)}
                     onSelect={() => togglePriority(id)}
                     role="checkbox"
                   />
@@ -167,7 +169,7 @@ export default function OnboardingFlow() {
             onClick={() => setStep((s) => s - 1)}
             className="text-[13.5px] font-semibold text-body transition-colors hover:text-brand"
           >
-            ← Back
+            {t("← Back")}
           </button>
         )}
         <button
@@ -176,7 +178,7 @@ export default function OnboardingFlow() {
           disabled={saving}
           className="ml-auto flex h-[52px] items-center justify-center gap-2 rounded-[14px] bg-brand px-7 text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
         >
-          {saving ? "Saving…" : step === 3 ? "Start Planning" : "Continue"}
+          {saving ? t("Saving…") : step === 3 ? t("Start Planning") : t("Continue")}
           <Icon name="arrowRight" size={16} />
         </button>
       </div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
 import Icon, { type IconName } from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/useT";
 import { Annotation } from "@/components/ui/Annotation";
 import { PLANNER_TOOLS } from "@/lib/content";
 
@@ -68,7 +69,8 @@ export default function PlannerDemo() {
     setPos((p) => clamp(p.x + delta[0], p.y + delta[1]));
   };
 
-  const activeLabel = PLANNER_TOOLS.find((t) => t.id === tool)?.label ?? "Fixture";
+  const tr = useT();
+  const activeLabel = tr(PLANNER_TOOLS.find((entry) => entry.id === tool)?.label ?? "Fixture");
 
   return (
     <section
@@ -90,18 +92,19 @@ export default function PlannerDemo() {
 
       <div className="relative z-10 flex h-full flex-col justify-center p-7 sm:p-10 lg:max-w-[58%] lg:p-12">
         <h2 className="text-[34px] leading-[1.08] font-semibold tracking-[-0.02em] text-white sm:text-[44px]">
-          See it.
+          {tr("See it.")}
           <br />
-          Change it.
+          {tr("Change it.")}
           <br />
-          Perfect it.
+          {tr("Perfect it.")}
         </h2>
         <p className="mt-5 max-w-sm text-[14.5px] leading-relaxed text-white/80">
-          Drag, drop and explore different layouts, fittings, tiles and colours before you start
-          building.
+          {tr(
+            "Drag, drop and explore different layouts, fittings, tiles and colours before you start building.",
+          )}
         </p>
         <Button href="#how-it-works" variant="white" size="md" withArrow className="mt-7 self-start">
-          Try the Planner
+          {tr("Try the Planner")}
         </Button>
       </div>
 
@@ -113,7 +116,7 @@ export default function PlannerDemo() {
         <div
           role="button"
           tabIndex={0}
-          aria-label={`${activeLabel} — drag, or move with the arrow keys`}
+          aria-label={`${activeLabel} — ${tr("drag, or move with the arrow keys")}`}
           onKeyDown={onKeyDown}
           onPointerDown={(e) => {
             const box = frameRef.current?.getBoundingClientRect();
@@ -153,9 +156,7 @@ export default function PlannerDemo() {
         <div className="pointer-events-none absolute -top-9 left-1/2 hidden -translate-x-1/2 items-center gap-1 sm:flex">
           <span className="on-light rounded-[6px] bg-white px-2.5 py-1 shadow-lift">
             <Annotation className="block text-[15px] leading-tight whitespace-nowrap text-ink" rotate={-3}>
-              Move
-              <br />
-              &amp; explore
+              {tr("Move & explore")}
             </Annotation>
           </span>
         </div>
@@ -163,7 +164,7 @@ export default function PlannerDemo() {
 
       {/* Fixture toolbar. */}
       <div className="on-light absolute top-1/2 right-4 z-20 hidden -translate-y-1/2 rounded-[14px] bg-white/95 p-1.5 shadow-lift backdrop-blur sm:block">
-        <ul className="flex flex-col gap-0.5" role="listbox" aria-label="Bathroom fixtures">
+        <ul className="flex flex-col gap-0.5" role="listbox" aria-label={tr("Bathroom fixtures")}>
           {PLANNER_TOOLS.map(({ id, label }) => {
             const active = id === tool;
             return (
@@ -179,7 +180,7 @@ export default function PlannerDemo() {
                   ].join(" ")}
                 >
                   <Icon name={id as IconName} size={19} />
-                  <span className="text-[9.5px] font-medium">{label}</span>
+                  <span className="text-[9.5px] font-medium">{tr(label)}</span>
                 </button>
               </li>
             );

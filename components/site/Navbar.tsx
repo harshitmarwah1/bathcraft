@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import BathCraftLogoAnimation from "@/components/BathCraftLogoAnimation";
 import Button from "@/components/ui/Button";
 import UserMenu from "@/components/auth/UserMenu";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/components/auth/AuthProvider";
 import Icon from "@/components/ui/Icon";
 import { NAV_LINKS } from "@/lib/content";
+import { useT } from "@/lib/i18n/useT";
 
 /**
  * Sticky navbar, 72px. Transparent-bordered over the top of the page; once the
@@ -17,6 +19,7 @@ import { NAV_LINKS } from "@/lib/content";
  */
 export default function Navbar() {
   const { user, ready } = useAuth();
+  const t = useT();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -59,7 +62,7 @@ export default function Navbar() {
         aria-label="Main"
         className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-6 px-5 sm:px-6"
       >
-        <Link href="#top" aria-label="BathCraft — home" className="shrink-0">
+        <Link href="#top" aria-label={t("BathCraft — home")} className="shrink-0">
           <BathCraftLogoAnimation variant="navbar" />
         </Link>
 
@@ -70,7 +73,7 @@ export default function Navbar() {
                 href={href}
                 className="text-[13.5px] font-medium text-body transition-colors hover:text-brand"
               >
-                {label}
+                {t(label)}
               </Link>
             </li>
           ))}
@@ -79,11 +82,13 @@ export default function Navbar() {
         <div className="ml-auto flex items-center gap-2.5 lg:ml-0">
           <button
             type="button"
-            aria-label="Search"
+            aria-label={t("Search")}
             className="hidden h-9 w-9 items-center justify-center rounded-full text-body transition-colors hover:bg-wash hover:text-brand sm:inline-flex"
           >
             <Icon name="search" size={18} />
           </button>
+
+          <LanguageToggle />
 
           <ThemeToggle />
 
@@ -101,7 +106,7 @@ export default function Navbar() {
                   by the order they appear here — so "hidden" lost and these
                   stayed visible on phones, pushing the menu button off screen. */}
               <Button href="/signin" variant="outline" size="sm" className="max-sm:hidden">
-                Sign in
+                {t("Sign in")}
               </Button>
               <Button
                 href={getStartedHref}
@@ -109,7 +114,7 @@ export default function Navbar() {
                 size="sm"
                 className="max-sm:hidden"
               >
-                Get Started
+                {t("Get Started")}
               </Button>
             </>
           )}
@@ -119,7 +124,7 @@ export default function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t("Close menu") : t("Open menu")}
             className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-wash max-sm:h-11 max-sm:w-11 lg:hidden"
           >
             <Icon name={open ? "close" : "menu"} size={22} />
@@ -145,22 +150,22 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="block border-b border-hairline py-3 text-[15px] font-medium text-ink last:border-0"
               >
-                {label}
+                {t(label)}
               </Link>
             </li>
           ))}
           <li className="flex gap-3 pt-4">
             {user ? (
               <Button href="/bathrooms" variant="primary" size="md" className="flex-1">
-                My Bathrooms
+                {t("My Bathrooms")}
               </Button>
             ) : (
               <>
                 <Button href="/signin" variant="outline" size="md" className="flex-1">
-                  Sign in
+                  {t("Sign in")}
                 </Button>
                 <Button href={getStartedHref} variant="primary" size="md" className="flex-1">
-                  Get Started
+                  {t("Get Started")}
                 </Button>
               </>
             )}

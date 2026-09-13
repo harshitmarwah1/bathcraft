@@ -1,9 +1,13 @@
+"use client";
+
 import Icon from "@/components/ui/Icon";
 import Reveal from "@/components/ui/Reveal";
 import { METRICS } from "@/lib/content";
+import { useT } from "@/lib/i18n/useT";
 
 /** Pale-blue rounded strip. Values are prototype placeholders — see lib/content.ts. */
 export default function MetricsBar() {
+  const t = useT();
   return (
     <section id="metrics" className="mx-auto max-w-[1280px] px-5 py-8 sm:px-6">
       <Reveal>
@@ -15,7 +19,7 @@ export default function MetricsBar() {
               </span>
               <div className="min-w-0">
                 <dt className="text-[20px] leading-tight font-bold text-ink">{value}</dt>
-                <dd className="mt-0.5 truncate text-[12.5px] text-body-soft">{label}</dd>
+                <dd className="mt-0.5 truncate text-[12.5px] text-body-soft">{t(label)}</dd>
               </div>
             </div>
           ))}

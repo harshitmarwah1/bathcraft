@@ -1,12 +1,26 @@
 import type { Metadata } from "next";
-import { Caveat, Inter } from "next/font/google";
+import { Caveat, Inter, Noto_Sans_Devanagari } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { LOCALE_SCRIPT } from "@/lib/i18n/locale";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+/**
+ * Devanagari. Inter covers no Devanagari at all, so Hindi would otherwise fall
+ * back to whatever the OS happens to have — different metrics, different
+ * weight, visibly not the same typeface. Listed after Inter in the stack so
+ * Latin text inside Hindi copy (BathCraft, Google, KOHLER) still sets in Inter.
+ */
+const devanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  variable: "--font-devanagari",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -26,12 +40,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${caveat.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${caveat.variable} ${devanagari.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Sets data-theme before first paint. Anything later — a component, an
             effect, even a blocking <script src> — lands after the browser has
             already painted, which reads as a white flash on a dark page. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        {/* Sets lang="hi" before paint, so the Devanagari stack applies on the
+            first frame and screen readers announce the right language. */}
+        <script dangerouslySetInnerHTML={{ __html: LOCALE_SCRIPT }} />
       </head>
       <body className="antialiased">
         <AuthProvider>{children}</AuthProvider>

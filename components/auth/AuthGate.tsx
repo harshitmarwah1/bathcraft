@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useAuth } from "./AuthProvider";
+import { useT } from "@/lib/i18n/useT";
 import { Spinner } from "./fields";
 
 /**
@@ -13,12 +14,13 @@ import { Spinner } from "./fields";
  */
 export default function AuthGate({ children }: { children: ReactNode }) {
   const { user, ready } = useAuth();
+  const t = useT();
 
   if (!ready) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Spinner className="border-brand/25 border-t-brand" />
-        <span className="sr-only">Loading your account…</span>
+        <span className="sr-only">{t("Loading your account…")}</span>
       </div>
     );
   }

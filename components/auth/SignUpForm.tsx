@@ -12,6 +12,7 @@ import {
   validateNewPassword,
   validateRequired,
 } from "@/lib/auth/validation";
+import { useT } from "@/lib/i18n/useT";
 import {
   AuthAlert,
   Checkbox,
@@ -36,6 +37,7 @@ export default function SignUpForm({
   onSignIn: () => void;
   onCreated: () => void;
 }) {
+  const t = useT();
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -63,7 +65,7 @@ export default function SignUpForm({
       email: validateEmail(values.email),
       password: validateNewPassword(values.password),
       confirm: validateConfirmPassword(values.password, values.confirm),
-      terms: values.terms ? null : "Please accept the Terms of Service to continue.",
+      terms: values.terms ? null : t("Please accept the Terms of Service to continue."),
     };
     setErrors(next);
     setFormError(null);
@@ -89,12 +91,12 @@ export default function SignUpForm({
         redirect: false,
       });
       if (!result || result.error) {
-        setFormError("Your account was created, but we couldn't sign you in. Please sign in.");
+        setFormError(t("Your account was created, but we couldn't sign you in. Please sign in."));
         return;
       }
       onCreated();
     } catch {
-      setFormError("We couldn't reach BathCraft. Check your connection and try again.");
+      setFormError(t("We couldn't reach BathCraft. Check your connection and try again."));
     } finally {
       setPending(false);
     }
@@ -109,25 +111,25 @@ export default function SignUpForm({
       await signIn("google", { callbackUrl: continueUrl });
     } catch {
       setGooglePending(false);
-      setFormError("We couldn't sign you in with Google.");
+      setFormError(t("We couldn't sign you in with Google."));
     }
   }
 
   return (
     <div>
       <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
-        Create your BathCraft account
+        {t("Create your BathCraft account")}
       </h1>
       <p className="mt-2 text-[14.5px] text-body">
-        Start planning your bathroom with clarity and confidence.
+        {t("Start planning your bathroom with clarity and confidence.")}
       </p>
 
       <form onSubmit={submit} noValidate className="mt-7">
-        {formError && <AuthAlert title="We couldn't create your account." body={formError} />}
+        {formError && <AuthAlert title={t("We couldn't create your account.")} body={formError} />}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <TextField
-            label="First name"
+            label={t("First name")}
             autoComplete="given-name"
             placeholder="Priya"
             value={values.firstName}
@@ -135,7 +137,7 @@ export default function SignUpForm({
             error={errors.firstName}
           />
           <TextField
-            label="Last name"
+            label={t("Last name")}
             autoComplete="family-name"
             placeholder="Sharma"
             value={values.lastName}
@@ -146,7 +148,7 @@ export default function SignUpForm({
 
         <TextField
           className="mt-4"
-          label="Email address"
+          label={t("Email address")}
           type="email"
           autoComplete="email"
           placeholder="you@example.com"
@@ -157,22 +159,22 @@ export default function SignUpForm({
 
         <PasswordField
           className="mt-4"
-          label="Password"
+          label={t("Password")}
           autoComplete="new-password"
-          placeholder="Create a password"
+          placeholder={t("Create a password")}
           value={values.password}
           onChange={(e) => set("password", e.target.value)}
           error={errors.password}
-          hint="Use at least 8 characters with a mix of letters and numbers."
+          hint={t("Use at least 8 characters with a mix of letters and numbers.")}
         />
 
         <PasswordChecklist value={values.password} />
 
         <PasswordField
           className="mt-4"
-          label="Confirm password"
+          label={t("Confirm password")}
           autoComplete="new-password"
-          placeholder="Re-enter your password"
+          placeholder={t("Re-enter your password")}
           value={values.confirm}
           onChange={(e) => set("confirm", e.target.value)}
           error={errors.confirm}
@@ -185,13 +187,13 @@ export default function SignUpForm({
           error={errors.terms}
           label={
             <>
-              I agree to the{" "}
+              {t("I agree to the")}{" "}
               <Link href="/terms" className="font-semibold text-brand hover:underline">
-                Terms of Service
+                {t("Terms of Service")}
               </Link>{" "}
-              and{" "}
+              {t("and")}{" "}
               <Link href="/privacy" className="font-semibold text-brand hover:underline">
-                Privacy Policy
+                {t("Privacy Policy")}
               </Link>
               .
             </>
@@ -199,8 +201,8 @@ export default function SignUpForm({
         />
 
         <div className="mt-6">
-          <SubmitButton pending={pending} pendingLabel="Creating account…">
-            Create Account
+          <SubmitButton pending={pending} pendingLabel={t("Creating account…")}>
+            {t("Create Account")}
             <Icon name="arrowRight" size={16} />
           </SubmitButton>
         </div>
@@ -212,20 +214,20 @@ export default function SignUpForm({
         {googlePending ? (
           <>
             <Spinner className="border-brand/25 border-t-brand" />
-            Connecting to Google…
+            {t("Connecting to Google…")}
           </>
         ) : (
           <>
             <GoogleMark />
-            Continue with Google
+            {t("Continue with Google")}
           </>
         )}
       </SocialButton>
 
       <p className="mt-7 text-center text-[13.5px] text-body">
-        Already have an account?{" "}
+        {t("Already have an account?")}{" "}
         <button type="button" onClick={onSignIn} className="font-semibold text-brand hover:underline">
-          Sign in
+          {t("Sign in")}
         </button>
       </p>
     </div>

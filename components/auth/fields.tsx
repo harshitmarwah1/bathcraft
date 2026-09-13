@@ -2,6 +2,7 @@
 
 import { useId, useState, type InputHTMLAttributes, type ReactNode } from "react";
 import Icon from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/useT";
 
 const BASE_INPUT =
   "h-[52px] w-full rounded-[12px] border bg-surface-raised px-4 text-[14.5px] text-ink " +
@@ -63,6 +64,7 @@ export function PasswordField({
 } & InputHTMLAttributes<HTMLInputElement>) {
   const id = useId();
   const [shown, setShown] = useState(false);
+  const t = useT();
   const errorId = `${id}-error`;
   const hintId = `${id}-hint`;
   const describedBy = [error ? errorId : null, hint ? hintId : null].filter(Boolean).join(" ");
@@ -84,7 +86,7 @@ export function PasswordField({
         <button
           type="button"
           onClick={() => setShown((v) => !v)}
-          aria-label={shown ? "Hide password" : "Show password"}
+          aria-label={shown ? t("Hide password") : t("Show password")}
           aria-pressed={shown}
           className="absolute top-1/2 right-1.5 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-[9px] text-body-soft transition-colors hover:bg-wash hover:text-brand"
         >

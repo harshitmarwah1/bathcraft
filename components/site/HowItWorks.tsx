@@ -1,7 +1,10 @@
+"use client";
+
 import Icon from "@/components/ui/Icon";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { MATERIALS, MEASUREMENTS, STEPS, TILE_SWATCHES } from "@/lib/content";
+import { useT } from "@/lib/i18n/useT";
 import { SWATCH_STYLE } from "./swatches";
 
 /**
@@ -10,13 +13,14 @@ import { SWATCH_STYLE } from "./swatches";
  * density and editable in one place.
  */
 export default function HowItWorks() {
+  const t = useT();
   return (
     <section id="how-it-works" className="bg-wash">
       <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-6 lg:py-20">
         <SectionHeading
           align="center"
-          eyebrow="How BathCraft works"
-          title="Plan. Visualize. Build. In 4 simple steps."
+          eyebrow={t("How BathCraft works")}
+          title={t("Plan. Visualize. Build. In 4 simple steps.")}
         />
 
         <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -33,8 +37,8 @@ export default function HowItWorks() {
                 {visual === "materials" && <MaterialsVisual />}
               </div>
 
-              <h3 className="mt-4 text-[15px] font-semibold text-ink">{title}</h3>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-body-soft">{body}</p>
+              <h3 className="mt-4 text-[15px] font-semibold text-ink">{t(title)}</h3>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-body-soft">{t(body)}</p>
             </Reveal>
           ))}
         </ol>
@@ -45,12 +49,13 @@ export default function HowItWorks() {
 
 /** Step 1 — a phone with the measurement form. */
 function PhoneVisual() {
+  const t = useT();
   return (
     <div className="h-full w-[122px] rounded-[14px] bg-ink p-[3px] shadow-lift">
       <div className="flex h-full flex-col rounded-[11px] bg-surface-raised px-2.5 py-2">
         <div className="mx-auto mb-2 h-[3px] w-7 rounded-full bg-hairline" />
         <p className="mb-1.5 text-[6px] font-semibold tracking-[0.12em] text-body-soft uppercase">
-          Bathroom
+          {t("Bathroom")}
         </p>
         <div className="space-y-1">
           {MEASUREMENTS.map(({ label, value }) => (
@@ -58,13 +63,13 @@ function PhoneVisual() {
               key={label}
               className="flex items-center justify-between rounded-[5px] bg-wash px-1.5 py-[5px]"
             >
-              <span className="text-[7px] text-body">{label}</span>
+              <span className="text-[7px] text-body">{t(label)}</span>
               <span className="text-[7px] font-semibold text-ink">{value}</span>
             </div>
           ))}
         </div>
         <div className="mt-auto rounded-[5px] bg-brand py-[5px] text-center text-[7px] font-semibold text-on-brand">
-          Next
+          {t("Next")}
         </div>
       </div>
     </div>
@@ -127,6 +132,7 @@ function MoodboardVisual() {
 
 /** Step 4 — the generated material list. */
 function MaterialsVisual() {
+  const tr = useT();
   return (
     <div className="w-full space-y-1.5">
       {MATERIALS.map(({ icon, label, qty }) => (
@@ -137,7 +143,7 @@ function MaterialsVisual() {
           <span className="text-brand">
             <Icon name={icon} size={14} />
           </span>
-          <span className="text-[10.5px] text-body">{label}</span>
+          <span className="text-[10.5px] text-body">{tr(label)}</span>
           <span className="ml-auto text-[10.5px] font-semibold text-ink">{qty}</span>
         </div>
       ))}
