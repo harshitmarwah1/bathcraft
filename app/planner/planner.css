@@ -1,0 +1,133 @@
+/* Planner design system — scoped to .bc-planner so it never touches the
+   landing's warm theme. Tokens + icon/utility classes extracted from the
+   original BathCraft planner (blue Material identity).
+   Fonts (Plus Jakarta Sans + Material Symbols) are loaded via <link> tags in
+   app/planner/layout.tsx — a remote @import here is dropped by Turbopack. */
+
+.bc-planner {
+  /* brand */
+  --color-primary: #006194;
+  --color-primary-container: #007bb9;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed: #cce5ff;
+  --color-primary-fixed-dim: #93ccff;
+  --color-on-primary-fixed: #001d31;
+  --color-primary-accent: #006194;
+  --color-primary-tint: rgba(0, 97, 148, 0.1);
+  --color-primary-tint-border: rgba(0, 97, 148, 0.2);
+  /* surfaces */
+  --color-surface: #f8f9ff;
+  --color-surface-lowest: #ffffff;
+  --color-surface-low: #eff4ff;
+  --color-surface-container: #e5eeff;
+  --color-surface-high: #dce9ff;
+  --color-surface-highest: #d3e4fe;
+  /* text */
+  --color-on-surface: #0b1c30;
+  --color-on-surface-variant: #3f4850;
+  /* inverse */
+  --color-inverse-surface: #213145;
+  --color-inverse-on-surface: #eaf1ff;
+  /* chrome */
+  --color-header-bg: rgba(248, 249, 255, 0.9);
+  --color-card-border: rgba(220, 233, 255, 0.6);
+  --color-theme-icon: #006194;
+
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--color-on-surface);
+  background: var(--color-surface);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bc-planner[data-theme="dark"] {
+  --color-primary-accent: #93ccff;
+  --color-primary-tint: rgba(0, 97, 148, 0.2);
+  --color-primary-tint-border: rgba(0, 97, 148, 0.35);
+  --color-surface: #0d1520;
+  --color-surface-lowest: #131f30;
+  --color-surface-low: #18263a;
+  --color-surface-container: #1d2e46;
+  --color-surface-high: #233753;
+  --color-surface-highest: #2c4263;
+  --color-on-surface: #eaf1ff;
+  --color-on-surface-variant: #9ab0ca;
+  --color-inverse-surface: #233753;
+  --color-inverse-on-surface: #ffffff;
+  --color-header-bg: rgba(13, 21, 32, 0.9);
+  --color-card-border: rgba(35, 55, 83, 0.8);
+  --color-theme-icon: #fbbf24;
+}
+
+.bc-planner * {
+  box-sizing: border-box;
+}
+
+.bc-planner .msi {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bc-planner .nsb::-webkit-scrollbar {
+  display: none;
+}
+.bc-planner .nsb {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.bc-planner .app-frame {
+  min-height: 100dvh;
+}
+@media (min-width: 480px) {
+  .bc-planner .app-frame {
+    min-height: 0;
+    height: min(920px, calc(100dvh - 48px));
+    margin: 24px auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    border: 1px solid var(--color-card-border);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes bounceIn {
+  0% { transform: translate(-50%, -10px); opacity: 0; }
+  60% { transform: translate(-50%, 2px); opacity: 1; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* Print: show the brief content only. Scoped to planner pages. */
+@media print {
+  .bc-planner header,
+  .bc-planner nav,
+  .bc-planner .no-print {
+    display: none !important;
+  }
+  .bc-planner .app-frame {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .bc-planner .app-frame .nsb {
+    overflow: visible !important;
+  }
+}
