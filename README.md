@@ -182,8 +182,24 @@ needs the two halves separately, so `scripts/gen-logo-dark.mjs` slices it at the
 same cut recorded below — local x 574, the blank column between "Bath" and
 "Craft". Re-run it if the white asset is ever replaced.
 
-The icon layers already carry alpha and keep their brand colours in both themes;
-only the wordmark and the full lockup switch.
+The icon has a second problem, and it is contrast rather than alpha. It is
+drawn in two sampled colours — slate `#4a5c72` and brand blue `#038fc2` — and
+against the dark surface `#0c1b2f` those measure:
+
+| | contrast | |
+| --- | --- | --- |
+| slate | **2.5:1** | below WCAG 1.4.11's 3:1 for graphical objects |
+| blue | 4.7:1 | passes |
+
+So the structural frame all but disappears and only the blue details survive.
+`gen-logo-dark.mjs` recolours every layer in HSL, lifting lightness without
+touching hue, which brings the worst layer from 2.45:1 to **6.9:1**. A CSS
+`brightness()` filter would have been simpler and wrong — it multiplies
+channels, so the blue clips and slides to cyan.
+
+Blue lands on the dark theme's own `--color-brand` (`#3fa9dd`), so the mark
+stays in step with every other blue on the page. White highlights are left
+alone, and nothing is ever darkened.
 
 The supplied logo is a flat raster, so nothing redraws it.
 `scripts/gen-logo-layers.js` slices the original PNG into disjoint layers and

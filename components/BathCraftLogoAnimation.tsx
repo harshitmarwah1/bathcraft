@@ -56,6 +56,14 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
    * Geometry is identical between the two sets — see scripts/gen-logo-dark.mjs.
    */
   const dark = useResolvedTheme() === "dark";
+  /**
+   * The icon is drawn in slate #4a5c72 and brand blue #038fc2. On the dark
+   * surface the slate measures 2.5:1 — under WCAG 1.4.11's 3:1 for graphical
+   * objects — so the structural frame all but vanishes and only the blue
+   * details survive. scripts/gen-logo-dark.mjs recolours each layer in HSL,
+   * lifting lightness without touching hue, to ~7:1.
+   */
+  const icon = (name: string) => `/logo/${name}${dark ? "-dark" : ""}.png`;
   const lockupSrc = dark ? "/logo/logo-white.png" : "/logo/logo-full.png";
   const bathSrc = dark ? "/logo/wordmark-bath-white.png" : "/logo/wordmark-bath.png";
   const craftSrc = dark ? "/logo/wordmark-craft-white.png" : "/logo/wordmark-craft.png";
@@ -243,14 +251,14 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
             {/* Alpha mask of the two interior layers — confines the closing
                 highlight to the faucet and water-drop, as specified. */}
             <mask id="bc-mask-ink" maskUnits="userSpaceOnUse" style={{ maskType: "alpha" }}>
-              <image href="/logo/icon-faucet.png" x="0" y="0" width="297" height="272" />
-              <image href="/logo/icon-drop.png" x="0" y="0" width="297" height="272" />
+              <image href={icon("icon-faucet")} x="0" y="0" width="297" height="272" />
+              <image href={icon("icon-drop")} x="0" y="0" width="297" height="272" />
             </mask>
 
             {/* Static alpha mask of the faucet alone — the hover highlight.
                 Nothing animates inside it, unlike the reveal masks. */}
             <mask id="bc-mask-faucet-ink" maskUnits="userSpaceOnUse" style={{ maskType: "alpha" }}>
-              <image href="/logo/icon-faucet.png" x="0" y="0" width="297" height="272" />
+              <image href={icon("icon-faucet")} x="0" y="0" width="297" height="272" />
             </mask>
           </defs>
 
@@ -301,7 +309,7 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
             <g className={styles.mark}>
               <image
                 className={styles.settledIcon}
-                href="/logo/icon-icon.png"
+                href={icon("icon-icon")}
                 x="0"
                 y="0"
                 width="297"
@@ -309,7 +317,7 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
               />
 
               <image
-                href="/logo/icon-frame-slate.png"
+                href={icon("icon-frame-slate")}
                 x="0"
                 y="0"
                 width="297"
@@ -321,15 +329,15 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
                   the blueprint-grey to brand-blue turn is a cross-fade rather
                   than a filter that could shift the brand colour. */}
               <g mask="url(#bc-mask-frame-blue)">
-                <image className={styles.tint} href="/logo/icon-frame-blue-slate.png" x="0" y="0" width="297" height="272" />
-                <image className={styles.colour} href="/logo/icon-frame-blue.png" x="0" y="0" width="297" height="272" />
+                <image className={styles.tint} href={icon("icon-frame-blue-slate")} x="0" y="0" width="297" height="272" />
+                <image className={styles.colour} href={icon("icon-frame-blue")} x="0" y="0" width="297" height="272" />
               </g>
               <g mask="url(#bc-mask-faucet)">
-                <image className={styles.tint} href="/logo/icon-faucet-slate.png" x="0" y="0" width="297" height="272" />
-                <image className={styles.colour} href="/logo/icon-faucet.png" x="0" y="0" width="297" height="272" />
+                <image className={styles.tint} href={icon("icon-faucet-slate")} x="0" y="0" width="297" height="272" />
+                <image className={styles.colour} href={icon("icon-faucet")} x="0" y="0" width="297" height="272" />
               </g>
 
-              <image href="/logo/icon-drop.png" x="0" y="0" width="297" height="272" mask="url(#bc-mask-drop)" />
+              <image href={icon("icon-drop")} x="0" y="0" width="297" height="272" mask="url(#bc-mask-drop)" />
 
               <g className={styles.sheenClip} mask="url(#bc-mask-ink)" aria-hidden="true">
                 <rect className={styles.sheen} x="-150" y="-20" width="120" height="320" fill="url(#bc-sheen)" />
