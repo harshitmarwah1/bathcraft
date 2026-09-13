@@ -5,9 +5,12 @@ import { useEffect, useState } from "react";
 import BathCraftLogoAnimation from "@/components/BathCraftLogoAnimation";
 import Button from "@/components/ui/Button";
 import UserMenu from "@/components/auth/UserMenu";
+import LanguageToggle from "@/components/ui/LanguageToggle";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/components/auth/AuthProvider";
 import Icon from "@/components/ui/Icon";
 import { NAV_LINKS } from "@/lib/content";
+import { useT } from "@/lib/i18n/useT";
 
 /**
  * Sticky navbar, 72px. Transparent-bordered over the top of the page; once the
@@ -16,6 +19,7 @@ import { NAV_LINKS } from "@/lib/content";
  */
 export default function Navbar() {
   const { user, ready } = useAuth();
+  const t = useT();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -50,15 +54,15 @@ export default function Navbar() {
       className={[
         "fixed inset-x-0 top-0 z-50 transition-[box-shadow,background-color,backdrop-filter] duration-300",
         scrolled
-          ? "bg-white/90 shadow-[0_1px_0_rgb(227_235_242),0_6px_24px_rgb(16_43_78/0.06)] backdrop-blur-md"
-          : "bg-white",
+          ? "bg-surface/90 shadow-[0_1px_0_var(--color-hairline),0_6px_24px_rgb(16_43_78/0.06)] backdrop-blur-md"
+          : "bg-surface",
       ].join(" ")}
     >
       <nav
         aria-label="Main"
         className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-6 px-5 sm:px-6"
       >
-        <Link href="#top" aria-label="BathCraft — home" className="shrink-0">
+        <Link href="#top" aria-label={t("BathCraft — home")} className="shrink-0">
           <BathCraftLogoAnimation variant="navbar" />
         </Link>
 
@@ -69,7 +73,7 @@ export default function Navbar() {
                 href={href}
                 className="text-[13.5px] font-medium text-body transition-colors hover:text-brand"
               >
-                {label}
+                {t(label)}
               </Link>
             </li>
           ))}
@@ -78,11 +82,15 @@ export default function Navbar() {
         <div className="ml-auto flex items-center gap-2.5 lg:ml-0">
           <button
             type="button"
-            aria-label="Search"
+            aria-label={t("Search")}
             className="hidden h-9 w-9 items-center justify-center rounded-full text-body transition-colors hover:bg-wash hover:text-brand sm:inline-flex"
           >
             <Icon name="search" size={18} />
           </button>
+
+          <LanguageToggle />
+
+          <ThemeToggle />
 
           {/* Hold the slot until the stored profile has been read, so the
               signed-out pair never flashes in front of a signed-in user. */}
@@ -92,16 +100,21 @@ export default function Navbar() {
             <UserMenu />
           ) : (
             <>
-              <Button href="/signin" variant="outline" size="sm" className="hidden sm:inline-flex">
-                Sign in
+              {/* max-sm:hidden, not "hidden sm:inline-flex": Button's base class
+                  list already sets inline-flex, and two display utilities in the
+                  same layer are resolved by Tailwind's output order rather than
+                  by the order they appear here — so "hidden" lost and these
+                  stayed visible on phones, pushing the menu button off screen. */}
+              <Button href="/signin" variant="outline" size="sm" className="max-sm:hidden">
+                {t("Sign in")}
               </Button>
               <Button
                 href={getStartedHref}
                 variant="primary"
                 size="sm"
-                className="hidden sm:inline-flex"
+                className="max-sm:hidden"
               >
-                Get Started
+                {t("Get Started")}
               </Button>
             </>
           )}
@@ -111,8 +124,8 @@ export default function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-wash lg:hidden"
+            aria-label={open ? t("Close menu") : t("Open menu")}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-wash max-sm:h-11 max-sm:w-11 lg:hidden"
           >
             <Icon name={open ? "close" : "menu"} size={22} />
           </button>
@@ -125,7 +138,7 @@ export default function Navbar() {
         id="mobile-nav"
         inert={!open ? true : undefined}
         className={[
-          "overflow-hidden border-t border-hairline bg-white transition-[max-height,opacity] duration-300 lg:hidden",
+          "overflow-hidden border-t border-hairline bg-surface transition-[max-height,opacity] duration-300 lg:hidden",
           open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >
@@ -137,22 +150,22 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="block border-b border-hairline py-3 text-[15px] font-medium text-ink last:border-0"
               >
-                {label}
+                {t(label)}
               </Link>
             </li>
           ))}
           <li className="flex gap-3 pt-4">
             {user ? (
               <Button href="/bathrooms" variant="primary" size="md" className="flex-1">
-                My Bathrooms
+                {t("My Bathrooms")}
               </Button>
             ) : (
               <>
                 <Button href="/signin" variant="outline" size="md" className="flex-1">
-                  Sign in
+                  {t("Sign in")}
                 </Button>
                 <Button href={getStartedHref} variant="primary" size="md" className="flex-1">
-                  Get Started
+                  {t("Get Started")}
                 </Button>
               </>
             )}

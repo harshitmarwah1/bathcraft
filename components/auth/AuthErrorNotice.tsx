@@ -1,6 +1,7 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/useT";
 
 /**
  * Every way Google sign-in can fail, turned into something a person can act on.
@@ -54,6 +55,7 @@ export default function AuthErrorNotice({
   code: string;
   onRetry: () => void;
 }) {
+  const t = useT();
   const { title, body } = MESSAGES[code] ?? FALLBACK;
 
   return (
@@ -66,15 +68,15 @@ export default function AuthErrorNotice({
           <Icon name="warning" size={16} />
         </span>
         <div>
-          <p className="text-[13.5px] font-semibold text-danger-dark">{title}</p>
-          <p className="mt-0.5 text-[12.5px] leading-relaxed text-danger-dark/80">{body}</p>
+          <p className="text-[13.5px] font-semibold text-danger-dark">{t(title)}</p>
+          <p className="mt-0.5 text-[12.5px] leading-relaxed text-danger-dark/80">{t(body)}</p>
           <button
             type="button"
             onClick={onRetry}
-            className="mt-2.5 inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-danger/30 bg-white px-3.5 text-[12.5px] font-semibold text-danger-dark transition-colors hover:bg-danger/[0.06]"
+            className="mt-2.5 inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-danger/30 bg-surface-raised px-3.5 text-[12.5px] font-semibold text-danger-dark transition-colors hover:bg-danger/[0.06]"
           >
             <Icon name="arrowRight" size={13} />
-            Try Again
+            {t("Try Again")}
           </button>
         </div>
       </div>

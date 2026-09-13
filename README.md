@@ -8,6 +8,8 @@ npm install
 npm run dev      # http://localhost:3000
 npm run build
 npm run lint
+npm run check:db   # verify the Supabase connection
+npm run check:i18n # report any untranslated string
 ```
 
 Next.js 16 (App Router) · React 19 · Tailwind v4 · Inter + Caveat. No animation
@@ -61,6 +63,82 @@ Sections, in page order: `Navbar` · `Hero` · `ValuePropositionBar` ·
 Cards 14px, buttons fully pill, two shadow steps (`--shadow-soft`,
 `--shadow-lift`). Warmth lives only inside the photographs.
 
+### English and Hindi
+
+A toggle in the navbar, next to the theme switch. The whole interface
+translates — navigation, hero, every section, auth, onboarding, the dashboard
+and the error states.
+
+```
+lib/i18n/dictionary.ts   Hindi, keyed by the English source string
+lib/i18n/locale.ts       the store, plus LOCALE_SCRIPT
+lib/i18n/useT.ts         useT() and useLocale()
+components/ui/LanguageToggle.tsx
+```
+
+**Keyed by the English, not by invented ids.** `t("Sign in")` rather than
+`t("auth.signIn")`: there is nothing to keep in sync, and an untranslated
+string falls back to correct English instead of showing a raw key to a user.
+`npm run check:i18n` reports any `t()` literal with no entry, because a silent
+fallback is otherwise invisible until someone switches language.
+
+**Devanagari is a real font, not a fallback.** Inter contains no Devanagari at
+all, so Hindi would otherwise render in whatever the OS supplies. Noto Sans
+Devanagari is loaded and sits *after* Inter in the stack, so Latin inside Hindi
+copy — BathCraft, Google, KOHLER — still sets in Inter.
+
+Not translated, deliberately: the BathCraft name, the brand names, numerals and
+units in the prototype figures, and the testimonial customer names.
+
+**TRADEOFF.** The locale lives in `localStorage`, not a cookie or a `/hi/` URL
+segment. That keeps the marketing pages static, but the server renders English
+and Hindi arrives after hydration, and search engines only ever see the English.
+Proper locale routing (next-intl with a `[locale]` segment) fixes both and is
+the right move if Hindi SEO matters. It is a much larger change than a toggle.
+
+One consequence worth knowing: any component that renders translated text has
+to be a client component, so nine presentational sections gained `"use client"`.
+
+### Light and dark
+
+Every colour in the table above is a CSS custom property, and the theme switch
+redefines those properties rather than adding a second set of classes. Nothing
+in a component says "dark".
+
+```
+app/globals.css       @theme = light values; dark overrides below it
+lib/theme.ts          the store, plus THEME_SCRIPT
+components/ui/ThemeToggle.tsx   the sun/moon button in the navbar
+```
+
+Three states, not two. **system** is the default and follows the OS; **light**
+and **dark** are explicit and stored in `localStorage` under
+`bathcraft.theme`. Dark is applied twice on purpose — once behind
+`@media (prefers-color-scheme: dark)` for the system default, once behind
+`[data-theme="dark"]` so an explicit choice outranks the OS.
+
+Three things are easy to get wrong here and are handled:
+
+- **The flash.** `THEME_SCRIPT` is inlined into `<head>` and sets the
+  attribute before first paint. A component or an effect runs after the browser
+  has already painted, which reads as a white flash on a dark page.
+- **Hydration.** The toggle reads the resolved theme through
+  `useSyncExternalStore`, so the hydration render uses the server value and the
+  browser value lands on the pass after. Calling `matchMedia` during render is
+  what produces a mismatch.
+- **`color-scheme`.** Set alongside the tokens so scrollbars and native form
+  chrome follow the theme. Without it you get a white scrollbar on a dark page.
+
+Two escapes from the theme, both deliberate:
+
+| Escape | Where | Why |
+| --- | --- | --- |
+| `.on-light` | hero's white button, planner toolbar and hint, before/after slider | These sit on a **photograph**, and a photograph does not get darker when the theme does. The class re-declares the light tokens for that subtree, so the utilities inside are unchanged. |
+| `--color-on-brand` | any text on `bg-brand` | Light and dark pull in opposite directions: white on `#078CC8` is 4.7:1, but dark mode lifts brand to `#3FA9DD` so it is legible *as text*, and white on that is only 2.6:1. The paired foreground flips with the theme. |
+
+Whites that stay white in both themes: text over the hero and auth photographs,
+the blueprint and planner "paper", and the Google `G`.
+
 ## The things that actually do something
 
 Not a screenshot — these were each exercised and verified in a browser:
@@ -84,12 +162,28 @@ Not a screenshot — these were each exercised and verified in a browser:
 
 | Variant | Where | Length |
 | --- | --- | --- |
-| `navbar` | header | ~2.0s, plays once, then it is just the logo |
+| `navbar` | header | ~8.1s, plays once, then it is just the logo |
 | `inline` | beside copy | 4.85s desktop / 3.0s mobile |
 | `splash` | full-screen opener | 8.5s desktop / 5.3s mobile |
 
 Pace is one number — `--d` on `.stage` — and `PLAY_MS` reads it back off the
 element so the JS timer cannot drift from the CSS.
+
+### Dark mode and the raster
+
+`logo-full.png`, `wordmark-bath.png` and `wordmark-craft.png` have **no alpha
+channel** — the artwork is dark ink on an opaque white rectangle. That is
+invisible on a white page and a white box on a dark one, and no amount of CSS
+fixes a missing alpha channel.
+
+`logo-white.png` is the same lockup drawn in white on transparency, so the dark
+theme swaps to it. It ships only as the whole 846×272 lockup, and the animation
+needs the two halves separately, so `scripts/gen-logo-dark.mjs` slices it at the
+same cut recorded below — local x 574, the blank column between "Bath" and
+"Craft". Re-run it if the white asset is ever replaced.
+
+The icon layers already carry alpha and keep their brand colours in both themes;
+only the wordmark and the full lockup switch.
 
 The supplied logo is a flat raster, so nothing redraws it.
 `scripts/gen-logo-layers.js` slices the original PNG into disjoint layers and
@@ -167,15 +261,42 @@ silently merged; the user signs in with their password first, and clicking
 Continue with Google then links the two. `allowDangerousEmailAccountLinking` is
 off deliberately.
 
-### The database seam — read before deploying
+### Database — Supabase Postgres
 
-`lib/db/store.ts` defines a `UserStore` interface and implements it against a
-**JSON file** in `.data/`. That is development-only: serverless hosts have a
-read-only filesystem and one copy per instance, so users would vanish or
-duplicate. Implement `UserStore` against a real database and export that
-instead — every caller goes through the interface, so nothing else changes.
+`lib/db/types.ts` defines the `UserStore` contract. Two implementations satisfy it
+and the environment picks one:
 
-Password reset is also unimplemented: `requestPasswordReset` in
+| Implementation | When | File |
+| --- | --- | --- |
+| Supabase Postgres | `SUPABASE_URL` **and** `SUPABASE_SERVICE_ROLE_KEY` are set | `lib/db/supabase.ts` |
+| JSON file | otherwise — **development only** | `lib/db/store.ts` |
+
+The file store cannot work on Vercel: the filesystem is read-only and each
+instance keeps its own copy. It exists so `npm run dev` works with no setup, and
+it logs a warning when it is the one in use.
+
+**Setup**
+
+1. Create a Supabase project.
+2. Run [`supabase/migrations/0001_users_and_accounts.sql`](supabase/migrations/0001_users_and_accounts.sql)
+   in the SQL editor. It is idempotent.
+3. Put `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`.
+4. `npm run check:db` — verifies the key reaches the project and the tables exist.
+
+**Notes that matter**
+
+- The **service role** key bypasses Row Level Security. It is a full-access
+  credential, server-only, and must never be prefixed `NEXT_PUBLIC_`.
+- RLS is enabled on both tables with **no policies**, deliberately. All access is
+  server-side via the service role, so the anon key opens an empty door.
+- Duplicate users are prevented by unique indexes — `lower(email)` on `users` and
+  `(provider, provider_account_id)` on `accounts` — not by a lock in the process.
+  Two functions racing the same first sign-in cannot both win; the loser catches
+  `23505` and reads back the winner's row.
+- `supabase-js` speaks HTTP rather than holding a Postgres connection, which is
+  what makes it safe on serverless. No pooler needed.
+
+Password reset remains unimplemented: `requestPasswordReset` in
 `app/actions/auth.ts` always resolves without sending mail, and says so.
 
 | Route | Contents |

@@ -6,16 +6,25 @@
    Blue and slate are sampled from the supplied logo raster; the rest of the
    scale is the landing-page reference. Colour is never decorative here:
 
-     ink      #102B4E  headings, navigation
-     body     #42566F  running copy
-     brand    #078CC8  primary actions, active state, annotations
-     wash     #F3FAFE  section grounds that need to sit back from white
+     ink      headings, navigation
+     body     running copy
+     brand    primary actions, active state, annotations
+     wash     section grounds that need to sit back from the page
+     surface  the page itself / raised cards and fields
 
-   There is no dark theme. The page is a white/pale-blue system with the
-   warmth carried entirely by the photography.
+   Both themes are defined below. Every value is a custom property and every
+   component reads them through Tailwind utilities, so the theme switch is a
+   change of variables, never a second set of classes.
+
+   The @theme block holds the LIGHT values, which are also the defaults.
 --------------------------------------------------------------------------- */
 
 @theme {
+  /* The page, and anything raised off it. In light these are both white;
+     splitting them is what makes a dark theme possible without a repaint. */
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+
   --color-ink: #102b4e;
   --color-ink-soft: #1d3a61;
   --color-body: #42566f;
@@ -23,6 +32,8 @@
 
   --color-brand: #078cc8;
   --color-brand-dark: #0672a3;
+  /* Foreground for anything sitting ON the brand colour. */
+  --color-on-brand: #ffffff;
   --color-brand-soft: #7cc9e8;
   --color-wash: #f3fafe;
   --color-wash-deep: #e4f2fb;
@@ -33,7 +44,9 @@
   --color-danger: #d2554b;
   --color-danger-dark: #a33c34;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans:
+    var(--font-inter), var(--font-devanagari), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
   --font-hand: var(--font-caveat), "Segoe Script", cursive;
 
   --radius-card: 14px;
@@ -41,6 +54,118 @@
 
   --shadow-soft: 0 1px 2px rgb(16 43 78 / 0.04), 0 8px 24px rgb(16 43 78 / 0.06);
   --shadow-lift: 0 2px 4px rgb(16 43 78 / 0.05), 0 18px 40px rgb(16 43 78 / 0.10);
+}
+
+/* ---------------------------------------------------------------------------
+   Dark theme.
+
+   Applied two ways, and the order matters:
+
+     1. @media (prefers-color-scheme: dark) — the system preference, honoured
+        by default, but skipped when the user has explicitly chosen light.
+     2. [data-theme="dark"] — an explicit choice, which wins over the system.
+
+   `color-scheme` is set alongside so the browser's own furniture — scrollbars,
+   the date picker, form control chrome, the flash before CSS paints — follows
+   the theme too. Without it you get a white scrollbar on a dark page.
+--------------------------------------------------------------------------- */
+
+@layer theme {
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      color-scheme: dark;
+
+      --color-surface: #0c1b2f;
+      --color-surface-raised: #13273f;
+
+      --color-ink: #e8f1f8;
+      --color-ink-soft: #c6d8e8;
+      --color-body: #a6bbd0;
+      --color-body-soft: #7d93aa;
+
+      /* #078CC8 is too dark to read on a dark ground; lift it and let the
+         hover state go lighter rather than darker. */
+      --color-brand: #3fa9dd;
+      --color-brand-dark: #63bee9;
+      --color-on-brand: #06141f;
+      --color-brand-soft: #1e6c95;
+
+      --color-wash: #13273f;
+      --color-wash-deep: #1b3250;
+      --color-hairline: #22374f;
+      --color-field: #2b4159;
+
+      --color-danger: #e8776d;
+      --color-danger-dark: #f5b3ab;
+
+      --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.30), 0 8px 24px rgb(0 0 0 / 0.36);
+      --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.34), 0 18px 40px rgb(0 0 0 / 0.46);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --color-surface: #0c1b2f;
+    --color-surface-raised: #13273f;
+
+    --color-ink: #e8f1f8;
+    --color-ink-soft: #c6d8e8;
+    --color-body: #a6bbd0;
+    --color-body-soft: #7d93aa;
+
+    --color-brand: #3fa9dd;
+    --color-brand-dark: #63bee9;
+    --color-on-brand: #06141f;
+    --color-brand-soft: #1e6c95;
+
+    --color-wash: #13273f;
+    --color-wash-deep: #1b3250;
+    --color-hairline: #22374f;
+    --color-field: #2b4159;
+
+    --color-danger: #e8776d;
+    --color-danger-dark: #f5b3ab;
+
+    --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.30), 0 8px 24px rgb(0 0 0 / 0.36);
+    --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.34), 0 18px 40px rgb(0 0 0 / 0.46);
+  }
+
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   .on-light — pin the light palette for one subtree.
+
+   Some surfaces do not belong to the theme because what sits behind them is a
+   photograph, and a photograph does not get darker when the theme does: the
+   hero's white button, the planner's floating toolbar and its handwritten
+   hint. Flipping their text to near-white would put light type on a white chip
+   over a bright photo.
+
+   Re-declaring the tokens locally is what makes this one class instead of a
+   parallel set of utilities — everything inside keeps using text-ink, bg-wash
+   and the rest, and simply resolves them to the light values.
+--------------------------------------------------------------------------- */
+.on-light {
+  color-scheme: light;
+
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-ink: #102b4e;
+  --color-ink-soft: #1d3a61;
+  --color-body: #42566f;
+  --color-body-soft: #6b7d94;
+  --color-brand: #078cc8;
+  --color-brand-dark: #0672a3;
+  --color-brand-soft: #7cc9e8;
+  --color-on-brand: #ffffff;
+  --color-wash: #f3fafe;
+  --color-wash-deep: #e4f2fb;
+  --color-hairline: #e3ebf2;
+  --color-field: #e5edf4;
 }
 
 html {
@@ -51,9 +176,17 @@ html {
 }
 
 body {
-  background: #fff;
+  background: var(--color-surface);
   color: var(--color-body);
   font-family: var(--font-sans);
+  /* Only the theme switch animates; page loads must not fade in. */
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 
 /* Focus is visible everywhere, in brand blue, never removed. */

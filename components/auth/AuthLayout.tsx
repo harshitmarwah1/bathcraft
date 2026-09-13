@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import Icon from "@/components/ui/Icon";
 import { Annotation, CurvedArrow } from "@/components/ui/Annotation";
+import { useT } from "@/lib/i18n/useT";
 
 /**
  * The split-screen shell every auth step sits inside.
@@ -16,8 +17,9 @@ import { Annotation, CurvedArrow } from "@/components/ui/Annotation";
  * to scroll past.
  */
 export default function AuthLayout({ children }: { children: ReactNode }) {
+  const t = useT();
   return (
-    <div className="flex min-h-screen flex-col bg-white lg:flex-row">
+    <div className="flex min-h-screen flex-col bg-surface lg:flex-row">
       {/* ---------------- Left: cinematic panel ---------------- */}
       <aside className="relative isolate h-[168px] shrink-0 overflow-hidden sm:h-[210px] lg:h-auto lg:w-[53%]">
         <Image
@@ -36,7 +38,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
         {/* Compact on mobile: just the logo over the strip. */}
         <div className="relative z-10 flex h-full flex-col p-6 sm:p-8 lg:p-12">
-          <Link href="/" aria-label="BathCraft — back to home" className="w-fit">
+          <Link href="/" aria-label={t("BathCraft — back to home")} className="w-fit">
             <Image
               src="/logo/logo-white.png"
               alt="BathCraft"
@@ -46,26 +48,25 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             />
           </Link>
           <p className="mt-3 hidden text-[11px] font-semibold tracking-[0.26em] text-white/70 uppercase lg:block">
-            Plan · Visualize · Build
+            {t("Plan · Visualize · Build")}
           </p>
 
           <div className="mt-auto hidden lg:block">
             <h2 className="max-w-md text-[40px] leading-[1.1] font-semibold tracking-[-0.02em] text-white">
-              Plan better.
+              {t("Plan better.")}
               <br />
-              Build with confidence.
+              {t("Build with confidence.")}
             </h2>
             <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/75">
-              Save your bathroom plans, compare ideas, track materials and continue your renovation
-              journey from anywhere.
+              {t(
+                "Save your bathroom plans, compare ideas, track materials and continue your renovation journey from anywhere.",
+              )}
             </p>
 
             {/* Handwritten note pointing at the blueprint detail. */}
             <div className="mt-12 flex items-end gap-3 text-white/85">
               <Annotation className="block text-[19px] leading-snug text-white" rotate={-4}>
-                Your dream bathroom
-                <br />
-                starts with a plan.
+                {t("Your dream bathroom starts with a plan.")}
               </Annotation>
               <CurvedArrow dir="down-right" width={58} className="mb-1" />
               <BlueprintDetail />
@@ -73,9 +74,9 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
             <ul className="mt-12 flex items-center gap-6 text-white/80">
               {[
-                { icon: "home", a: "Better", b: "Decisions" },
-                { icon: "piggy", a: "Save Time", b: "& Money" },
-                { icon: "sparkle", a: "Beautiful", b: "Results" },
+                { icon: "home", a: t("Better"), b: t("Decisions") },
+                { icon: "piggy", a: t("Save Time"), b: t("& Money") },
+                { icon: "sparkle", a: t("Beautiful"), b: t("Results") },
               ].map(({ icon, a, b }) => (
                 <li key={a} className="flex items-center gap-2.5">
                   <Icon name={icon as "home"} size={22} />

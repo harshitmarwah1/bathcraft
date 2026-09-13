@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n/useT";
+import { useResolvedTheme } from "@/lib/useTheme";
 import styles from "./BathCraftLogoAnimation.module.css";
 
 /**
@@ -41,7 +43,22 @@ type Props = {
 };
 
 export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
+  const t = useT();
   const isNavbar = variant === "navbar";
+
+  /**
+   * The lockup and the two wordmark halves are flat rasters with no alpha —
+   * dark ink on an opaque white rectangle. Invisible on a white page, a white
+   * box on a dark one. CSS cannot fix that, so the dark theme swaps in the
+   * white-on-transparent artwork instead. The icon layers already carry alpha
+   * and keep their brand colours in both themes.
+   *
+   * Geometry is identical between the two sets — see scripts/gen-logo-dark.mjs.
+   */
+  const dark = useResolvedTheme() === "dark";
+  const lockupSrc = dark ? "/logo/logo-white.png" : "/logo/logo-full.png";
+  const bathSrc = dark ? "/logo/wordmark-bath-white.png" : "/logo/wordmark-bath.png";
+  const craftSrc = dark ? "/logo/wordmark-craft-white.png" : "/logo/wordmark-craft.png";
   const stageRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -240,7 +257,7 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
           {/* Reduced-motion path: the finished lockup, faded in. Nothing draws. */}
           <image
             className={styles.reducedLogo}
-            href="/logo/logo-full.png"
+            href={lockupSrc}
             x="0"
             y="0"
             width="846"
@@ -354,8 +371,8 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
                 and "Craft". Each slice runs full height to the canvas edge so
                 icon + bath + craft tile the lockup with no seam. */}
             <g className={styles.wordmark}>
-              <image className={styles.bath} href="/logo/wordmark-bath.png" x="297" y="0" width="277" height="272" />
-              <image className={styles.craft} href="/logo/wordmark-craft.png" x="574" y="0" width="272" height="272" />
+              <image className={styles.bath} href={bathSrc} x="297" y="0" width="277" height="272" />
+              <image className={styles.craft} href={craftSrc} x="574" y="0" width="272" height="272" />
             </g>
           </g>
         </svg>
@@ -364,8 +381,8 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
             sentences, never inside "Without renovation regrets." */}
         {!isNavbar && (
           <p className={styles.tagline}>
-            <span>See it. Plan it. Build it.</span>{" "}
-            <span>Without renovation regrets.</span>
+            <span>{t("See it. Plan it. Build it.")}</span>{" "}
+            <span>{t("Without renovation regrets.")}</span>
           </p>
         )}
       </div>

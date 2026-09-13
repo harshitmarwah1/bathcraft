@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/useT";
 import VideoModal from "./VideoModal";
 
 /**
@@ -14,6 +15,7 @@ import VideoModal from "./VideoModal";
  */
 export default function Hero() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const t = useT();
 
   return (
     <section
@@ -22,7 +24,9 @@ export default function Hero() {
     >
       <Image
         src="/photos/hero.jpg"
-        alt="A warm, softly lit bathroom with a freestanding stone bath, a glass shower and a timber vanity"
+        alt={t(
+          "A warm, softly lit bathroom with a freestanding stone bath, a glass shower and a timber vanity",
+        )}
         fill
         priority
         sizes="100vw"
@@ -37,28 +41,28 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 text-center sm:px-6">
         <p className="animate-[fade-up_0.7s_ease-out_0.15s_both] text-[11px] font-semibold tracking-[0.28em] text-white/85 uppercase motion-reduce:animate-none">
-          Better bathrooms. Brighter spaces.
+          {t("Better bathrooms. Brighter spaces.")}
         </p>
 
         <h1 className="mx-auto mt-5 max-w-4xl animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_0.28s_both] text-[38px] leading-[1.08] font-semibold tracking-[-0.02em] text-balance text-white sm:text-[52px] lg:text-[68px] motion-reduce:animate-none">
-          From ideas to
+          {t("From ideas to")}
           <br />
-          beautiful bathrooms
+          {t("beautiful bathrooms")}
         </h1>
 
         <p className="mx-auto mt-5 max-w-xl animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_0.42s_both] text-[15px] text-white/85 sm:text-base motion-reduce:animate-none">
-          Plan, visualize, estimate and build — all in one place.
+          {t("Plan, visualize, estimate and build — all in one place.")}
         </p>
 
         <div className="mt-8 flex animate-[fade-up_0.8s_cubic-bezier(0.16,1,0.3,1)_0.56s_both] flex-col items-center justify-center gap-3 sm:flex-row sm:gap-5 motion-reduce:animate-none">
           <Button href="#planner" variant="white" size="lg" withArrow>
-            Start Planning Free
+            {t("Start Planning Free")}
           </Button>
 
           <button
             type="button"
             onClick={() => setVideoOpen(true)}
-            aria-label="Watch BathCraft renovation video"
+            aria-label={t("Watch BathCraft renovation video")}
             className="group inline-flex items-center gap-3 rounded-pill px-2 py-2 text-[15px] font-medium text-white transition-transform duration-200 hover:-translate-y-px motion-reduce:hover:translate-y-0"
           >
             <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-white/12 transition-[background-color,border-color] duration-200 group-hover:border-white/70 group-hover:bg-white/20">
@@ -69,7 +73,7 @@ export default function Hero() {
               />
             </span>
             <span className="opacity-85 transition-opacity duration-200 group-hover:opacity-100">
-              Watch Video
+              {t("Watch Video")}
             </span>
           </button>
         </div>
@@ -78,9 +82,9 @@ export default function Hero() {
       {/* Bottom rail: tagline, slide indicators, scroll cue. */}
       <div className="absolute inset-x-0 bottom-0 z-10 mx-auto flex max-w-[1280px] items-center px-5 pb-6 text-[11px] tracking-[0.16em] text-white/75 uppercase sm:px-6 sm:pb-7">
         <p className="hidden gap-5 sm:flex">
-          <span>Design it.</span>
-          <span>Plan it.</span>
-          <span>Build it.</span>
+          <span>{t("Design it.")}</span>
+          <span>{t("Plan it.")}</span>
+          <span>{t("Build it.")}</span>
         </p>
 
         <div className="mx-auto flex items-center gap-2" aria-hidden="true">
@@ -93,7 +97,7 @@ export default function Hero() {
           href="#value"
           className="ml-auto hidden items-center gap-1.5 transition-colors hover:text-white sm:flex"
         >
-          Scroll
+          {t("Scroll")}
           <Icon
             name="arrowDown"
             size={14}
@@ -106,7 +110,7 @@ export default function Hero() {
         isOpen={videoOpen}
         onClose={() => setVideoOpen(false)}
         videoSrc="/media/video-project-4.mp4"
-        title="Take Control of Your Bathroom Renovation"
+        title={t("Take Control of Your Bathroom Renovation")}
       />
 
     </section>

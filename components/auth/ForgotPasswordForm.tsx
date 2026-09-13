@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Icon from "@/components/ui/Icon";
+import { useT } from "@/lib/i18n/useT";
 import { requestPasswordReset } from "@/app/actions/auth";
 import { validateEmail } from "@/lib/auth/validation";
 import { SubmitButton, TextField } from "./fields";
 
 export default function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -31,19 +33,19 @@ export default function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
           <Icon name="check" size={26} strokeWidth={2.2} />
         </span>
         <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
-          Check your inbox
+          {t("Check your inbox")}
         </h1>
         <p className="mt-3 text-[14.5px] leading-relaxed text-body">
-          We&apos;ve sent a password reset link to:
+          {t("We’ve sent a password reset link to:")}
         </p>
         <p className="mt-1 text-[14.5px] font-semibold break-all text-ink">{sentTo}</p>
 
         <button
           type="button"
           onClick={onBack}
-          className="mt-8 flex h-[52px] w-full items-center justify-center rounded-[14px] bg-brand text-[15px] font-semibold text-white shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
+          className="mt-8 flex h-[52px] w-full items-center justify-center rounded-[14px] bg-brand text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
         >
-          Back to Sign In
+          {t("Back to Sign In")}
         </button>
       </div>
     );
@@ -52,15 +54,15 @@ export default function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
   return (
     <div>
       <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
-        Forgot your password?
+        {t("Forgot your password?")}
       </h1>
       <p className="mt-2 text-[14.5px] text-body">
-        Enter your email and we&apos;ll send you a reset link.
+        {t("Enter your email and we’ll send you a reset link.")}
       </p>
 
       <form onSubmit={submit} noValidate className="mt-7">
         <TextField
-          label="Email address"
+          label={t("Email address")}
           type="email"
           autoComplete="email"
           placeholder="you@example.com"
@@ -69,8 +71,8 @@ export default function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
           error={error}
         />
         <div className="mt-6">
-          <SubmitButton pending={pending} pendingLabel="Sending…">
-            Send Reset Link
+          <SubmitButton pending={pending} pendingLabel={t("Sending…")}>
+            {t("Send Reset Link")}
           </SubmitButton>
         </div>
       </form>
@@ -80,7 +82,7 @@ export default function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
         onClick={onBack}
         className="mt-6 flex w-full items-center justify-center gap-2 text-[13.5px] font-semibold text-body transition-colors hover:text-brand"
       >
-        <span aria-hidden="true">←</span> Back to Sign In
+        <span aria-hidden="true">←</span> {t("Back to Sign In")}
       </button>
     </div>
   );

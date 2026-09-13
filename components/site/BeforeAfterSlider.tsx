@@ -54,7 +54,7 @@ export default function BeforeAfterSlider() {
   return (
     <div
       ref={frameRef}
-      className="relative aspect-[4/3] w-full touch-none overflow-hidden rounded-card bg-white select-none sm:aspect-[16/11]"
+      className="on-light relative aspect-[4/3] w-full touch-none overflow-hidden rounded-card bg-white select-none sm:aspect-[16/11]"
       onPointerDown={(e) => {
         setDragging(true);
         setFromClientX(e.clientX);

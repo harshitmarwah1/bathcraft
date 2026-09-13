@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Icon from "@/components/ui/Icon";
 import { validateEmail, validatePassword } from "@/lib/auth/validation";
+import { useT } from "@/lib/i18n/useT";
 import {
   AuthAlert,
   Checkbox,
@@ -28,6 +29,7 @@ export default function SignInForm({
   onForgotPassword: () => void;
   onSignedIn: (url: string) => void;
 }) {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string | null; password?: string | null }>({});
@@ -52,12 +54,12 @@ export default function SignInForm({
       if (!result || result.error) {
         // Deliberately not "no such account" — that would confirm which
         // addresses are registered to anyone who asks.
-        setFormError("We couldn't sign you in.");
+        setFormError(t("We couldn't sign you in."));
         return;
       }
       onSignedIn(continueUrl);
     } catch {
-      setFormError("We couldn't reach BathCraft. Check your connection and try again.");
+      setFormError(t("We couldn't reach BathCraft. Check your connection and try again."));
     } finally {
       setPending(false);
     }
@@ -77,29 +79,29 @@ export default function SignInForm({
       // On success the browser navigates away and nothing below runs.
     } catch {
       setGooglePending(false);
-      setFormError("We couldn't sign you in with Google.");
+      setFormError(t("We couldn't sign you in with Google."));
     }
   }
 
   return (
     <div>
       <h1 className="text-[32px] leading-[1.15] font-bold tracking-[-0.02em] text-balance text-ink">
-        Let&rsquo;s bring your bathroom to life.
+        {t("Let’s bring your bathroom to life.")}
       </h1>
       <p className="mt-3 text-[14.5px] leading-relaxed text-body">
-        Sign in to continue planning, comparing and designing.
+        {t("Sign in to continue planning, comparing and designing.")}
       </p>
 
       <form onSubmit={submit} noValidate className="mt-7">
         {formError && (
           <AuthAlert
             title={formError}
-            body="Please check your email and password and try again."
+            body={t("Please check your email and password and try again.")}
           />
         )}
 
         <TextField
-          label="Email address"
+          label={t("Email address")}
           type="email"
           autoComplete="email"
           placeholder="you@example.com"
@@ -110,28 +112,28 @@ export default function SignInForm({
 
         <PasswordField
           className="mt-4"
-          label="Password"
+          label={t("Password")}
           autoComplete="current-password"
-          placeholder="Enter your password"
+          placeholder={t("Enter your password")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={errors.password}
         />
 
         <div className="mt-4 flex items-center justify-between gap-4">
-          <Checkbox label="Remember me" name="remember" defaultChecked />
+          <Checkbox label={t("Remember me")} name="remember" defaultChecked />
           <button
             type="button"
             onClick={onForgotPassword}
             className="text-[13px] font-semibold text-brand hover:underline"
           >
-            Forgot password?
+            {t("Forgot password?")}
           </button>
         </div>
 
         <div className="mt-6">
-          <SubmitButton pending={pending} pendingLabel="Signing in…">
-            Sign In
+          <SubmitButton pending={pending} pendingLabel={t("Signing in…")}>
+            {t("Sign In")}
             <Icon name="arrowRight" size={16} />
           </SubmitButton>
         </div>
@@ -143,24 +145,24 @@ export default function SignInForm({
         {googlePending ? (
           <>
             <Spinner className="border-brand/25 border-t-brand" />
-            Connecting to Google…
+            {t("Connecting to Google…")}
           </>
         ) : (
           <>
             <GoogleMark />
-            Continue with Google
+            {t("Continue with Google")}
           </>
         )}
       </SocialButton>
 
       <p className="mt-7 text-center text-[13.5px] text-body">
-        New to BathCraft?{" "}
+        {t("New to BathCraft?")}{" "}
         <button
           type="button"
           onClick={onCreateAccount}
           className="font-semibold text-brand hover:underline"
         >
-          Create an account
+          {t("Create an account")}
         </button>
       </p>
     </div>
