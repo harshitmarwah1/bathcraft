@@ -8,6 +8,7 @@ npm install
 npm run dev      # http://localhost:3000
 npm run build
 npm run lint
+npm run check:db # verify the Supabase connection
 ```
 
 Next.js 16 (App Router) · React 19 · Tailwind v4 · Inter + Caveat. No animation
@@ -60,6 +61,46 @@ Sections, in page order: `Navbar` · `Hero` · `ValuePropositionBar` ·
 
 Cards 14px, buttons fully pill, two shadow steps (`--shadow-soft`,
 `--shadow-lift`). Warmth lives only inside the photographs.
+
+### Light and dark
+
+Every colour in the table above is a CSS custom property, and the theme switch
+redefines those properties rather than adding a second set of classes. Nothing
+in a component says "dark".
+
+```
+app/globals.css       @theme = light values; dark overrides below it
+lib/theme.ts          the store, plus THEME_SCRIPT
+components/ui/ThemeToggle.tsx   the sun/moon button in the navbar
+```
+
+Three states, not two. **system** is the default and follows the OS; **light**
+and **dark** are explicit and stored in `localStorage` under
+`bathcraft.theme`. Dark is applied twice on purpose — once behind
+`@media (prefers-color-scheme: dark)` for the system default, once behind
+`[data-theme="dark"]` so an explicit choice outranks the OS.
+
+Three things are easy to get wrong here and are handled:
+
+- **The flash.** `THEME_SCRIPT` is inlined into `<head>` and sets the
+  attribute before first paint. A component or an effect runs after the browser
+  has already painted, which reads as a white flash on a dark page.
+- **Hydration.** The toggle reads the resolved theme through
+  `useSyncExternalStore`, so the hydration render uses the server value and the
+  browser value lands on the pass after. Calling `matchMedia` during render is
+  what produces a mismatch.
+- **`color-scheme`.** Set alongside the tokens so scrollbars and native form
+  chrome follow the theme. Without it you get a white scrollbar on a dark page.
+
+Two escapes from the theme, both deliberate:
+
+| Escape | Where | Why |
+| --- | --- | --- |
+| `.on-light` | hero's white button, planner toolbar and hint, before/after slider | These sit on a **photograph**, and a photograph does not get darker when the theme does. The class re-declares the light tokens for that subtree, so the utilities inside are unchanged. |
+| `--color-on-brand` | any text on `bg-brand` | Light and dark pull in opposite directions: white on `#078CC8` is 4.7:1, but dark mode lifts brand to `#3FA9DD` so it is legible *as text*, and white on that is only 2.6:1. The paired foreground flips with the theme. |
+
+Whites that stay white in both themes: text over the hero and auth photographs,
+the blueprint and planner "paper", and the Google `G`.
 
 ## The things that actually do something
 
@@ -167,15 +208,42 @@ silently merged; the user signs in with their password first, and clicking
 Continue with Google then links the two. `allowDangerousEmailAccountLinking` is
 off deliberately.
 
-### The database seam — read before deploying
+### Database — Supabase Postgres
 
-`lib/db/store.ts` defines a `UserStore` interface and implements it against a
-**JSON file** in `.data/`. That is development-only: serverless hosts have a
-read-only filesystem and one copy per instance, so users would vanish or
-duplicate. Implement `UserStore` against a real database and export that
-instead — every caller goes through the interface, so nothing else changes.
+`lib/db/types.ts` defines the `UserStore` contract. Two implementations satisfy it
+and the environment picks one:
 
-Password reset is also unimplemented: `requestPasswordReset` in
+| Implementation | When | File |
+| --- | --- | --- |
+| Supabase Postgres | `SUPABASE_URL` **and** `SUPABASE_SERVICE_ROLE_KEY` are set | `lib/db/supabase.ts` |
+| JSON file | otherwise — **development only** | `lib/db/store.ts` |
+
+The file store cannot work on Vercel: the filesystem is read-only and each
+instance keeps its own copy. It exists so `npm run dev` works with no setup, and
+it logs a warning when it is the one in use.
+
+**Setup**
+
+1. Create a Supabase project.
+2. Run [`supabase/migrations/0001_users_and_accounts.sql`](supabase/migrations/0001_users_and_accounts.sql)
+   in the SQL editor. It is idempotent.
+3. Put `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`.
+4. `npm run check:db` — verifies the key reaches the project and the tables exist.
+
+**Notes that matter**
+
+- The **service role** key bypasses Row Level Security. It is a full-access
+  credential, server-only, and must never be prefixed `NEXT_PUBLIC_`.
+- RLS is enabled on both tables with **no policies**, deliberately. All access is
+  server-side via the service role, so the anon key opens an empty door.
+- Duplicate users are prevented by unique indexes — `lower(email)` on `users` and
+  `(provider, provider_account_id)` on `accounts` — not by a lock in the process.
+  Two functions racing the same first sign-in cannot both win; the loser catches
+  `23505` and reads back the winner's row.
+- `supabase-js` speaks HTTP rather than holding a Postgres connection, which is
+  what makes it safe on serverless. No pooler needed.
+
+Password reset remains unimplemented: `requestPasswordReset` in
 `app/actions/auth.ts` always resolves without sending mail, and says so.
 
 | Route | Contents |

@@ -1,54 +1,40 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { Account, AuthProviderId, Database, OnboardingAnswers, User } from "./types";
+import { supabaseStore } from "./supabase";
+import { normaliseEmail } from "./types";
+import type {
+  Database,
+  NewAccount,
+  NewUser,
+  ProfilePatch,
+  User,
+  UserStore,
+} from "./types";
+
+// Re-exported so callers keep importing the store and its vocabulary from one place.
+export { normaliseEmail };
+export type { UserStore, NewUser, NewAccount, ProfilePatch };
 
 /**
  * The BathCraft user store.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * THIS IS THE SEAM. Read before deploying.
+ * TWO IMPLEMENTATIONS, PICKED BY ENVIRONMENT.
  *
- * BathCraft had no database when Google sign-in was added, and inventing one
- * would have meant provisioning infrastructure nobody asked for. So the store
- * is defined as a narrow interface (`UserStore`) with a JSON-file implementation
- * good enough for local development and nothing more.
+ *   Supabase Postgres  — used whenever SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
+ *                        are both set. This is the real one. See ./supabase.ts.
+ *   JSON file          — the fallback, so `npm run dev` works with no setup.
  *
- * A file store DOES NOT WORK on Vercel or any serverless host: the filesystem is
- * read-only, and each instance would hold its own copy anyway. Before production,
- * implement `UserStore` against a real database (Postgres, Neon, Supabase…) and
- * export that instead. Every caller goes through this interface, so that is the
- * only file that has to change.
+ * The file store is DEVELOPMENT ONLY and cannot work on Vercel or any serverless
+ * host: the filesystem is read-only and each instance keeps its own copy, so
+ * users would fail to save or silently diverge. The selection is logged on first
+ * use rather than left to be guessed at.
+ *
+ * Both satisfy `UserStore`, which is the whole point of the interface — callers
+ * never learn which one they got.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-export interface UserStore {
-  findUserById(id: string): Promise<User | null>;
-  findUserByEmail(email: string): Promise<User | null>;
-  findUserByAccount(provider: AuthProviderId, providerAccountId: string): Promise<User | null>;
-  listAccounts(userId: string): Promise<Account[]>;
-  createUser(input: NewUser, account: NewAccount): Promise<User>;
-  linkAccount(userId: string, account: NewAccount): Promise<void>;
-  updateProfile(userId: string, patch: ProfilePatch): Promise<User | null>;
-  setOnboarding(userId: string, answers: OnboardingAnswers): Promise<User | null>;
-}
-
-export type NewUser = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  image?: string | null;
-};
-
-export type NewAccount = {
-  provider: AuthProviderId;
-  providerAccountId: string;
-  passwordHash?: string;
-};
-
-export type ProfilePatch = Partial<Pick<User, "firstName" | "lastName" | "image">>;
-
-export const normaliseEmail = (email: string) => email.trim().toLowerCase();
-
 /* ── file-backed implementation ─────────────────────────────────────────── */
 
 const FILE = process.env.BATHCRAFT_DATA_FILE ?? join(process.cwd(), ".data", "bathcraft.json");
@@ -182,4 +168,30 @@ const fileStore: UserStore = {
   },
 };
 
-export const store: UserStore = fileStore;
+/* ── selection ───────────────────────────────────────────────────────────── */
+
+const hasSupabase = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+/**
+ * Loaded lazily and only when configured, so a developer without Supabase
+ * credentials never pays for the client — and, more importantly, so a missing
+ * key fails here with a clear message instead of somewhere inside a sign-in.
+ */
+function resolveStore(): UserStore {
+  if (!hasSupabase) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "[bathcraft] Supabase is not configured — using the JSON file store at " +
+          FILE +
+          ". Development only; set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY for the real database.",
+      );
+    }
+    return fileStore;
+  }
+  return supabaseStore;
+}
+
+export const store: UserStore = resolveStore();
+
+/** Which implementation is live. Reported by scripts/check-supabase.mjs. */
+export const storeKind: "supabase" | "file" = hasSupabase ? "supabase" : "file";

@@ -47,3 +47,40 @@ export type Database = {
   users: User[];
   accounts: Account[];
 };
+
+/* ---------------------------------------------------------------------------
+   The store contract.
+
+   It lives beside the types rather than next to an implementation so that both
+   implementations can depend on it without depending on each other. Putting it
+   in store.ts created a cycle: store -> supabase -> store.
+--------------------------------------------------------------------------- */
+
+export interface UserStore {
+  findUserById(id: string): Promise<User | null>;
+  findUserByEmail(email: string): Promise<User | null>;
+  findUserByAccount(provider: AuthProviderId, providerAccountId: string): Promise<User | null>;
+  listAccounts(userId: string): Promise<Account[]>;
+  createUser(input: NewUser, account: NewAccount): Promise<User>;
+  linkAccount(userId: string, account: NewAccount): Promise<void>;
+  updateProfile(userId: string, patch: ProfilePatch): Promise<User | null>;
+  setOnboarding(userId: string, answers: OnboardingAnswers): Promise<User | null>;
+}
+
+export type NewUser = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  image?: string | null;
+};
+
+export type NewAccount = {
+  provider: AuthProviderId;
+  providerAccountId: string;
+  passwordHash?: string;
+};
+
+export type ProfilePatch = Partial<Pick<User, "firstName" | "lastName" | "image">>;
+
+/** Addresses are compared lower-cased everywhere. One definition, no drift. */
+export const normaliseEmail = (email: string) => email.trim().toLowerCase();
