@@ -14,7 +14,13 @@ import type {
   Unit,
 } from "@/lib/planner/types";
 import { DIM_BOUNDS } from "@/lib/planner/defaults";
-import { loadOrCreateProject, saveProject } from "@/lib/planner/db";
+import {
+  loadOrCreateProject,
+  saveProject,
+  getProject,
+  createProject,
+  deleteProject,
+} from "@/lib/planner/db";
 import { generateLayout } from "@/lib/planner/layout/engine";
 import { generateEstimate as computeEstimate } from "@/lib/planner/estimate/engine";
 
@@ -27,8 +33,14 @@ interface ProjectState {
   unit: Unit;
   setUnit: (unit: Unit) => void;
 
-  /** Load the signed-in user's most recent project, or create a fresh one. */
+  /** Load the last-opened project (or the most recent), else create a fresh one. */
   loadOrCreate: () => Promise<void>;
+  /** Load a specific project by id (used from the My Bathrooms list). */
+  loadProject: (id: string) => Promise<void>;
+  /** Create a new project and make it current. Returns it (or null on failure). */
+  newProject: (name?: string) => Promise<Project | null>;
+  /** Delete a project; clears the current one if it was the deleted one. */
+  removeProject: (id: string) => Promise<void>;
   hydrate: (project: Project) => void;
 
   // Step 1 — room
@@ -79,6 +91,24 @@ function schedulePersist(project: Project) {
   }, 700);
 }
 
+// Remember which project was last open so a reload reopens it (not just "latest").
+const LAST_OPENED_KEY = "bathcraft.lastProjectId";
+function rememberOpened(id: string | null) {
+  try {
+    if (id) window.localStorage.setItem(LAST_OPENED_KEY, id);
+    else window.localStorage.removeItem(LAST_OPENED_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+function readLastOpened(): string | null {
+  try {
+    return window.localStorage.getItem(LAST_OPENED_KEY);
+  } catch {
+    return null;
+  }
+}
+
 export const useProjectStore = create<ProjectState>((set, get) => {
   /** Apply a mutation to the current project, bump updatedAt, persist (debounced). */
   function mutate(fn: (p: Project) => Project) {
@@ -102,10 +132,52 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       if (get().project || get().loading) return;
       set({ loading: true });
       try {
-        const project = await loadOrCreateProject();
+        const lastId = readLastOpened();
+        const project = (lastId && (await getProject(lastId))) || (await loadOrCreateProject());
+        rememberOpened(project.id);
         set({ project, loading: false });
       } catch {
         set({ loading: false });
+      }
+    },
+
+    async loadProject(id) {
+      set({ loading: true });
+      try {
+        const project = await getProject(id);
+        if (project) {
+          rememberOpened(project.id);
+          set({ project, loading: false });
+        } else {
+          set({ loading: false });
+        }
+      } catch {
+        set({ loading: false });
+      }
+    },
+
+    async newProject(name) {
+      set({ loading: true });
+      try {
+        const project = await createProject(name?.trim() || "New Bathroom");
+        rememberOpened(project.id);
+        set({ project, loading: false });
+        return project;
+      } catch {
+        set({ loading: false });
+        return null;
+      }
+    },
+
+    async removeProject(id) {
+      try {
+        await deleteProject(id);
+      } catch {
+        /* ignore */
+      }
+      if (get().project?.id === id) {
+        rememberOpened(null);
+        set({ project: null });
       }
     },
 

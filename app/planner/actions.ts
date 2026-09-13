@@ -23,11 +23,16 @@ export async function listProjectsAction(): Promise<Project[]> {
   return projectStore.list(await requireUserId());
 }
 
-/** The planner's entry: resume the latest project, or start a fresh one. */
+/** The planner's entry: resume the latest project, or start a fresh one
+ *  (named from the user's onboarding answer when they have one). */
 export async function loadOrCreateProjectAction(): Promise<Project> {
-  const userId = await requireUserId();
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Not authenticated");
   const existing = await projectStore.list(userId);
-  return existing[0] ?? projectStore.create(userId, "Master Ensuite");
+  if (existing[0]) return existing[0];
+  const seededName = session.user.onboarding?.bathroomName?.trim() || "My Bathroom";
+  return projectStore.create(userId, seededName);
 }
 
 export async function getProjectAction(projectId: string): Promise<Project | null> {
