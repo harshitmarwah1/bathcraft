@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { projectStore } from "@/lib/db/projects";
+import { projectStore, type Invite, type MemberInfo } from "@/lib/db/projects";
 import type { Project } from "@/lib/planner/types";
 
 /**
@@ -49,4 +49,24 @@ export async function saveProjectAction(project: Project): Promise<Project> {
 
 export async function deleteProjectAction(projectId: string): Promise<void> {
   return projectStore.remove(await requireUserId(), projectId);
+}
+
+// ── Sharing (two-sided co-edit) ──────────────────────────────────────────────
+
+export async function listMembersAction(projectId: string): Promise<MemberInfo[]> {
+  // access-gate: only someone who can open the project can see its members
+  const userId = await requireUserId();
+  const project = await projectStore.get(userId, projectId);
+  if (!project) return [];
+  return projectStore.listMembers(projectId);
+}
+
+/** Owner-only: mint a shareable invite. Returns the token; the client builds the URL. */
+export async function createInviteAction(projectId: string): Promise<Invite> {
+  return projectStore.createInvite(await requireUserId(), projectId);
+}
+
+/** Redeem an invite link; the caller (join page) is already authenticated. */
+export async function acceptInviteAction(token: string): Promise<string | null> {
+  return projectStore.acceptInvite(await requireUserId(), token);
 }

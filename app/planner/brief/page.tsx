@@ -7,6 +7,7 @@ import { ProgressBar } from "@/components/planner/shell/ProgressBar";
 import { StepFooterCta } from "@/components/planner/sections/StepFooterCta";
 import { ProjectBriefSummary } from "@/components/planner/sections/ProjectBriefSummary";
 import { BrandGuideSection } from "@/components/planner/sections/BrandGuideSection";
+import { InviteExpert } from "@/components/planner/sections/InviteExpert";
 import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
 import { useI18n } from "@/lib/planner/i18n/provider";
 import { useEnsureProject } from "@/lib/planner/store/use-ensure-project";
@@ -89,6 +90,8 @@ export default function BriefStepPage() {
             <ActionButton icon="print" label={t.printBrief} onClick={() => window.print()} />
             <ActionButton icon="share" label={t.shareBrief} onClick={onShare} />
           </div>
+
+          <InviteExpert />
 
           <BrandGuideSection />
         </div>
