@@ -53,11 +53,12 @@
 }
 
 .navbar .stage {
-  /* 0.5x speed: 4850ms * 0.84 ≈ 4.1s, twice the original 2.0s.
+  /* 0.25x speed. The sequence was authored at 0.42 (~2.0s) for the header;
+     four times that is 1.68, or ~8.1s.
      Still a plain number, never calc() — the component parseFloats this back
      to set its own completion timer, and calc() would resolve to a token
      stream rather than a number and silently desync it. */
-  --d: 0.84;
+  --d: 1.68;
   padding: 0;
 }
 

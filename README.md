@@ -162,7 +162,7 @@ Not a screenshot — these were each exercised and verified in a browser:
 
 | Variant | Where | Length |
 | --- | --- | --- |
-| `navbar` | header | ~4.1s, plays once, then it is just the logo |
+| `navbar` | header | ~8.1s, plays once, then it is just the logo |
 | `inline` | beside copy | 4.85s desktop / 3.0s mobile |
 | `splash` | full-screen opener | 8.5s desktop / 5.3s mobile |
 
