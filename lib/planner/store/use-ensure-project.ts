@@ -12,7 +12,7 @@ export function useEnsureProject() {
   const loadOrCreate = useProjectStore((s) => s.loadOrCreate);
 
   useEffect(() => {
-    if (ready && user && !project) void loadOrCreate(user.id);
+    if (ready && user && !project) void loadOrCreate();
   }, [ready, user, project, loadOrCreate]);
 
   return { project, ready: ready && !!project };
