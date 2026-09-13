@@ -219,6 +219,20 @@ export const en = {
   myProjectsEmpty: "No saved projects yet. Start the planner to create one.",
   startPlanner: "Start planning",
   openProject: "Open",
+
+  // Sharing / co-edit
+  shareTitle: "Share with your contractor",
+  shareSub: "Invite an expert to review and co-edit this plan",
+  createInvite: "Create invite link",
+  creatingInvite: "Creating…",
+  copyLink: "Copy link",
+  linkCopied: "Link copied",
+  inviteHint: "Anyone with this link can open and edit this plan.",
+  collaborators: "Collaborators",
+  sharedWithYou: "You're collaborating on this shared plan",
+  joining: "Joining project…",
+  inviteInvalid: "This invite link is invalid or has expired.",
+  goToPlanner: "Go to planner",
 } as const;
 
 /** Keys come from `en`; values are plain strings so translations conform while
@@ -423,6 +437,19 @@ export const hi: Dictionary = {
   myProjectsEmpty: "अभी कोई प्रोजेक्ट नहीं। प्लानर शुरू करें।",
   startPlanner: "प्लानिंग शुरू करें",
   openProject: "खोलें",
+
+  shareTitle: "अपने ठेकेदार के साथ साझा करें",
+  shareSub: "इस प्लान को देखने व मिलकर एडिट करने के लिए एक्सपर्ट को बुलाएं",
+  createInvite: "इनवाइट लिंक बनाएं",
+  creatingInvite: "बन रहा है…",
+  copyLink: "लिंक कॉपी करें",
+  linkCopied: "लिंक कॉपी हो गया",
+  inviteHint: "इस लिंक वाला कोई भी व्यक्ति इस प्लान को खोल और एडिट कर सकता है।",
+  collaborators: "सहयोगी",
+  sharedWithYou: "आप इस साझा प्लान पर काम कर रहे हैं",
+  joining: "प्रोजेक्ट से जुड़ रहे हैं…",
+  inviteInvalid: "यह इनवाइट लिंक अमान्य या समाप्त हो चुका है।",
+  goToPlanner: "प्लानर पर जाएं",
 };
 
 export const dictionaries: Record<Language, Dictionary> = { en, hi };
