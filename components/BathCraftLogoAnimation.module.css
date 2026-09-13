@@ -53,7 +53,11 @@
 }
 
 .navbar .stage {
-  --d: 0.42; /* 4850ms * 0.42 ≈ 2.0s */
+  /* 0.5x speed: 4850ms * 0.84 ≈ 4.1s, twice the original 2.0s.
+     Still a plain number, never calc() — the component parseFloats this back
+     to set its own completion timer, and calc() would resolve to a token
+     stream rather than a number and silently desync it. */
+  --d: 0.84;
   padding: 0;
 }
 
