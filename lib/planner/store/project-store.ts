@@ -14,7 +14,7 @@ import type {
   Unit,
 } from "@/lib/planner/types";
 import { DIM_BOUNDS } from "@/lib/planner/defaults";
-import { getProjectStore } from "@/lib/planner/db";
+import { loadOrCreateProject, saveProject } from "@/lib/planner/db";
 import { generateLayout } from "@/lib/planner/layout/engine";
 import { generateEstimate as computeEstimate } from "@/lib/planner/estimate/engine";
 
@@ -27,8 +27,8 @@ interface ProjectState {
   unit: Unit;
   setUnit: (unit: Unit) => void;
 
-  /** Load the user's most recent project, or create a fresh default one. */
-  loadOrCreate: (userId: string) => Promise<void>;
+  /** Load the signed-in user's most recent project, or create a fresh one. */
+  loadOrCreate: () => Promise<void>;
   hydrate: (project: Project) => void;
 
   // Step 1 — room
@@ -68,15 +68,25 @@ function dimField(dim: DimKey): "lengthInches" | "widthInches" | "heightInches" 
   return dim === "length" ? "lengthInches" : dim === "width" ? "widthInches" : "heightInches";
 }
 
+// Debounced write-through: the UI mutates in-memory instantly (Zustand); the
+// project is persisted to the server ~700ms after the last change, so a stepper
+// held down or fast typing is one save, not dozens.
+let saveTimer: ReturnType<typeof setTimeout> | null = null;
+function schedulePersist(project: Project) {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    void saveProject(project).catch(() => {});
+  }, 700);
+}
+
 export const useProjectStore = create<ProjectState>((set, get) => {
-  /** Apply a mutation to the current project, bump updatedAt, persist. */
+  /** Apply a mutation to the current project, bump updatedAt, persist (debounced). */
   function mutate(fn: (p: Project) => Project) {
     const current = get().project;
     if (!current) return;
     const next = { ...fn(current), updatedAt: new Date().toISOString() };
     set({ project: next });
-    // write-through (fire and forget); the data seam handles persistence.
-    void getProjectStore().update(next.id, next).catch(() => {});
+    schedulePersist(next);
   }
 
   return {
@@ -88,14 +98,15 @@ export const useProjectStore = create<ProjectState>((set, get) => {
       set({ unit });
     },
 
-    async loadOrCreate(userId: string) {
+    async loadOrCreate() {
+      if (get().project || get().loading) return;
       set({ loading: true });
-      const store = getProjectStore();
-      const existing = await store.list(userId);
-      const project =
-        existing.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0] ??
-        (await store.create({ ownerId: userId, name: "Master Ensuite" }));
-      set({ project, loading: false });
+      try {
+        const project = await loadOrCreateProject();
+        set({ project, loading: false });
+      } catch {
+        set({ loading: false });
+      }
     },
 
     hydrate(project) {
