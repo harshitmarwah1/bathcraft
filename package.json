@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:db": "node scripts/check-supabase.mjs"
+    "check:db": "node scripts/check-supabase.mjs",
+    "db:migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
@@ -23,6 +24,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
+    "postgres": "^3.4.9",
     "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "typescript": "^5"
