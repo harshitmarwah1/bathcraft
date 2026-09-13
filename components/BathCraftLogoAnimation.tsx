@@ -64,9 +64,18 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
    * lifting lightness without touching hue, to ~7:1.
    */
   const icon = (name: string) => `/logo/${name}${dark ? "-dark" : ""}.png`;
-  const lockupSrc = dark ? "/logo/logo-white.png" : "/logo/logo-full.png";
-  const bathSrc = dark ? "/logo/wordmark-bath-white.png" : "/logo/wordmark-bath.png";
-  const craftSrc = dark ? "/logo/wordmark-craft-white.png" : "/logo/wordmark-craft.png";
+  /**
+   * Light mode uses the *-alpha* set, not the supplied originals. Those are ink
+   * on an OPAQUE white rectangle, which only disappears while whatever sits
+   * behind them is also pure white — and the navbar is not: once scrolled it is
+   * bg-surface/90 with a backdrop blur, so the bar picks up the hero through it
+   * while the logo's own white stays at 100% and reads as a box.
+   * scripts/gen-logo-alpha.mjs rebuilds the same colours with a real alpha
+   * channel; recompositing it over white is byte-identical to the original.
+   */
+  const lockupSrc = dark ? "/logo/logo-white.png" : "/logo/logo-full-alpha.png";
+  const bathSrc = dark ? "/logo/wordmark-bath-white.png" : "/logo/wordmark-bath-alpha.png";
+  const craftSrc = dark ? "/logo/wordmark-craft-white.png" : "/logo/wordmark-craft-alpha.png";
   const stageRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -152,7 +161,7 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/logo/logo-full.png"
+          src="/logo/logo-full-alpha.png"
           alt="BathCraft"
           width={846}
           height={272}

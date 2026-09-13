@@ -169,12 +169,21 @@ Not a screenshot — these were each exercised and verified in a browser:
 Pace is one number — `--d` on `.stage` — and `PLAY_MS` reads it back off the
 element so the JS timer cannot drift from the CSS.
 
-### Dark mode and the raster
+### The rasters have no alpha
 
 `logo-full.png`, `wordmark-bath.png` and `wordmark-craft.png` have **no alpha
 channel** — the artwork is dark ink on an opaque white rectangle. That is
 invisible on a white page and a white box on a dark one, and no amount of CSS
 fixes a missing alpha channel.
+
+**Light mode needed the same treatment**, for a different reason: the navbar is
+`bg-surface/90` with a backdrop blur once scrolled, so it picks up the hero
+photograph through it while the logo's own white stays at 100% and reads as a
+box. `scripts/gen-logo-alpha.mjs` borrows the alpha channel from `logo-white.png`
+— which is the artwork's coverage mask — and undoes the white composite
+(`F = (C - 255(1-a)) / a`) to rebuild the coloured lockup with real transparency.
+It refuses to write unless recompositing over white reproduces the original
+exactly; it currently does, with a worst channel error of 0.
 
 `logo-white.png` is the same lockup drawn in white on transparency, so the dark
 theme swaps to it. It ships only as the whole 846×272 lockup, and the animation
