@@ -40,13 +40,23 @@ export default function BathroomsPage() {
                       ? `${onboarding.priorities.length} ${t("priorities set")}`
                       : t("No measurements yet")}
                   </p>
-                  <Link
-                    href="/onboarding"
-                    className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline"
-                  >
-                    {t("Continue planning")}
-                    <Icon name="arrowRight" size={14} />
-                  </Link>
+                  <div className="mt-4 flex items-center gap-4">
+                    <Link
+                      href="/onboarding"
+                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline"
+                    >
+                      {t("Continue planning")}
+                      <Icon name="arrowRight" size={14} />
+                    </Link>
+                    {/* Entry point into the folded-in planner (protected /planner). */}
+                    <Link
+                      href="/planner/space"
+                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline"
+                    >
+                      {t("Open the Planner")}
+                      <Icon name="arrowRight" size={14} />
+                    </Link>
+                  </div>
                 </li>
               </ul>
             </>

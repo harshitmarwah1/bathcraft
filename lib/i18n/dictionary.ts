@@ -198,6 +198,7 @@ export const hi: Record<string, string> = {
   "Account": "खाता",
   "Picking up where you left off.": "वहीं से आगे, जहाँ आपने छोड़ा था।",
   "Continue planning": "योजना जारी रखें",
+  "Open the Planner": "प्लानर खोलें",
   "No measurements yet": "अभी कोई माप नहीं",
   "Start with a name and a few measurements — BathCraft takes it from there.":
     "एक नाम और कुछ माप से शुरू करें — आगे बाथक्राफ्ट सँभाल लेगा।",
