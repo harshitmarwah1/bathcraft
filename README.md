@@ -169,6 +169,22 @@ Not a screenshot — these were each exercised and verified in a browser:
 Pace is one number — `--d` on `.stage` — and `PLAY_MS` reads it back off the
 element so the JS timer cannot drift from the CSS.
 
+### Dark mode and the raster
+
+`logo-full.png`, `wordmark-bath.png` and `wordmark-craft.png` have **no alpha
+channel** — the artwork is dark ink on an opaque white rectangle. That is
+invisible on a white page and a white box on a dark one, and no amount of CSS
+fixes a missing alpha channel.
+
+`logo-white.png` is the same lockup drawn in white on transparency, so the dark
+theme swaps to it. It ships only as the whole 846×272 lockup, and the animation
+needs the two halves separately, so `scripts/gen-logo-dark.mjs` slices it at the
+same cut recorded below — local x 574, the blank column between "Bath" and
+"Craft". Re-run it if the white asset is ever replaced.
+
+The icon layers already carry alpha and keep their brand colours in both themes;
+only the wordmark and the full lockup switch.
+
 The supplied logo is a flat raster, so nothing redraws it.
 `scripts/gen-logo-layers.js` slices the original PNG into disjoint layers and
 the animation reveals slices of those originals through animated SVG masks.

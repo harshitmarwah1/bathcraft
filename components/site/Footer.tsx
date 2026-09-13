@@ -5,16 +5,19 @@ import Link from "next/link";
 import Icon from "@/components/ui/Icon";
 import { FOOTER_LINKS, SOCIALS } from "@/lib/content";
 import { useT } from "@/lib/i18n/useT";
+import { useResolvedTheme } from "@/lib/useTheme";
 
 /** White footer. The logo here is the static lockup — it has already animated. */
 export default function Footer() {
   const t = useT();
+  // logo-full.png has no alpha — see BathCraftLogoAnimation.
+  const dark = useResolvedTheme() === "dark";
   return (
     <footer className="border-t border-hairline bg-surface">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-8 px-5 py-10 sm:px-6 lg:flex-row lg:items-center lg:gap-10">
         <div className="shrink-0">
           <Image
-            src="/logo/logo-full.png"
+            src={dark ? "/logo/logo-white.png" : "/logo/logo-full.png"}
             alt="BathCraft"
             width={846}
             height={272}
