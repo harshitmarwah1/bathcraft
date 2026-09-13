@@ -26,7 +26,14 @@ export default function Home() {
 
         {/* Planner left, the three explore cards stacked right. */}
         <section className="mx-auto max-w-[1280px] px-5 py-14 sm:px-6 lg:py-16">
-          <div className="grid items-stretch gap-6 lg:grid-cols-[58fr_42fr]">
+          {/* grid-cols-1 is doing real work on phones, not decoration. Without an
+              explicit track the single implicit column is sized `auto`, whose
+              floor is the content's min-content width — here 502px, inside a
+              327px container. `grid-cols-1` emits minmax(0, 1fr), which is
+              allowed to shrink below that. main's overflow-x-clip was hiding
+              the result rather than scrolling, so 175px of the planner was
+              simply invisible on a phone. */}
+          <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-[58fr_42fr]">
             <PlannerDemo />
             <div className="flex flex-col gap-8">
               <StyleExplorer />

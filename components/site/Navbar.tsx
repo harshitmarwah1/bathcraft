@@ -95,14 +95,19 @@ export default function Navbar() {
             <UserMenu />
           ) : (
             <>
-              <Button href="/signin" variant="outline" size="sm" className="hidden sm:inline-flex">
+              {/* max-sm:hidden, not "hidden sm:inline-flex": Button's base class
+                  list already sets inline-flex, and two display utilities in the
+                  same layer are resolved by Tailwind's output order rather than
+                  by the order they appear here — so "hidden" lost and these
+                  stayed visible on phones, pushing the menu button off screen. */}
+              <Button href="/signin" variant="outline" size="sm" className="max-sm:hidden">
                 Sign in
               </Button>
               <Button
                 href={getStartedHref}
                 variant="primary"
                 size="sm"
-                className="hidden sm:inline-flex"
+                className="max-sm:hidden"
               >
                 Get Started
               </Button>
@@ -115,7 +120,7 @@ export default function Navbar() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-wash lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-wash max-sm:h-11 max-sm:w-11 lg:hidden"
           >
             <Icon name={open ? "close" : "menu"} size={22} />
           </button>

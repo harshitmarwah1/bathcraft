@@ -39,6 +39,7 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
       title={isDark ? "Switch to light theme" : "Switch to dark theme"}
       className={[
         "relative flex h-9 w-9 items-center justify-center rounded-full text-body",
+        "max-sm:h-11 max-sm:w-11",
         "transition-colors hover:bg-wash hover:text-brand",
         className,
       ].join(" ")}

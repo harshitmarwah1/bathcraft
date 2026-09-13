@@ -40,7 +40,7 @@ export default function Footer() {
               <a
                 href={href}
                 aria-label={label}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-body transition-colors hover:bg-wash hover:text-brand"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-body transition-colors hover:bg-wash hover:text-brand max-sm:h-11 max-sm:w-11"
               >
                 <Icon name={icon} size={18} />
               </a>
