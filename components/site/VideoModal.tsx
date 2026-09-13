@@ -169,7 +169,21 @@ export default function VideoModal({
           </button>
         </div>
 
-        <div className="relative overflow-hidden rounded-[16px] bg-black shadow-[0_30px_80px_rgb(0_0_0/0.55)]">
+        {/*
+          The asset is a 1920x1080 file whose picture is portrait, pillarboxed
+          with the black bars baked into the frames — see the README. On a phone
+          a 16:9 box would shrink that already-narrow picture to a thin strip
+          between two much larger bars.
+
+          So below sm the frame is 9:16 and the video is object-cover. That is
+          not an approximation: covering a 9:16 box with 16:9 content scales to
+          fit the height and shows the middle (9/16) / (16/9) = 31.6% of the
+          width, which is exactly the pillarboxed picture. The bars fall out of
+          the geometry rather than being cropped by a hand-tuned number.
+
+          Desktop keeps contain, so nothing there changes.
+        */}
+        <div className="relative overflow-hidden rounded-[16px] bg-black shadow-[0_30px_80px_rgb(0_0_0/0.55)] max-sm:aspect-[9/16] max-sm:max-h-[80vh]">
           <video
             ref={videoRef}
             src={videoSrc}
@@ -178,7 +192,7 @@ export default function VideoModal({
             preload="metadata"
             onEnded={() => setEnded(true)}
             onPlay={() => setEnded(false)}
-            className="block h-auto max-h-[76vh] w-full"
+            className="block h-auto max-h-[76vh] w-full max-sm:h-full max-sm:max-h-none max-sm:object-cover"
             /* 1920x1080 — declared so the box is correct before metadata lands,
                which keeps the opening animation from resizing mid-flight. */
             width={1920}

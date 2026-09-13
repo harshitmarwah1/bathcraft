@@ -237,9 +237,16 @@ Closing pauses, rewinds to 0 and returns focus to the trigger with
 `preventScroll`, which keeps a scrolled-down page exactly where it was.
 
 **Note on the asset:** the supplied MP4 is a 1920x1080 file whose picture is
-portrait, pillarboxed with black bars baked into the frames. The player shows it
-at its true aspect ratio rather than cropping, so those bars are visible. Re-export
-at the real portrait ratio to fill the frame.
+portrait — 9:16 — pillarboxed with black bars baked into the frames.
+
+Below `sm` the player frame is `aspect-[9/16]` and the video is `object-cover`.
+That is geometry, not a tuned crop: covering a 9:16 box with 16:9 content scales
+to fit the height and shows the middle `(9/16) / (16/9)` = 31.6% of the width,
+which is exactly the pillarboxed picture, so the bars fall away on their own.
+
+Desktop still uses `contain` and shows the bars, because a 9:16 frame on a wide
+screen is a tall thin column. Re-exporting the asset at its real portrait ratio
+would remove the bars everywhere and let both breakpoints drop the special case.
 
 ## Accessibility
 
