@@ -250,3 +250,68 @@ body {
   from { opacity: 0; transform: translateY(12px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* ---------------------------------------------------------------------------
+   Mascot cursor.
+
+   The hammer replaces the arrow across the site. Links and buttons are named
+   explicitly alongside html/body: the browser's own stylesheet declares
+   `cursor: pointer` on them, and an inherited value never beats a declaration
+   on the element itself, so without naming them the mascot vanishes over every
+   link.
+
+   This whole block lives in @layer base, and that is load-bearing rather than
+   tidiness. Tailwind v4 emits its utilities into @layer utilities, and in the
+   cascade UNLAYERED css beats every layered rule no matter how specific it is.
+   Appended outside a layer, these element selectors silently overrode
+   `cursor-grab`, `cursor-ew-resize` and `cursor-not-allowed` — a drag handle
+   that shows a mascot instead of a grab hand has lost real information. Inside
+   @layer base they sit below utilities, so those classes win again.
+
+   Text fields keep the I-beam. A mascot over a text input hides the caret and
+   obscures that the field can be typed into at all.
+
+   Size: 24x40. Browsers cap custom cursors at 128x128 and fall back to the
+   default past that, but the practical limit is lower — a large cursor covers
+   the thing it is pointing at.
+
+   This overrides the pointer size set in the operating system's accessibility
+   settings, which is why the `auto` fallback matters: a browser that refuses
+   the image still gets a usable arrow.
+--------------------------------------------------------------------------- */
+
+@layer base {
+  html,
+  body,
+  a,
+  button,
+  summary,
+  label,
+  select,
+  [role="button"] {
+    cursor: url("/cursor/hammer.png") 5 3, auto;
+  }
+
+  /* Crisp on high-DPI screens. Declared second so a browser without
+     image-set() support keeps the plain url() above rather than dropping the
+     custom cursor altogether. */
+  html,
+  body,
+  a,
+  button,
+  summary,
+  label,
+  select,
+  [role="button"] {
+    cursor: image-set(
+        url("/cursor/hammer.png") 1x,
+        url("/cursor/hammer@2x.png") 2x
+      )
+      5 3, auto;
+  }
+
+  input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+  textarea {
+    cursor: text;
+  }
+}
