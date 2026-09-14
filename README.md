@@ -152,6 +152,12 @@ Not a screenshot — these were each exercised and verified in a browser:
   the blueprint is hand-drawn SVG of the photograph's own layout.
 - **Planner** — the selected fixture is draggable and arrow-key movable, and the
   toolbar changes what is selected.
+- **Style coverflow** — the selected card sits centred and full size, its
+  neighbours smaller and dimmed. The track is anchored at `left-1/2` and
+  translated back by the distance to the middle of the active card, so it
+  centres at every breakpoint without measuring anything in JS; `--card` and
+  `--gap` are the only numbers. Click a card or a pill, or use ←/→/Home/End.
+  Only transform and opacity animate. No autoplay, deliberately.
 - **Tile swatches** fan on hover and are individually selectable.
 - **Mobile nav** toggles `aria-expanded`, goes `inert` when closed, locks scroll.
 - **Scroll reveal** via one shared `Reveal` component, staggered per section.
