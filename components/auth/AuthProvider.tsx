@@ -3,6 +3,8 @@
 import { SessionProvider, signOut as authSignOut, useSession } from "next-auth/react";
 import { useCallback, useMemo } from "react";
 import { saveOnboarding } from "@/app/actions/auth";
+import { EVENTS } from "@/lib/analytics/events";
+import { track } from "@/lib/analytics/mixpanel";
 import type { OnboardingAnswers } from "@/lib/db/types";
 
 export type { OnboardingAnswers };
@@ -45,6 +47,10 @@ export function useAuth() {
   }, [data]);
 
   const signOut = useCallback(async () => {
+    // Fired before the navigation starts. Mixpanel batches, so a sign-out on a
+    // slow connection can still be lost in transit — acceptable for this event,
+    // and not worth blocking the user behind a network round trip.
+    track(EVENTS.SIGNED_OUT);
     // Clears the session cookie server-side, then hard-navigates to the landing
     // page. It has to be one navigation: clearing the cookie and letting React
     // re-render a protected page first lets that page's own guard fire and
@@ -55,6 +61,7 @@ export function useAuth() {
   const completeOnboarding = useCallback(
     async (answers: OnboardingAnswers) => {
       await saveOnboarding(answers);
+      track(EVENTS.ONBOARDING_COMPLETED);
       /**
        * Re-mint the JWT so `onboarded` flips without a sign-out/sign-in round
        * trip. The argument is required, not decorative: next-auth's `update()`

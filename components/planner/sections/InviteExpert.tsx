@@ -6,6 +6,8 @@ import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
 import { useI18n } from "@/lib/planner/i18n/provider";
 import { useSession } from "@/lib/planner/session";
 import { useProjectStore } from "@/lib/planner/store/project-store";
+import { EVENTS } from "@/lib/analytics/events";
+import { track } from "@/lib/analytics/mixpanel";
 import { createInviteAction, listMembersAction } from "@/app/planner/actions";
 import type { MemberInfo } from "@/lib/db/projects";
 
@@ -43,6 +45,7 @@ export function InviteExpert() {
     setBusy(true);
     try {
       const invite = await createInviteAction(projectId);
+      track(EVENTS.INVITE_CREATED, { project_id: projectId });
       setLink(`${window.location.origin}/planner/join/${invite.token}`);
     } catch {
       /* ignore */

@@ -6,6 +6,8 @@ import { WizardShell } from "@/components/planner/shell/WizardShell";
 import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
 import { useI18n } from "@/lib/planner/i18n/provider";
 import { useProjectStore } from "@/lib/planner/store/project-store";
+import { EVENTS } from "@/lib/analytics/events";
+import { track } from "@/lib/analytics/mixpanel";
 import { acceptInviteAction } from "@/app/planner/actions";
 
 /**
@@ -32,6 +34,7 @@ export default function JoinPage() {
         const projectId = await acceptInviteAction(token);
         if (!active) return;
         if (projectId) {
+          track(EVENTS.INVITE_ACCEPTED, { project_id: projectId });
           await loadProject(projectId);
           router.replace("/planner/space");
         } else {

@@ -1,5 +1,6 @@
 "use client";
 
+import { markAuthIntent } from "@/lib/analytics/auth-intent";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
@@ -94,6 +95,7 @@ export default function SignUpForm({
         setFormError(t("Your account was created, but we couldn't sign you in. Please sign in."));
         return;
       }
+      markAuthIntent({ kind: "signup", provider: "credentials" });
       onCreated();
     } catch {
       setFormError(t("We couldn't reach BathCraft. Check your connection and try again."));
@@ -108,6 +110,7 @@ export default function SignUpForm({
     setGooglePending(true);
     setFormError(null);
     try {
+      markAuthIntent({ kind: "signup", provider: "google" });
       await signIn("google", { callbackUrl: continueUrl });
     } catch {
       setGooglePending(false);

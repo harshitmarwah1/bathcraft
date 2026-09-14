@@ -14,6 +14,8 @@ import type {
   Unit,
 } from "@/lib/planner/types";
 import { DIM_BOUNDS } from "@/lib/planner/defaults";
+import { EVENTS } from "@/lib/analytics/events";
+import { track } from "@/lib/analytics/mixpanel";
 import {
   loadOrCreateProject,
   saveProject,
@@ -162,6 +164,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
         const project = await createProject(name?.trim() || "New Bathroom");
         rememberOpened(project.id);
         set({ project, loading: false });
+        track(EVENTS.PROJECT_CREATED, { project_id: project.id });
         return project;
       } catch {
         set({ loading: false });
@@ -172,6 +175,7 @@ export const useProjectStore = create<ProjectState>((set, get) => {
     async removeProject(id) {
       try {
         await deleteProject(id);
+        track(EVENTS.PROJECT_DELETED, { project_id: id });
       } catch {
         /* ignore */
       }

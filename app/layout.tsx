@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Inter, Noto_Sans_Devanagari } from "next/font/google";
+import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { LOCALE_SCRIPT } from "@/lib/i18n/locale";
 import { THEME_SCRIPT } from "@/lib/theme";
@@ -55,7 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: LOCALE_SCRIPT }} />
       </head>
       <body className="antialiased">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <AnalyticsProvider />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
