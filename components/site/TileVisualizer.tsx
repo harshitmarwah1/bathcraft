@@ -19,15 +19,15 @@ export default function TileVisualizer() {
     <Reveal as="section">
       <div className="flex flex-col gap-5 overflow-hidden rounded-card bg-wash p-5 ring-1 ring-hairline sm:flex-row sm:items-center">
         <div className="min-w-0 flex-1">
-          <h2 className="text-[17px] font-bold tracking-[-0.01em] text-ink">
+          <h2 className="text-[22px] font-bold tracking-[-0.02em] text-ink">
             {t("Try tiles and wallpapers instantly")}
           </h2>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-body">
+          <p className="mt-1.5 text-[15px] leading-relaxed text-body">
             {t("Upload a brochure or pick from our library.")}
           </p>
           <a
             href="#styles"
-            className="group mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand"
+            className="group mt-3 inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-brand"
           >
             {t("Try now")}
             <Icon

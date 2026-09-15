@@ -31,10 +31,10 @@ export function BudgetSection() {
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <MaterialIcon name="workspace_premium" size={20} color="var(--color-primary-accent)" />
           <div>
-            <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+            <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
               {t.budgetTitle}
             </h2>
-            <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.budgetSub}</p>
+            <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.budgetSub}</p>
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export function BudgetSection() {
                     size={20}
                     color={active ? "var(--color-primary)" : "var(--color-on-surface-variant)"}
                   />
-                  <span style={{ fontSize: 13, fontWeight: active ? 800 : 600, color: "var(--color-on-surface)" }}>
+                  <span style={{ fontSize: "calc(13px * var(--pl-fs, 1))", fontWeight: active ? 800 : 600, color: "var(--color-on-surface)" }}>
                     {t[tier.labelKey]}
                   </span>
                 </div>
@@ -79,15 +79,15 @@ export function BudgetSection() {
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <MaterialIcon name="account_balance_wallet" size={20} color="var(--color-primary-accent)" />
             <div>
-              <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+              <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
                 {t.budgetAmount}
               </h2>
-              <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>
+              <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>
                 {t.budgetAmountSub}
               </p>
             </div>
           </div>
-          <span style={{ fontSize: 18, fontWeight: 800, color: "var(--color-primary-accent)" }}>
+          <span style={{ fontSize: "calc(18px * var(--pl-fs, 1))", fontWeight: 800, color: "var(--color-primary-accent)" }}>
             {formatInr(style.budgetInr)}
           </span>
         </div>
@@ -101,7 +101,7 @@ export function BudgetSection() {
           aria-label="Budget amount"
           style={{ width: "100%", accentColor: "var(--color-primary)", cursor: "pointer" }}
         />
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "var(--color-on-surface-variant)", fontWeight: 600 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "calc(10px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)", fontWeight: 600 }}>
           <span>{formatInr(BUDGET_MIN)}</span>
           <span>{formatInr(BUDGET_MAX)}+</span>
         </div>

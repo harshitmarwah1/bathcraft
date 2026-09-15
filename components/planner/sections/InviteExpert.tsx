@@ -72,10 +72,10 @@ export function InviteExpert() {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <MaterialIcon name="group_add" size={20} color="var(--color-primary-accent)" />
         <div>
-          <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+          <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
             {t.shareTitle}
           </h2>
-          <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>
+          <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>
             {isOwner ? t.shareSub : t.sharedWithYou}
           </p>
         </div>
@@ -98,7 +98,7 @@ export function InviteExpert() {
                   background: "var(--color-surface-low)",
                   border: "1px solid var(--color-surface-high)",
                   color: "var(--color-on-surface)",
-                  fontSize: 12,
+                  fontSize: "calc(12px * var(--pl-fs, 1))",
                   fontFamily: "inherit",
                 }}
               />
@@ -111,7 +111,7 @@ export function InviteExpert() {
                   background: "var(--color-primary)",
                   color: "var(--color-on-primary)",
                   fontWeight: 700,
-                  fontSize: 12.5,
+                  fontSize: "calc(12.5px * var(--pl-fs, 1))",
                   border: "none",
                   cursor: "pointer",
                   fontFamily: "inherit",
@@ -121,7 +121,7 @@ export function InviteExpert() {
                 {copied ? t.linkCopied : t.copyLink}
               </button>
             </div>
-            <p style={{ fontSize: 10.5, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.inviteHint}</p>
+            <p style={{ fontSize: "calc(10.5px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.inviteHint}</p>
           </div>
         ) : (
           <button
@@ -134,7 +134,7 @@ export function InviteExpert() {
               border: "1px solid var(--color-surface-high)",
               color: "var(--color-primary-accent)",
               fontWeight: 700,
-              fontSize: 13,
+              fontSize: "calc(13px * var(--pl-fs, 1))",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -150,7 +150,7 @@ export function InviteExpert() {
 
       {members.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "var(--color-on-surface-variant)", textTransform: "uppercase", letterSpacing: "0.4px" }}>
+          <span style={{ fontSize: "calc(11px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-on-surface-variant)", textTransform: "uppercase", letterSpacing: "0.4px" }}>
             {t.collaborators}
           </span>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -161,7 +161,7 @@ export function InviteExpert() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 5,
-                  fontSize: 11.5,
+                  fontSize: "calc(11.5px * var(--pl-fs, 1))",
                   fontWeight: 600,
                   padding: "4px 10px",
                   borderRadius: 999,

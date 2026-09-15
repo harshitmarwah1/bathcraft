@@ -7,7 +7,7 @@ import type { Language } from "@/lib/planner/types";
  */
 export const en = {
   // app chrome
-  appName: "BathCraft",
+  appName: "Milagro Universe",
   appSub: "Step 1: Space & Layout",
   appSub2: "Step 2: Style & Budget",
   langLabel: "EN",
@@ -120,7 +120,7 @@ export const en = {
   addOnsSub: "Tap to include the extras you need",
   addOnsSelected: "selected",
   s3CtaText: "Continue",
-  s3CtaSub: "Next: Generate 2D Plan",
+  s3CtaSub: "Next: Your 4D Plan",
 
   // fixture variants (label + plain-language explainer)
   wallHung: "Wall-hung",
@@ -163,8 +163,8 @@ export const en = {
   nicheDesc: "Recessed shelf built into the wall",
 
   // Step 4 — Generated 2D Plan
-  appSub4: "Step 4: Your 2D Plan",
-  step4Badge: "Step 4 of 6 • 2D Plan",
+  appSub4: "Step 4: Your 4D Plan",
+  step4Badge: "Step 4 of 6 • 4D Plan",
   planTitle: "Your Generated Plan",
   planSub: "Scaled 2D layout with real clearances",
   regenerate: "Regenerate",
@@ -200,7 +200,7 @@ export const en = {
   briefSpaceLabel: "Space",
   briefStyleLabel: "Style & Budget",
   briefFixturesLabel: "Fixtures & Elements",
-  briefPlanLabel: "2D Plan",
+  briefPlanLabel: "Your plan",
   briefEstimateLabel: "Cost & Time",
   brandGuideTitle: "Brand Guide",
   brandGuideSub: "Trusted brands, grouped by tier",
@@ -233,6 +233,30 @@ export const en = {
   joining: "Joining project…",
   inviteInvalid: "This invite link is invalid or has expired.",
   goToPlanner: "Go to planner",
+  // 4D plan (3D room + build timeline)
+  plan4dTitle: "Your 4D plan",
+  plan4dSub: "Your bathroom in 3D, and how it gets built day by day",
+  viewMode: "Plan view",
+  view2d: "2D",
+  view3d: "3D",
+  view3dLabel: "Interactive 3D model of your bathroom",
+  loading3d: "Building your 3D room…",
+  view3dUnavailable: "3D isn't available on this device, so here is the 2D plan.",
+  dragHint: "Drag to rotate · scroll to zoom",
+  resetView: "Reset view",
+  playBuild: "Play the build",
+  pauseBuild: "Pause",
+  buildTimeline: "Build timeline",
+  dayOfTotal: "Day {day} of {total}",
+  buildComplete: "Ready to use",
+  phasePrep: "Site prep",
+  phasePlumbing: "Plumbing",
+  phaseWaterproofing: "Waterproofing",
+  phaseTiling: "Tiling",
+  phaseFixtures: "Fixtures",
+  phaseFinishing: "Finishing",
+  inspirationTitle: "Style inspiration",
+  inspirationSub: "Real bathrooms in this style",
 } as const;
 
 /** Keys come from `en`; values are plain strings so translations conform while
@@ -240,7 +264,7 @@ export const en = {
 export type Dictionary = { [K in keyof typeof en]: string };
 
 export const hi: Dictionary = {
-  appName: "BathCraft",
+  appName: "Milagro Universe",
   appSub: "चरण 1: जगह और लेआउट",
   appSub2: "चरण 2: स्टाइल और बजट",
   langLabel: "हिन्दी",
@@ -344,7 +368,7 @@ export const hi: Dictionary = {
   addOnsSub: "जो चाहिए उसे जोड़ने के लिए टैप करें",
   addOnsSelected: "चयनित",
   s3CtaText: "आगे बढ़ें",
-  s3CtaSub: "अगला: 2D नक्शा बनाएं",
+  s3CtaSub: "अगला: आपका 4D प्लान",
 
   wallHung: "वॉल-हंग",
   wallHungDesc: "दीवार पर लगा, फर्श खुला रहता है — साफ करना आसान",
@@ -384,8 +408,8 @@ export const hi: Dictionary = {
   niche: "वॉल निच",
   nicheDesc: "दीवार में बनी शेल्फ",
 
-  appSub4: "चरण 4: आपका 2D नक्शा",
-  step4Badge: "चरण 4 / 6 • 2D नक्शा",
+  appSub4: "चरण 4: आपका 4D प्लान",
+  step4Badge: "चरण 4 / 6 • 4D प्लान",
   planTitle: "आपका तैयार नक्शा",
   planSub: "सटीक क्लीयरेंस के साथ 2D लेआउट",
   regenerate: "फिर से बनाएं",
@@ -419,7 +443,7 @@ export const hi: Dictionary = {
   briefSpaceLabel: "जगह",
   briefStyleLabel: "स्टाइल और बजट",
   briefFixturesLabel: "फिक्स्चर और तत्व",
-  briefPlanLabel: "2D नक्शा",
+  briefPlanLabel: "आपका प्लान",
   briefEstimateLabel: "लागत और समय",
   brandGuideTitle: "ब्रांड गाइड",
   brandGuideSub: "भरोसेमंद ब्रांड, टियर अनुसार",
@@ -450,6 +474,29 @@ export const hi: Dictionary = {
   joining: "प्रोजेक्ट से जुड़ रहे हैं…",
   inviteInvalid: "यह इनवाइट लिंक अमान्य या समाप्त हो चुका है।",
   goToPlanner: "प्लानर पर जाएं",
+  plan4dTitle: "आपका 4D प्लान",
+  plan4dSub: "आपका बाथरूम 3D में, और यह दिन-ब-दिन कैसे बनेगा",
+  viewMode: "नक्शा दृश्य",
+  view2d: "2D",
+  view3d: "3D",
+  view3dLabel: "आपके बाथरूम का इंटरैक्टिव 3D मॉडल",
+  loading3d: "आपका 3D कमरा बन रहा है…",
+  view3dUnavailable: "इस डिवाइस पर 3D उपलब्ध नहीं है, इसलिए यह रहा 2D नक्शा।",
+  dragHint: "घुमाने के लिए खींचें · ज़ूम के लिए स्क्रॉल करें",
+  resetView: "व्यू रीसेट करें",
+  playBuild: "निर्माण चलाएं",
+  pauseBuild: "रोकें",
+  buildTimeline: "निर्माण समयरेखा",
+  dayOfTotal: "दिन {day} / {total}",
+  buildComplete: "इस्तेमाल के लिए तैयार",
+  phasePrep: "साइट तैयारी",
+  phasePlumbing: "प्लंबिंग",
+  phaseWaterproofing: "वॉटरप्रूफिंग",
+  phaseTiling: "टाइलिंग",
+  phaseFixtures: "फिक्स्चर",
+  phaseFinishing: "फिनिशिंग",
+  inspirationTitle: "स्टाइल प्रेरणा",
+  inspirationSub: "इस स्टाइल के असली बाथरूम",
 };
 
 export const dictionaries: Record<Language, Dictionary> = { en, hi };

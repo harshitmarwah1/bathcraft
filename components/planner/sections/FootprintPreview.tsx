@@ -13,17 +13,17 @@ import type { Opening, Placement, Wall } from "@/lib/planner/types";
 function markerColors(dark: boolean) {
   return {
     indigo: dark
-      ? { tint: "rgba(49,46,129,0.5)", border: "#4338ca", text: "#a5b4fc" }
-      : { tint: "#eef2ff", border: "#c7d2fe", text: "#4338ca" },
+      ? { tint: "rgba(255,255,255,0.08)", border: "#4a4640", text: "#d9d5cf" }
+      : { tint: "#efeeec", border: "#cfcbc5", text: "#4a4640" },
     blue: dark
-      ? { tint: "rgba(30,58,138,0.5)", border: "#1d4ed8", text: "#93c5fd" }
-      : { tint: "#eff6ff", border: "#bfdbfe", text: "#1d4ed8" },
+      ? { tint: "rgba(138,90,43,0.28)", border: "#8a5a2b", text: "#e0b98c" }
+      : { tint: "#f6efe7", border: "#dcc4a8", text: "#8a5a2b" },
     teal: dark
-      ? { tint: "rgba(19,78,74,0.5)", border: "#0f766e", text: "#5eead4" }
-      : { tint: "#f0fdfa", border: "#99f6e4", text: "#0f766e" },
+      ? { tint: "rgba(79,107,74,0.3)", border: "#4f6b4a", text: "#b9cdb3" }
+      : { tint: "#eef2ec", border: "#c5d1c1", text: "#4f6b4a" },
     cyan: dark
-      ? { tint: "rgba(22,78,99,0.5)", border: "#0e7490", text: "#67e8f9" }
-      : { tint: "#ecfeff", border: "#a5f3fc", text: "#0e7490" },
+      ? { tint: "rgba(138,79,53,0.3)", border: "#8a4f35", text: "#e2b8a4" }
+      : { tint: "#f5ebe6", border: "#dbbfb1", text: "#8a4f35" },
   };
 }
 
@@ -59,11 +59,11 @@ export function FootprintPreview() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <MaterialIcon name="draw" size={18} color="var(--color-primary-accent)" />
-          <span style={{ fontWeight: 700, fontSize: 12, color: "var(--color-on-surface)" }}>
+          <span style={{ fontWeight: 700, fontSize: "calc(12px * var(--pl-fs, 1))", color: "var(--color-on-surface)" }}>
             {t.previewTitle}
           </span>
         </div>
-        <span style={{ fontSize: 10, fontWeight: 700, color: "var(--color-primary-accent)" }}>
+        <span style={{ fontSize: "calc(10px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-primary-accent)" }}>
           {t.liveScale}
         </span>
       </div>
@@ -101,6 +101,9 @@ export function FootprintPreview() {
             boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
             width: boxWidth,
             height: boxHeight,
+            // Scale the whole drawing (outline + door/window marks, which are
+            // positioned in unscaled px) with the planner's density multiplier.
+            zoom: "var(--pl-sp, 1)",
           }}
         >
           {/* dimension labels */}
@@ -130,7 +133,7 @@ export function FootprintPreview() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          fontSize: 11,
+          fontSize: "calc(11px * var(--pl-fs, 1))",
           color: "var(--color-on-surface-variant)",
           padding: "0 2px",
         }}
@@ -158,7 +161,7 @@ function EdgeLabel({ children, style }: { children: React.ReactNode; style: CSSP
         background: "var(--color-surface-lowest)",
         padding: "2px 6px",
         borderRadius: 6,
-        fontSize: 10,
+        fontSize: "calc(10px * var(--pl-fs, 1))",
         fontWeight: 700,
         color: "var(--color-primary-accent)",
         border: "1px solid var(--color-primary-tint-border)",
@@ -193,7 +196,7 @@ function Marker({
         borderRadius: 6,
         background: color.tint,
         border: `1px solid ${color.border}`,
-        fontSize: 9,
+        fontSize: "calc(9px * var(--pl-fs, 1))",
         fontWeight: 700,
         color: color.text,
         ...style,

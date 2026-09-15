@@ -25,7 +25,7 @@ const FIXTURES: FixtureDef[] = [
     icon: "wc",
     nameKey: "elemWc",
     subKey: "elemWcSub",
-    palette: { bgLight: "#dbeafe", bgDark: "rgba(30,58,138,0.4)", fgLight: "#006194", fgDark: "#93c5fd", badge: "rgba(0,97,148,0.15)" },
+    palette: { bgLight: "#efe2d3", bgDark: "rgba(30,58,138,0.4)", fgLight: "#4a4640", fgDark: "#e0b98c", badge: "rgba(138,90,43,0.15)" },
     options: [
       { value: "back", icon: "arrow_downward", labelKey: "back" },
       { value: "left", icon: "arrow_back", labelKey: "left" },
@@ -37,7 +37,7 @@ const FIXTURES: FixtureDef[] = [
     icon: "countertops",
     nameKey: "elemVanity",
     subKey: "elemVanitySub",
-    palette: { bgLight: "#ccfbf1", bgDark: "rgba(19,78,74,0.4)", fgLight: "#0f766e", fgDark: "#5eead4", badge: "rgba(20,184,166,0.15)" },
+    palette: { bgLight: "#dfe7dc", bgDark: "rgba(19,78,74,0.4)", fgLight: "#4f6b4a", fgDark: "#b9cdb3", badge: "rgba(20,184,166,0.15)" },
     options: [
       { value: "left", icon: "arrow_back", labelKey: "left" },
       { value: "right", icon: "arrow_forward", labelKey: "right" },
@@ -49,7 +49,7 @@ const FIXTURES: FixtureDef[] = [
     icon: "shower",
     nameKey: "elemShower",
     subKey: "elemShowerSub",
-    palette: { bgLight: "#e0e7ff", bgDark: "rgba(49,46,129,0.4)", fgLight: "#4338ca", fgDark: "#a5b4fc", badge: "rgba(99,102,241,0.15)" },
+    palette: { bgLight: "#e6e3df", bgDark: "rgba(49,46,129,0.4)", fgLight: "#4a4640", fgDark: "#d9d5cf", badge: "rgba(99,102,241,0.15)" },
     options: [
       { value: "walkIn", icon: "shower", labelKey: "walkIn" },
       { value: "enclosed", icon: "door_sliding", labelKey: "enclosed" },
@@ -61,7 +61,7 @@ const FIXTURES: FixtureDef[] = [
     icon: "kitchen",
     nameKey: "elemAlmirah",
     subKey: "elemAlmirahSub",
-    palette: { bgLight: "#cffafe", bgDark: "rgba(22,78,99,0.4)", fgLight: "#0e7490", fgDark: "#67e8f9", badge: "rgba(6,182,212,0.15)" },
+    palette: { bgLight: "#eddcd3", bgDark: "rgba(22,78,99,0.4)", fgLight: "#8a4f35", fgDark: "#e2b8a4", badge: "rgba(6,182,212,0.15)" },
     options: [
       { value: "underVanity", icon: "vertical_align_bottom", labelKey: "underVanity" },
       { value: "dryCorner", icon: "square", labelKey: "dryCorner" },
@@ -87,17 +87,17 @@ export function FixturesSection() {
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <MaterialIcon name="grid_view" size={20} color="var(--color-primary-accent)" />
           <div>
-            <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+            <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
               {t.fixturesTitle}
             </h2>
-            <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>
+            <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>
               {t.fixturesSub}
             </p>
           </div>
         </div>
         <span
           style={{
-            fontSize: 10,
+            fontSize: "calc(10px * var(--pl-fs, 1))",
             fontWeight: 700,
             padding: "2px 8px",
             borderRadius: 999,
@@ -146,15 +146,15 @@ export function FixturesSection() {
                     <MaterialIcon name={f.icon} size={18} />
                   </div>
                   <div>
-                    <span style={{ fontWeight: 700, fontSize: 12, display: "block", color: "var(--color-on-surface)" }}>
+                    <span style={{ fontWeight: 700, fontSize: "calc(12px * var(--pl-fs, 1))", display: "block", color: "var(--color-on-surface)" }}>
                       {t[f.nameKey]}
                     </span>
-                    <span style={{ fontSize: 10, color: "var(--color-on-surface-variant)" }}>{t[f.subKey]}</span>
+                    <span style={{ fontSize: "calc(10px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)" }}>{t[f.subKey]}</span>
                   </div>
                 </div>
                 <span
                   style={{
-                    fontSize: 10,
+                    fontSize: "calc(10px * var(--pl-fs, 1))",
                     fontWeight: 700,
                     color: fg,
                     background: f.palette.badge,
@@ -176,7 +176,7 @@ export function FixturesSection() {
                       style={{
                         padding: "6px 8px",
                         borderRadius: 10,
-                        fontSize: 11,
+                        fontSize: "calc(11px * var(--pl-fs, 1))",
                         fontWeight: active ? 700 : 600,
                         background: active ? "var(--color-primary)" : "var(--color-surface-lowest)",
                         color: active ? "var(--color-on-primary)" : "var(--color-on-surface)",

@@ -16,7 +16,7 @@ export default function Testimonials() {
   const t = useT();
   return (
     <section className="bg-surface">
-      <div className="mx-auto max-w-[1280px] px-5 py-14 sm:px-6 lg:py-16">
+      <div className="mx-auto max-w-[1280px] 2xl:max-w-[1440px] px-5 py-14 sm:px-6 lg:py-16">
         <SectionHeading
           align="center"
           title={t("Trusted by homeowners like you")}
@@ -31,22 +31,22 @@ export default function Testimonials() {
               delay={i * 110}
               className="w-[86vw] shrink-0 snap-start sm:w-auto"
             >
-              <figure className="flex h-full gap-4 rounded-card bg-surface-raised p-4 shadow-soft ring-1 ring-hairline">
+              <figure className="flex h-full gap-5 rounded-card bg-surface-raised p-5 shadow-soft ring-1 ring-hairline">
                 <Image
                   src={src}
                   alt={t(alt)}
                   width={300}
                   height={400}
                   sizes="120px"
-                  className="h-[132px] w-[98px] shrink-0 rounded-[9px] object-cover"
+                  className="h-[156px] w-[116px] shrink-0 rounded-[10px] object-cover"
                 />
                 <div className="flex min-w-0 flex-col">
-                  <blockquote className="text-[13px] leading-relaxed text-body">
+                  <blockquote className="text-[15px] leading-relaxed text-body">
                     &ldquo;{t(quote)}&rdquo;
                   </blockquote>
                   <figcaption className="mt-auto pt-3">
-                    <span className="block text-[13px] font-semibold text-ink">{name}</span>
-                    <span className="block text-[11.5px] text-body-soft">{t(role)}</span>
+                    <span className="block text-[15px] font-semibold text-ink">{name}</span>
+                    <span className="block text-[13px] text-body-soft">{t(role)}</span>
                   </figcaption>
                 </div>
               </figure>

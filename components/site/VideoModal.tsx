@@ -148,7 +148,7 @@ export default function VideoModal({
         <div className="mb-3 flex items-end justify-between gap-4 px-1">
           <div className="min-w-0">
             <p className="text-[10.5px] font-semibold tracking-[0.24em] text-white/45 uppercase">
-              BathCraft
+              Milagro Universe
             </p>
             <h2
               id="video-modal-title"

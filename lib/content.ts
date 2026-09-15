@@ -2,7 +2,7 @@
  * All repeated landing-page copy lives here so sections stay structural.
  *
  * PROTOTYPE DATA WARNING
- * `METRICS`, `HERO_METRICS` and `TESTIMONIALS` are placeholder values invented
+ * `HERO_METRICS` and `TESTIMONIALS` are placeholder values invented
  * for this prototype. They are not verified business claims or real customers.
  * Replace them with substantiated figures and released quotes before this page
  * is published anywhere a visitor could act on them.
@@ -21,22 +21,18 @@ export const NAV_LINKS: NavLink[] = [
 
 export const VALUE_PROPS = [
   {
-    icon: "home" as const,
     title: "Visualize before you build",
     body: "See your bathroom in 2D & 3D",
   },
   {
-    icon: "calculator" as const,
     title: "Get accurate estimates",
     body: "No surprise costs",
   },
   {
-    icon: "cart" as const,
     title: "Find the right products",
     body: "Trusted brands & local stores",
   },
   {
-    icon: "shield" as const,
     title: "Plan with confidence",
     body: "Save time, money and effort",
   },
@@ -116,19 +112,12 @@ export const TILE_SWATCHES = [
   { id: "wood", label: "Warm wood" },
 ];
 
-/** Prototype placeholders — see the warning at the top of this file. */
-export const METRICS = [
-  { icon: "people" as const, value: "10,000+", label: "Happy homeowners" },
-  { icon: "star" as const, value: "4.8/5", label: "Average rating" },
-  { icon: "piggy" as const, value: "30%", label: "Average cost savings" },
-  { icon: "shield" as const, value: "50+", label: "Trusted brands" },
-];
 
 /** Prototype placeholders — not real customers. See the warning above. */
 export const TESTIMONIALS = [
   {
     quote:
-      "BathCraft made the whole process so much easier. I could finally visualize my bathroom and choose the right products.",
+      "Milagro Universe made the whole process so much easier. I could finally visualize my bathroom and choose the right products.",
     name: "Priya S.",
     role: "Homeowner, Bengaluru",
     src: "/photos/testimonial-1.jpg",

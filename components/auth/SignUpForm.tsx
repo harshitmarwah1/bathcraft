@@ -98,7 +98,7 @@ export default function SignUpForm({
       markAuthIntent({ kind: "signup", provider: "credentials" });
       onCreated();
     } catch {
-      setFormError(t("We couldn't reach BathCraft. Check your connection and try again."));
+      setFormError(t("We couldn't reach Milagro Universe. Check your connection and try again."));
     } finally {
       setPending(false);
     }
@@ -120,10 +120,10 @@ export default function SignUpForm({
 
   return (
     <div>
-      <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
-        {t("Create your BathCraft account")}
+      <h1 className="text-[36px] leading-[1.1] font-bold tracking-[-0.03em] text-balance text-ink lg:text-[40px]">
+        {t("Create your Milagro Universe account")}
       </h1>
-      <p className="mt-2 text-[14.5px] text-body">
+      <p className="mt-3 text-[16px] text-body">
         {t("Start planning your bathroom with clarity and confidence.")}
       </p>
 
@@ -227,7 +227,7 @@ export default function SignUpForm({
         )}
       </SocialButton>
 
-      <p className="mt-7 text-center text-[13.5px] text-body">
+      <p className="mt-7 text-center text-[15px] text-body">
         {t("Already have an account?")}{" "}
         <button type="button" onClick={onSignIn} className="font-semibold text-brand hover:underline">
           {t("Sign in")}
@@ -250,7 +250,7 @@ function PasswordChecklist({ value }: { value: string }) {
           <li
             key={rule.id}
             className={[
-              "flex items-center gap-1.5 text-[12px] transition-colors duration-200",
+              "flex items-center gap-1.5 text-[13.5px] transition-colors duration-200",
               met ? "text-brand" : "text-body-soft",
             ].join(" ")}
           >

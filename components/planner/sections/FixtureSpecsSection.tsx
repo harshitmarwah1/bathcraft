@@ -34,10 +34,10 @@ export function FixtureSpecsSection() {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <MaterialIcon name="tune" size={20} color="var(--color-primary-accent)" />
         <div>
-          <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+          <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
             {t.specsTitle}
           </h2>
-          <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.specsSub}</p>
+          <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.specsSub}</p>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export function FixtureSpecsSection() {
                 >
                   <MaterialIcon name={f.icon} size={16} />
                 </div>
-                <span style={{ fontWeight: 700, fontSize: 13, color: "var(--color-on-surface)" }}>
+                <span style={{ fontWeight: 700, fontSize: "calc(13px * var(--pl-fs, 1))", color: "var(--color-on-surface)" }}>
                   {t[f.nameKey]}
                 </span>
               </div>
@@ -97,10 +97,10 @@ export function FixtureSpecsSection() {
                         style={{ flexShrink: 0 }}
                       />
                       <span style={{ minWidth: 0 }}>
-                        <span style={{ display: "block", fontWeight: active ? 800 : 700, fontSize: 12.5, color: "var(--color-on-surface)" }}>
+                        <span style={{ display: "block", fontWeight: active ? 800 : 700, fontSize: "calc(12.5px * var(--pl-fs, 1))", color: "var(--color-on-surface)" }}>
                           {t[v as Key]}
                         </span>
-                        <span style={{ display: "block", fontSize: 11, color: "var(--color-on-surface-variant)" }}>
+                        <span style={{ display: "block", fontSize: "calc(11px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)" }}>
                           {t[descKey]}
                         </span>
                       </span>

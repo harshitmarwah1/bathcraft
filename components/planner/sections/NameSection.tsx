@@ -33,7 +33,7 @@ export function NameSection() {
         <label
           style={{
             fontWeight: 700,
-            fontSize: 14,
+            fontSize: "calc(14px * var(--pl-fs, 1))",
             color: "var(--color-on-surface)",
             display: "flex",
             alignItems: "center",
@@ -45,7 +45,7 @@ export function NameSection() {
         </label>
         <span
           style={{
-            fontSize: 11,
+            fontSize: "calc(11px * var(--pl-fs, 1))",
             fontWeight: 700,
             color: "var(--color-primary-accent)",
             background: "var(--color-primary-tint)",
@@ -78,7 +78,7 @@ export function NameSection() {
             border: "1px solid var(--color-surface-high)",
             color: "var(--color-on-surface)",
             fontWeight: 700,
-            fontSize: 14,
+            fontSize: "calc(14px * var(--pl-fs, 1))",
             outline: "none",
             boxSizing: "border-box",
             fontFamily: "inherit",
@@ -101,7 +101,7 @@ export function NameSection() {
                 padding: "7px 12px",
                 borderRadius: 12,
                 fontWeight: active ? 700 : 500,
-                fontSize: 12,
+                fontSize: "calc(12px * var(--pl-fs, 1))",
                 background: active ? "var(--color-primary)" : "var(--color-surface-low)",
                 color: active ? "var(--color-on-primary)" : "var(--color-on-surface)",
                 border: active ? "none" : "1px solid var(--color-surface-high)",

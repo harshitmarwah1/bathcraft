@@ -78,7 +78,7 @@ export default function JoinPage() {
             color="var(--color-primary-accent)"
           />
         </div>
-        <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "var(--color-on-surface)" }}>
+        <p style={{ margin: 0, fontSize: "calc(14px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-on-surface)" }}>
           {error ? t.inviteInvalid : t.joining}
         </p>
         {error && (
@@ -91,7 +91,7 @@ export default function JoinPage() {
               background: "var(--color-primary)",
               color: "var(--color-on-primary)",
               fontWeight: 700,
-              fontSize: 14,
+              fontSize: "calc(14px * var(--pl-fs, 1))",
               border: "none",
               cursor: "pointer",
               fontFamily: "inherit",

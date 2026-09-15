@@ -5,57 +5,44 @@ import { usePathname } from "next/navigation";
 import { useI18n } from "@/lib/planner/i18n/provider";
 import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
 
-const ITEMS = [
+export const PLANNER_NAV = [
   { key: "navBathrooms", icon: "bathtub", href: "/bathrooms" },
   { key: "navPlanner", icon: "architecture", href: "/planner/space" },
   { key: "navGuides", icon: "menu_book", href: "/planner/guides" },
   { key: "navDocs", icon: "folder_shared", href: "/planner/docs" },
 ] as const;
 
+/** "Planner" stays active across every wizard step; guides and docs are their
+ *  own /planner sub-routes, so they are excluded from the Planner match. */
+export function isNavActive(pathname: string, item: (typeof PLANNER_NAV)[number]) {
+  if (item.key === "navPlanner") {
+    return (
+      pathname.startsWith("/planner") &&
+      !pathname.startsWith("/planner/guides") &&
+      !pathname.startsWith("/planner/docs")
+    );
+  }
+  return pathname.startsWith(item.href);
+}
+
+/** Phone tab bar. On laptops the same destinations live in the header. */
 export function BottomNav() {
   const { t } = useI18n();
   const pathname = usePathname();
 
   return (
-    <nav
-      style={{
-        flexShrink: 0,
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        height: 64,
-        alignItems: "center",
-        background: "var(--color-surface-lowest)",
-        borderTop: "1px solid var(--color-surface-high)",
-        padding: "0 4px",
-      }}
-    >
-      {ITEMS.map((item) => {
-        // "Planner" stays active across all wizard steps; guides/docs are their
-        // own /planner sub-routes, so exclude them from the Planner match.
-        const active =
-          item.key === "navPlanner"
-            ? pathname.startsWith("/planner") &&
-              !pathname.startsWith("/planner/guides") &&
-              !pathname.startsWith("/planner/docs")
-            : pathname.startsWith(item.href);
-        const color = active ? "var(--color-primary-accent)" : "var(--color-on-surface-variant)";
+    <nav className="pl-bottomnav" aria-label={t.appName}>
+      {PLANNER_NAV.map((item) => {
+        const active = isNavActive(pathname, item);
         return (
           <Link
             key={item.key}
             href={item.href}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 2,
-              color,
-              fontWeight: active ? 700 : 600,
-              textDecoration: "none",
-            }}
+            className="pl-bottomnav-link"
+            aria-current={active ? "page" : undefined}
           >
-            <MaterialIcon name={item.icon} size={22} color={color} />
-            <span style={{ fontSize: 10, fontWeight: active ? 700 : 600 }}>{t[item.key]}</span>
+            <MaterialIcon name={item.icon} size={22} />
+            <span>{t[item.key]}</span>
           </Link>
         );
       })}

@@ -17,6 +17,7 @@ export default function FixturesStepPage() {
   return (
     <WizardShell
       subtitle={t.appSub3}
+      progress={<ProgressBar badge={t.step3Badge} step={3} total={6} icon="grid_view" />}
       footer={
         <StepFooterCta
           label={t.s3CtaText}
@@ -28,16 +29,13 @@ export default function FixturesStepPage() {
         />
       }
     >
-      <ProgressBar badge={t.step3Badge} step={3} total={6} icon="grid_view" />
       {ready ? (
-        <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: 16 }}>
+        <div className="pl-sections">
           <FixtureSpecsSection />
           <AddOnsSection />
         </div>
       ) : (
-        <div style={{ padding: "40px 16px", textAlign: "center", color: "var(--color-on-surface-variant)", fontSize: 13 }}>
-          Loading…
-        </div>
+        <div className="pl-loading">Loading…</div>
       )}
     </WizardShell>
   );

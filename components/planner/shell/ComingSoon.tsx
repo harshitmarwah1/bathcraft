@@ -14,10 +14,10 @@ export function ComingSoon({
   subtitle?: string;
 }) {
   return (
-    <WizardShell subtitle={title}>
+    <WizardShell subtitle={title} showSteps={false}>
       <div
         style={{
-          padding: "48px 24px",
+          padding: "64px 24px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -38,10 +38,10 @@ export function ComingSoon({
         >
           <MaterialIcon name={icon} size={32} color="var(--color-primary-accent)" />
         </div>
-        <h1 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "var(--color-on-surface)" }}>
+        <h1 style={{ margin: 0, fontSize: "calc(24px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-on-surface)" }}>
           {title}
         </h1>
-        <p style={{ margin: 0, fontSize: 13, color: "var(--color-on-surface-variant)", maxWidth: 280 }}>
+        <p style={{ margin: 0, fontSize: "calc(14px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)", maxWidth: 360 }}>
           {subtitle ?? "This section is coming soon."}
         </p>
       </div>

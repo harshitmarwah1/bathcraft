@@ -1,18 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import { StepCard } from "@/components/planner/ui/StepCard";
 import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
 import { useI18n } from "@/lib/planner/i18n/provider";
 import { useProjectStore } from "@/lib/planner/store/project-store";
 import type { ArchitectureStyle } from "@/lib/planner/types";
+import { STYLE_PHOTOS } from "./StyleInspiration";
 
-const STYLES: { value: ArchitectureStyle; icon: string; labelKey: "styleModern" | "styleTraditional" | "styleMinimal" | "styleLuxury" }[] = [
-  { value: "modern", icon: "auto_awesome", labelKey: "styleModern" },
-  { value: "traditional", icon: "temple_hindu", labelKey: "styleTraditional" },
-  { value: "minimal", icon: "crop_square", labelKey: "styleMinimal" },
-  { value: "luxury", icon: "diamond", labelKey: "styleLuxury" },
+const STYLES: { value: ArchitectureStyle; labelKey: "styleModern" | "styleTraditional" | "styleMinimal" | "styleLuxury" }[] = [
+  { value: "modern", labelKey: "styleModern" },
+  { value: "traditional", labelKey: "styleTraditional" },
+  { value: "minimal", labelKey: "styleMinimal" },
+  { value: "luxury", labelKey: "styleLuxury" },
 ];
 
+/** Architecture style, chosen by looking at real bathrooms rather than icons. */
 export function StyleSection() {
   const { t } = useI18n();
   const style = useProjectStore((s) => s.project?.style);
@@ -24,69 +27,36 @@ export function StyleSection() {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <MaterialIcon name="palette" size={20} color="var(--color-primary-accent)" />
         <div>
-          <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+          <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
             {t.styleTitle}
           </h2>
-          <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.styleSub}</p>
+          <p style={{ fontSize: "calc(12px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.styleSub}</p>
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10 }}>
         {STYLES.map((s) => {
           const active = style.architecture === s.value;
           return (
             <button
               key={s.value}
+              type="button"
+              className="pl-style-card"
+              aria-pressed={active}
               onClick={() => setArchitecture(s.value)}
-              style={{
-                position: "relative",
-                padding: "16px 12px",
-                borderRadius: 12,
-                background: active ? "var(--color-primary-tint)" : "var(--color-surface-low)",
-                border: active
-                  ? "1.5px solid var(--color-primary)"
-                  : "1px solid var(--color-surface-high)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 8,
-                cursor: "pointer",
-                fontFamily: "inherit",
-              }}
             >
-              {active && (
-                <MaterialIcon
-                  name="check_circle"
-                  size={16}
-                  color="var(--color-primary)"
-                  style={{ position: "absolute", top: 8, right: 8 }}
+              <span className="pl-style-photo">
+                <Image
+                  src={STYLE_PHOTOS[s.value][0]}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 240px, 45vw"
+                  style={{ objectFit: "cover" }}
                 />
-              )}
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 12,
-                  background: active ? "var(--color-primary)" : "var(--color-surface-container)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <MaterialIcon
-                  name={s.icon}
-                  size={22}
-                  color={active ? "var(--color-on-primary)" : "var(--color-primary-accent)"}
-                />
-              </div>
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: active ? 800 : 600,
-                  color: "var(--color-on-surface)",
-                }}
-              >
+              </span>
+              <span className="pl-style-label">
                 {t[s.labelKey]}
+                {active && <MaterialIcon name="check_circle" size={18} color="var(--color-primary)" />}
               </span>
             </button>
           );

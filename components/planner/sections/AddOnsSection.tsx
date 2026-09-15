@@ -30,15 +30,15 @@ export function AddOnsSection() {
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <MaterialIcon name="add_circle" size={20} color="var(--color-primary-accent)" />
           <div>
-            <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+            <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
               {t.addOnsTitle}
             </h2>
-            <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.addOnsSub}</p>
+            <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.addOnsSub}</p>
           </div>
         </div>
         <span
           style={{
-            fontSize: 10,
+            fontSize: "calc(10px * var(--pl-fs, 1))",
             fontWeight: 700,
             padding: "2px 8px",
             borderRadius: 999,
@@ -98,10 +98,10 @@ export function AddOnsSection() {
                   color={active ? "var(--color-primary)" : "var(--color-on-surface-variant)"}
                 />
               </div>
-              <span style={{ fontWeight: 700, fontSize: 12.5, color: "var(--color-on-surface)" }}>
+              <span style={{ fontWeight: 700, fontSize: "calc(12.5px * var(--pl-fs, 1))", color: "var(--color-on-surface)" }}>
                 {t[a.value as Key]}
               </span>
-              <span style={{ fontSize: 10.5, color: "var(--color-on-surface-variant)", lineHeight: 1.35 }}>
+              <span style={{ fontSize: "calc(10.5px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)", lineHeight: 1.35 }}>
                 {t[descKey]}
               </span>
             </button>

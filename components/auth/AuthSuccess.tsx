@@ -27,15 +27,15 @@ export default function AuthSuccess({ onStart }: { onStart: () => void }) {
         </svg>
       </span>
 
-      <h1 className="text-[28px] leading-tight font-bold tracking-[-0.02em] text-balance text-ink">
-        {t("Your BathCraft account is ready.")}
+      <h1 className="text-[34px] leading-[1.1] font-bold tracking-[-0.03em] text-balance text-ink lg:text-[38px]">
+        {t("Your Milagro Universe account is ready.")}
       </h1>
-      <p className="mt-3 text-[15px] text-body">{t("Let’s start planning your bathroom.")}</p>
+      <p className="mt-3 text-[17px] text-body">{t("Let’s start planning your bathroom.")}</p>
 
       <button
         type="button"
         onClick={onStart}
-        className="mt-8 flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-brand text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-brand-dark motion-reduce:hover:translate-y-0"
+        className="mt-8 flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-action text-[16px] font-semibold text-on-action shadow-[0_6px_18px_rgb(138_90_43/0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-action-dark motion-reduce:hover:translate-y-0"
       >
         {t("Start My First Bathroom")}
         <Icon name="arrowRight" size={16} />
@@ -43,9 +43,9 @@ export default function AuthSuccess({ onStart }: { onStart: () => void }) {
 
       <Link
         href="/"
-        className="mt-3 flex h-[52px] w-full items-center justify-center rounded-[14px] border border-field bg-surface-raised text-[14.5px] font-semibold text-ink transition-colors duration-200 hover:bg-wash"
+        className="mt-3 flex h-[52px] w-full items-center justify-center rounded-[14px] border border-field bg-surface-raised text-[16px] font-semibold text-ink transition-colors duration-200 hover:bg-wash"
       >
-        {t("Explore BathCraft")}
+        {t("Explore Milagro Universe")}
       </Link>
     </div>
   );

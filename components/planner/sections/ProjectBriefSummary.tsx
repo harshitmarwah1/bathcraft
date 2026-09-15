@@ -2,7 +2,7 @@
 
 import { StepCard } from "@/components/planner/ui/StepCard";
 import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
-import { FloorPlanSvg } from "./FloorPlanSvg";
+import { Plan4DViewer } from "@/components/planner/plan3d/Plan4DViewer";
 import { useI18n } from "@/lib/planner/i18n/provider";
 import { inchesToFeetInchesShort, areaSqft, formatInr } from "@/lib/planner/units";
 import type { Dictionary } from "@/lib/planner/i18n/dictionaries";
@@ -37,8 +37,8 @@ const TIER_KEY: Record<CostTier, Key> = {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
-      <span style={{ fontSize: 12, color: "var(--color-on-surface-variant)" }}>{label}</span>
-      <span style={{ fontSize: 12.5, fontWeight: 700, color: "var(--color-on-surface)", textAlign: "right" }}>{value}</span>
+      <span style={{ fontSize: "calc(12px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)" }}>{label}</span>
+      <span style={{ fontSize: "calc(12.5px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-on-surface)", textAlign: "right" }}>{value}</span>
     </div>
   );
 }
@@ -48,7 +48,7 @@ function Block({ icon, title, children }: { icon: string; title: string; childre
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <MaterialIcon name={icon} size={16} color="var(--color-primary-accent)" />
-        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.3px", textTransform: "uppercase", color: "var(--color-primary-accent)" }}>
+        <span style={{ fontSize: "calc(12px * var(--pl-fs, 1))", fontWeight: 800, letterSpacing: "0.3px", textTransform: "uppercase", color: "var(--color-primary-accent)" }}>
           {title}
         </span>
       </div>
@@ -66,8 +66,8 @@ export function ProjectBriefSummary({ project }: { project: Project }) {
     <StepCard style={{ display: "flex", flexDirection: "column", gap: 18 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ fontSize: 18, fontWeight: 800, color: "var(--color-on-surface)" }}>{room.name}</span>
-          <span style={{ fontSize: 11, color: "var(--color-on-surface-variant)" }}>{t.briefTitle}</span>
+          <span style={{ fontSize: "calc(18px * var(--pl-fs, 1))", fontWeight: 800, color: "var(--color-on-surface)" }}>{room.name}</span>
+          <span style={{ fontSize: "calc(11px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)" }}>{t.briefTitle}</span>
         </div>
         <div style={{ width: 40, height: 40, borderRadius: 12, background: "var(--color-primary)", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <MaterialIcon name="architecture" size={22} color="var(--color-on-primary)" />
@@ -96,7 +96,7 @@ export function ProjectBriefSummary({ project }: { project: Project }) {
         {addOns.length > 0 && (
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 2 }}>
             {addOns.map((a) => (
-              <span key={a} style={{ fontSize: 10.5, fontWeight: 700, padding: "3px 8px", borderRadius: 999, background: "var(--color-surface-container)", color: "var(--color-on-surface-variant)" }}>
+              <span key={a} style={{ fontSize: "calc(10.5px * var(--pl-fs, 1))", fontWeight: 700, padding: "3px 8px", borderRadius: 999, background: "var(--color-surface-container)", color: "var(--color-on-surface-variant)" }}>
                 {t[a as Key]}
               </span>
             ))}
@@ -107,7 +107,7 @@ export function ProjectBriefSummary({ project }: { project: Project }) {
       {plan && (
         <Block icon="draw" title={t.briefPlanLabel}>
           <div style={{ marginLeft: -22 }}>
-            <FloorPlanSvg room={room} plan={plan} />
+            <Plan4DViewer project={project} plan={plan} />
           </div>
         </Block>
       )}
@@ -119,8 +119,8 @@ export function ProjectBriefSummary({ project }: { project: Project }) {
           <Row label={t.timeEstimate} value={`${estimate.timeDays} ${t.daysUnit}`} />
           <div style={{ height: 1, background: "var(--color-surface-high)", margin: "2px 0" }} />
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 13, fontWeight: 800, color: "var(--color-on-surface)" }}>{t.totalCost}</span>
-            <span style={{ fontSize: 18, fontWeight: 800, color: "var(--color-primary-accent)" }}>{formatInr(estimate.totalCostInr)}</span>
+            <span style={{ fontSize: "calc(13px * var(--pl-fs, 1))", fontWeight: 800, color: "var(--color-on-surface)" }}>{t.totalCost}</span>
+            <span style={{ fontSize: "calc(18px * var(--pl-fs, 1))", fontWeight: 800, color: "var(--color-primary-accent)" }}>{formatInr(estimate.totalCostInr)}</span>
           </div>
         </Block>
       )}

@@ -17,10 +17,10 @@ export default function BrandComparison() {
   const t = useT();
   return (
     <Reveal id="brands" as="section">
-      <h2 className="text-[21px] font-bold tracking-[-0.01em] text-ink">
+      <h2 className="text-[26px] font-bold tracking-[-0.02em] text-ink lg:text-[30px]">
         {t("Top brands. Real comparisons.")}
       </h2>
-      <p className="mt-2 max-w-md text-[13.5px] leading-relaxed text-body">
+      <p className="mt-2 max-w-md text-[15px] leading-relaxed text-body lg:text-[16px]">
         {t("Compare prices, warranty and service for trusted brands.")}
       </p>
 
@@ -29,7 +29,7 @@ export default function BrandComparison() {
           <li key={brand} className="shrink-0">
             <a
               href="#brands"
-              className="flex h-[46px] min-w-[92px] items-center justify-center rounded-[10px] bg-surface-raised px-4 text-[13px] font-semibold tracking-[0.02em] text-body ring-1 ring-hairline transition-[color,box-shadow,transform] duration-200 hover:-translate-y-px hover:text-brand hover:shadow-soft hover:ring-brand/30 motion-reduce:hover:translate-y-0"
+              className="flex h-[46px] min-w-[92px] items-center justify-center rounded-[10px] bg-surface-raised px-4 text-[14px] font-semibold tracking-[0.02em] text-body ring-1 ring-hairline transition-[color,box-shadow,transform] duration-200 hover:-translate-y-px hover:text-brand hover:shadow-soft hover:ring-brand/30 motion-reduce:hover:translate-y-0"
             >
               {brand}
             </a>
@@ -39,7 +39,7 @@ export default function BrandComparison() {
 
       <a
         href="#brands"
-        className="group mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand"
+        className="group mt-4 inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-brand"
       >
         {t("View all brands")}
         <Icon

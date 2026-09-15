@@ -31,25 +31,14 @@ export default function EstimateStepPage() {
   return (
     <WizardShell
       subtitle={t.appSub5}
-      footer={
-        <StepFooterCta
-          label={t.s5CtaText}
-          subLabel={t.s5CtaSub}
-          onClick={() => router.push("/planner/brief")}
-          onBack={() => router.push("/planner/plan")}
-          backLabel={t.backCta}
-          disabled={!ready}
-        />
-      }
-    >
-      <ProgressBar badge={t.step5Badge} step={5} total={6} icon="receipt_long" />
-      {ready && estimate ? (
-        <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: 16 }}>
-          {/* Cost & time summary */}
+      progress={<ProgressBar badge={t.step5Badge} step={5} total={6} icon="receipt_long" />}
+      // The total stays in view while the line items scroll.
+      aside={
+        ready && estimate ? (
           <StepCard style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <MaterialIcon name="payments" size={20} color="var(--color-primary-accent)" />
-              <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+              <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
                 {t.costTitle}
               </h2>
             </div>
@@ -69,8 +58,8 @@ export default function EstimateStepPage() {
               <SummaryRow label={t.labourCost} value={formatInr(estimate.labourCostInr)} />
               <div style={{ height: 1, background: "var(--color-primary-tint-border)" }} />
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "var(--color-on-surface)" }}>{t.totalCost}</span>
-                <span style={{ fontSize: 22, fontWeight: 800, color: "var(--color-primary-accent)" }}>
+                <span style={{ fontSize: "calc(14px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-on-surface)" }}>{t.totalCost}</span>
+                <span style={{ fontSize: "calc(26px * var(--pl-fs, 1))", fontWeight: 800, color: "var(--color-primary-accent)", fontVariantNumeric: "tabular-nums" }}>
                   {formatInr(estimate.totalCostInr)}
                 </span>
               </div>
@@ -87,16 +76,29 @@ export default function EstimateStepPage() {
               />
             </div>
           </StepCard>
-
-          {/* Bill of materials */}
+        ) : undefined
+      }
+      footer={
+        <StepFooterCta
+          label={t.s5CtaText}
+          subLabel={t.s5CtaSub}
+          onClick={() => router.push("/planner/brief")}
+          onBack={() => router.push("/planner/plan")}
+          backLabel={t.backCta}
+          disabled={!ready}
+        />
+      }
+    >
+      {ready && estimate ? (
+        <div className="pl-sections">
           <StepCard style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <MaterialIcon name="list_alt" size={20} color="var(--color-primary-accent)" />
               <div>
-                <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+                <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
                   {t.bomTitle}
                 </h2>
-                <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.bomSub}</p>
+                <p style={{ fontSize: "calc(12px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.bomSub}</p>
               </div>
             </div>
 
@@ -109,34 +111,32 @@ export default function EstimateStepPage() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     gap: 8,
-                    padding: "9px 0",
+                    padding: "11px 0",
                     borderTop: i === 0 ? "none" : "1px solid var(--color-surface-high)",
                   }}
                 >
                   <div style={{ minWidth: 0 }}>
-                    <span style={{ display: "block", fontSize: 12.5, fontWeight: 600, color: "var(--color-on-surface)" }}>
+                    <span style={{ display: "block", fontSize: "calc(14px * var(--pl-fs, 1))", fontWeight: 600, color: "var(--color-on-surface)" }}>
                       {l.label}
                     </span>
-                    <span style={{ fontSize: 10.5, color: "var(--color-on-surface-variant)" }}>
+                    <span style={{ fontSize: "calc(12px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)", fontVariantNumeric: "tabular-nums" }}>
                       {l.quantity} {l.unit} × {formatInr(l.unitCostInr)}
                     </span>
                   </div>
-                  <span style={{ fontSize: 12.5, fontWeight: 700, color: "var(--color-on-surface)", whiteSpace: "nowrap" }}>
+                  <span style={{ fontSize: "calc(14px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-on-surface)", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>
                     {formatInr(l.totalInr)}
                   </span>
                 </div>
               ))}
             </div>
 
-            <p style={{ fontSize: 10.5, margin: 0, color: "var(--color-on-surface-variant)", fontStyle: "italic" }}>
+            <p style={{ fontSize: "calc(12px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)", fontStyle: "italic" }}>
               {t.estDisclaimer}
             </p>
           </StepCard>
         </div>
       ) : (
-        <div style={{ padding: "40px 16px", textAlign: "center", color: "var(--color-on-surface-variant)", fontSize: 13 }}>
-          Loading…
-        </div>
+        <div className="pl-loading">Loading…</div>
       )}
     </WizardShell>
   );
@@ -145,8 +145,8 @@ export default function EstimateStepPage() {
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
-      <span style={{ fontSize: 12.5, color: "var(--color-on-surface-variant)" }}>{label}</span>
-      <span style={{ fontSize: 13, fontWeight: 700, color: "var(--color-on-surface)" }}>{value}</span>
+      <span style={{ fontSize: "calc(13px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)" }}>{label}</span>
+      <span style={{ fontSize: "calc(14px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-on-surface)", fontVariantNumeric: "tabular-nums" }}>{value}</span>
     </div>
   );
 }
@@ -164,7 +164,7 @@ function InfoTile({
   tone?: "ok" | "warn";
   badge?: string;
 }) {
-  const toneColor = tone === "warn" ? "#d97706" : tone === "ok" ? "#16a34a" : "var(--color-primary-accent)";
+  const toneColor = tone === "warn" ? "#b45309" : tone === "ok" ? "#15803d" : "var(--color-primary-accent)";
   return (
     <div
       style={{
@@ -181,10 +181,10 @@ function InfoTile({
     >
       <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
         <MaterialIcon name={icon} size={15} color={toneColor} />
-        <span style={{ fontSize: 10.5, fontWeight: 600, color: "var(--color-on-surface-variant)" }}>{label}</span>
+        <span style={{ fontSize: "calc(12px * var(--pl-fs, 1))", fontWeight: 600, color: "var(--color-on-surface-variant)" }}>{label}</span>
       </div>
-      <span style={{ fontSize: 14, fontWeight: 800, color: "var(--color-on-surface)" }}>{value}</span>
-      {badge && <span style={{ fontSize: 10, fontWeight: 700, color: toneColor }}>{badge}</span>}
+      <span style={{ fontSize: "calc(15px * var(--pl-fs, 1))", fontWeight: 800, color: "var(--color-on-surface)", fontVariantNumeric: "tabular-nums" }}>{value}</span>
+      {badge && <span style={{ fontSize: "calc(12px * var(--pl-fs, 1))", fontWeight: 700, color: toneColor }}>{badge}</span>}
     </div>
   );
 }

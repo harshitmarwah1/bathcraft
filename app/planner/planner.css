@@ -1,62 +1,64 @@
-/* Planner design system — scoped to .bc-planner so it never touches the
-   landing's warm theme. Tokens + icon/utility classes extracted from the
-   original BathCraft planner (blue Material identity).
-   Fonts (Plus Jakarta Sans + Material Symbols) are loaded via <link> tags in
-   app/planner/layout.tsx — a remote @import here is dropped by Turbopack. */
+/* ---------------------------------------------------------------------------
+   Planner design system — scoped to .bc-planner.
+
+   Every token here is an ALIAS of the site's (app/globals.css). The planner
+   used to carry its own Material palette, font and theme; now it reads the same
+   brand blue, ink, hairlines and Hanken Grotesk as the landing, and repaints with the
+   same theme switch. Component code keeps its original token names.
+
+   Layout is laptop-first: at 1024px+ the planner is a full-width app (header,
+   step rail, content + sticky side panel, sticky action bar). Below that it
+   keeps the original phone layout; a dedicated mobile pass comes later.
+--------------------------------------------------------------------------- */
 
 .bc-planner {
   /* brand */
-  --color-primary: #006194;
-  --color-primary-container: #007bb9;
-  --color-on-primary: #ffffff;
-  --color-primary-fixed: #cce5ff;
-  --color-primary-fixed-dim: #93ccff;
-  --color-on-primary-fixed: #001d31;
-  --color-primary-accent: #006194;
-  --color-primary-tint: rgba(0, 97, 148, 0.1);
-  --color-primary-tint-border: rgba(0, 97, 148, 0.2);
-  /* surfaces */
-  --color-surface: #f8f9ff;
-  --color-surface-lowest: #ffffff;
-  --color-surface-low: #eff4ff;
-  --color-surface-container: #e5eeff;
-  --color-surface-high: #dce9ff;
-  --color-surface-highest: #d3e4fe;
+  --color-primary: var(--color-brand);
+  --color-primary-container: var(--color-brand-dark);
+  --color-on-primary: var(--color-on-brand);
+  --color-primary-fixed: var(--color-wash-deep);
+  --color-primary-fixed-dim: var(--color-brand-soft);
+  --color-on-primary-fixed: var(--color-ink);
+  --color-primary-accent: var(--color-brand);
+  --color-primary-tint: color-mix(in srgb, var(--color-brand) 9%, transparent);
+  --color-primary-tint-border: color-mix(in srgb, var(--color-brand) 22%, transparent);
+  /* surfaces: page sits back, cards come forward. Neutral stone, tinted a
+     touch toward the logo slate — blue is kept for actions and selection. */
+  --pl-page: var(--color-blueprint-ground);
+  --pl-grid-fine: var(--color-blueprint-fine);
+  --pl-grid-major: var(--color-blueprint-major);
+  --color-surface-lowest: var(--color-surface-raised);
+  --color-surface-low: color-mix(in srgb, var(--color-ink) 4%, var(--color-surface-raised));
+  --color-surface-container: color-mix(in srgb, var(--color-ink) 7%, var(--color-surface-raised));
+  --color-surface-high: var(--color-hairline);
+  --color-surface-highest: var(--color-field);
   /* text */
-  --color-on-surface: #0b1c30;
-  --color-on-surface-variant: #3f4850;
+  --color-on-surface: var(--color-ink);
+  --color-on-surface-variant: var(--color-body);
   /* inverse */
-  --color-inverse-surface: #213145;
-  --color-inverse-on-surface: #eaf1ff;
+  --color-inverse-surface: var(--color-ink);
+  --color-inverse-on-surface: var(--color-surface);
   /* chrome */
-  --color-header-bg: rgba(248, 249, 255, 0.9);
-  --color-card-border: rgba(220, 233, 255, 0.6);
-  --color-theme-icon: #006194;
+  --color-header-bg: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  --color-card-border: var(--color-hairline);
+  --color-theme-icon: var(--color-body);
 
-  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   color: var(--color-on-surface);
-  background: var(--color-surface);
+  background: var(--pl-page);
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Dark: the site's wash and raised surface are the same colour, so the page
+   drops to the base surface to keep cards distinct. */
 .bc-planner[data-theme="dark"] {
-  --color-primary-accent: #93ccff;
-  --color-primary-tint: rgba(0, 97, 148, 0.2);
-  --color-primary-tint-border: rgba(0, 97, 148, 0.35);
-  --color-surface: #0d1520;
-  --color-surface-lowest: #131f30;
-  --color-surface-low: #18263a;
-  --color-surface-container: #1d2e46;
-  --color-surface-high: #233753;
-  --color-surface-highest: #2c4263;
-  --color-on-surface: #eaf1ff;
-  --color-on-surface-variant: #9ab0ca;
-  --color-inverse-surface: #233753;
-  --color-inverse-on-surface: #ffffff;
-  --color-header-bg: rgba(13, 21, 32, 0.9);
-  --color-card-border: rgba(35, 55, 83, 0.8);
-  --color-theme-icon: #fbbf24;
+  --pl-page: var(--color-blueprint-ground);
+  --pl-grid-fine: var(--color-blueprint-fine);
+  --pl-grid-major: var(--color-blueprint-major);
+  --color-surface-low: var(--color-wash-deep);
+  --color-surface-container: color-mix(in srgb, #ffffff 6%, var(--color-surface-raised));
+  --color-header-bg: color-mix(in srgb, var(--color-surface) 90%, transparent);
 }
 
 .bc-planner * {
@@ -86,36 +88,666 @@
   scrollbar-width: none;
 }
 
-.bc-planner .app-frame {
-  min-height: 100dvh;
+.bc-planner :focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
-@media (min-width: 480px) {
+
+/* ===========================================================================
+   Frame — phone layout (base)
+   =========================================================================== */
+
+.bc-planner .pl-root {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  background-color: var(--pl-page);
+  /* A faint architect's grid — the planner is where the blueprint is drawn. */
+  background-image:
+    linear-gradient(var(--pl-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pl-grid-major) 1px, transparent 1px),
+    linear-gradient(var(--pl-grid-fine) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pl-grid-fine) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+}
+
+.bc-planner .app-frame {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--pl-page);
+}
+
+@media (min-width: 480px) and (max-width: 1023.98px) {
   .bc-planner .app-frame {
     min-height: 0;
     height: min(920px, calc(100dvh - 48px));
     margin: 24px auto;
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.18);
     border: 1px solid var(--color-card-border);
   }
+}
+
+.bc-planner .pl-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.bc-planner .pl-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.bc-planner .pl-content {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+.bc-planner .pl-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 16px 0;
+}
+
+.bc-planner .pl-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px;
+}
+
+.bc-planner .pl-loading {
+  padding: 40px 16px;
+  text-align: center;
+  color: var(--color-on-surface-variant);
+  font-size: 13px;
+}
+
+.bc-planner .pl-rail,
+.bc-planner .pl-topnav {
+  display: none;
+}
+
+/* --- header --------------------------------------------------------------- */
+
+.bc-planner .pl-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  flex-shrink: 0;
+  background: var(--color-header-bg);
+  border-bottom: 1px solid var(--color-surface-high);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bc-planner .pl-header-inner {
+  height: 64px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bc-planner .pl-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.bc-planner .pl-brand-lockup {
+  display: block;
+  height: 30px;
+  width: auto;
+}
+
+.bc-planner .pl-header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.bc-planner .pl-lang {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-high);
+  color: var(--color-primary-accent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 150ms ease;
+}
+
+.bc-planner .pl-lang-sep,
+.bc-planner .pl-lang-other {
+  color: var(--color-on-surface-variant);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.bc-planner .pl-icon-btn {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-surface-high);
+  color: var(--color-theme-icon);
+  cursor: pointer;
+  transition: border-color 150ms ease;
+}
+
+.bc-planner .pl-lang:hover,
+.bc-planner .pl-icon-btn:hover {
+  border-color: var(--color-primary-tint-border);
+}
+
+/* --- bottom nav (phones) ---------------------------------------------------- */
+
+.bc-planner .pl-bottomnav {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 64px;
+  align-items: center;
+  padding: 0 4px;
+  background: var(--color-surface-lowest);
+  border-top: 1px solid var(--color-surface-high);
+}
+
+.bc-planner .pl-bottomnav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 48px;
+  color: var(--color-on-surface-variant);
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bc-planner .pl-bottomnav-link[aria-current="page"] {
+  color: var(--color-primary-accent);
+  font-weight: 700;
+}
+
+/* --- step heading + progress ---------------------------------------------- */
+
+.bc-planner .pl-progress {
+  padding: 12px 16px 16px;
+}
+
+.bc-planner .pl-progress-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.bc-planner .pl-progress-text {
+  min-width: 0;
+}
+
+.bc-planner .pl-progress-meta {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary-accent);
+}
+
+.bc-planner .pl-progress-title {
+  margin: 2px 0 0;
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-on-surface);
+  text-wrap: balance;
+}
+
+.bc-planner .pl-progress-pct {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-on-surface-variant);
+}
+
+.bc-planner .pl-progress-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-surface-high);
+  overflow: hidden;
+}
+
+.bc-planner .pl-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-primary);
+  transform-origin: left center;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- action bar ------------------------------------------------------------ */
+
+.bc-planner .pl-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  margin-top: auto;
+  padding: 10px 16px;
+  background: var(--color-surface-lowest);
+  border-top: 1px solid var(--color-surface-high);
+}
+
+.bc-planner .pl-footer-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "back primary"
+    "sub  sub";
+  gap: 6px 8px;
+}
+
+.bc-planner .pl-footer-inner[data-back="false"] {
+  grid-template-areas:
+    "primary primary"
+    "sub     sub";
+}
+
+.bc-planner .pl-btn {
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+
+.bc-planner .pl-btn-secondary {
+  grid-area: back;
+  background: var(--color-surface-low);
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-surface-high);
+}
+
+.bc-planner .pl-btn-secondary:hover {
+  border-color: var(--color-primary-tint-border);
+}
+
+.bc-planner .pl-btn-primary {
+  grid-area: primary;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: 1px solid transparent;
+}
+
+.bc-planner .pl-btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-container);
+}
+
+.bc-planner .pl-btn-primary:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.bc-planner .pl-footer-sub {
+  grid-area: sub;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+.bc-planner .pl-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* --- toast ----------------------------------------------------------------- */
+
+.bc-planner .pl-toast {
+  position: fixed;
+  top: 84px;
+  left: 50%;
+  z-index: 50;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--color-inverse-surface);
+  color: var(--color-inverse-on-surface);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.24);
+  animation: pl-toast-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pl-toast-in {
+  from { opacity: 0; transform: translate(-50%, -8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-@keyframes bounceIn {
-  0% { transform: translate(-50%, -10px); opacity: 0; }
-  60% { transform: translate(-50%, 2px); opacity: 1; }
-  100% { transform: translate(-50%, 0); opacity: 1; }
+
+/* ===========================================================================
+   Laptop — 1024px and up
+   =========================================================================== */
+
+@media (min-width: 1024px) {
+  .bc-planner .pl-root {
+    display: block;
+  }
+
+  .bc-planner .app-frame {
+    max-width: none;
+    overflow: visible;
+    background: transparent;
+  }
+
+  .bc-planner .pl-header-inner {
+    padding: 0 clamp(24px, 3vw, 64px);
+    gap: 32px;
+  }
+
+  .bc-planner .pl-topnav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .bc-planner .pl-topnav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    color: var(--color-on-surface-variant);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 150ms ease, background-color 150ms ease;
+  }
+
+  .bc-planner .pl-topnav-link:hover {
+    color: var(--color-on-surface);
+    background: var(--color-surface-low);
+  }
+
+  .bc-planner .pl-topnav-link[aria-current="page"] {
+    color: var(--color-primary-accent);
+    background: var(--color-primary-tint);
+  }
+
+  .bc-planner .pl-body {
+    display: grid;
+    grid-template-columns: clamp(220px, 15vw, 280px) minmax(0, 1fr);
+    gap: clamp(32px, 3vw, 64px);
+    width: 100%;
+    padding: 40px clamp(24px, 3vw, 64px) 0;
+    align-items: start;
+  }
+
+  .bc-planner .pl-body[data-steps="false"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bc-planner .pl-main {
+    overflow: visible;
+    min-height: calc(100dvh - 104px);
+  }
+
+  .bc-planner .pl-bottomnav {
+    display: none;
+  }
+
+  /* step rail */
+  .bc-planner .pl-rail {
+    position: sticky;
+    top: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bc-planner .pl-rail-project {
+    margin: 0;
+    padding: 0 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-on-surface);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bc-planner .pl-rail-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .bc-planner .pl-rail-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    color: var(--color-on-surface-variant);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  .bc-planner .pl-rail-link:hover {
+    background: var(--color-surface-lowest);
+    color: var(--color-on-surface);
+  }
+
+  .bc-planner .pl-rail-link[data-state="current"] {
+    background: var(--color-surface-lowest);
+    color: var(--color-on-surface);
+    box-shadow: 0 0 0 1px var(--color-surface-high);
+  }
+
+  .bc-planner .pl-rail-num {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-surface-highest);
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bc-planner .pl-rail-link[data-state="current"] .pl-rail-num {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .bc-planner .pl-rail-link[data-state="done"] .pl-rail-num {
+    background: var(--color-primary-tint);
+    border-color: transparent;
+    color: var(--color-primary-accent);
+  }
+
+  /* step heading */
+  .bc-planner .pl-progress {
+    padding: 0 0 28px;
+  }
+
+  .bc-planner .pl-progress-row {
+    margin-bottom: 14px;
+  }
+
+  .bc-planner .pl-progress-meta {
+    font-size: 13px;
+  }
+
+  .bc-planner .pl-progress-title {
+    margin-top: 4px;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+  }
+
+  .bc-planner .pl-progress-pct {
+    font-size: 13px;
+  }
+
+  /* content + side panel */
+  .bc-planner .pl-content {
+    display: grid;
+    gap: 24px;
+    padding-bottom: 40px;
+  }
+
+  .bc-planner .pl-content[data-aside="true"] {
+    grid-template-columns: minmax(0, 1fr) clamp(340px, 28vw, 520px);
+    align-items: start;
+  }
+
+  .bc-planner .pl-aside {
+    position: sticky;
+    top: 104px;
+    padding: 0;
+  }
+
+  .bc-planner .pl-sections {
+    padding: 0;
+    gap: 20px;
+  }
+
+  .bc-planner .pl-content[data-aside="false"] .pl-sections {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 24px;
+  }
+
+  .bc-planner .pl-loading {
+    padding: 64px 0;
+  }
+
+  /* action bar */
+  .bc-planner .pl-footer {
+    padding: 16px 0 20px;
+    background: #f5f6f7;
+    background: color-mix(in srgb, var(--pl-page) 94%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .bc-planner .pl-footer-inner,
+  .bc-planner .pl-footer-inner[data-back="false"] {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "back sub primary";
+    align-items: center;
+    gap: 16px;
+  }
+
+  .bc-planner .pl-footer-sub {
+    justify-content: flex-end;
+    font-size: 13px;
+  }
+
+  .bc-planner .pl-btn-primary {
+    min-width: 220px;
+  }
 }
 
-/* Print: show the brief content only. Scoped to planner pages. */
+/* ===========================================================================
+   Reduced motion
+   =========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .bc-planner *,
+  .bc-planner *::before,
+  .bc-planner *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* ===========================================================================
+   Print: the brief content only.
+   =========================================================================== */
+
 @media print {
+  .bc-planner .pl-root {
+    background-image: none !important;
+  }
   .bc-planner header,
   .bc-planner nav,
   .bc-planner .no-print {
     display: none !important;
+  }
+  .bc-planner .pl-body {
+    display: block !important;
+    padding: 0 !important;
+  }
+  .bc-planner .pl-content {
+    display: block !important;
+  }
+  .bc-planner .pl-aside {
+    position: static !important;
   }
   .bc-planner .app-frame {
     height: auto !important;
@@ -129,5 +761,611 @@
   }
   .bc-planner .app-frame .nsb {
     overflow: visible !important;
+  }
+}
+
+/* ===========================================================================
+   4D plan — 3D room + build timeline (components/planner/plan3d)
+   =========================================================================== */
+
+.bc-planner .pl-4d {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bc-planner .pl-4d-stage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  max-height: 68vh;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--color-surface-high);
+  background: radial-gradient(120% 90% at 50% 15%, var(--color-surface-lowest), var(--color-surface-container));
+}
+
+.bc-planner .pl-4d-canvas {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.bc-planner .pl-4d-canvas:active {
+  cursor: grabbing;
+}
+
+.bc-planner .pl-4d-2d {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 56px 24px 20px;
+}
+
+.bc-planner .pl-4d-2d svg {
+  max-height: 100%;
+}
+
+.bc-planner .pl-4d-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 56px 16px 16px;
+  background: var(--color-surface-lowest);
+}
+
+.bc-planner .pl-4d-status {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+.bc-planner .pl-4d-fallback .pl-4d-status {
+  position: static;
+  transform: none;
+}
+
+.bc-planner .pl-4d-toolbar {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.bc-planner .pl-4d-toolbar > * {
+  pointer-events: auto;
+}
+
+.bc-planner .pl-4d-segment {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface-lowest) 90%, transparent);
+  border: 1px solid var(--color-surface-high);
+}
+
+.bc-planner .pl-4d-segment button {
+  height: 32px;
+  min-width: 48px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.bc-planner .pl-4d-segment button[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.bc-planner .pl-4d-hint {
+  margin-left: auto;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface-lowest) 85%, transparent);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+.bc-planner .pl-4d-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--color-surface-high);
+  background: var(--color-surface-lowest);
+  color: var(--color-on-surface);
+  cursor: pointer;
+}
+
+.bc-planner .pl-4d-timeline {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.bc-planner .pl-4d-play {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.bc-planner .pl-4d-play:hover {
+  background: var(--color-primary-container);
+}
+
+.bc-planner .pl-4d-track {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bc-planner .pl-4d-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bc-planner .pl-4d-phase {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+
+.bc-planner .pl-4d-day {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+
+.bc-planner .pl-4d-range {
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bc-planner .pl-4d-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--color-primary) var(--pl-fill, 0%),
+    var(--color-surface-high) var(--pl-fill, 0%)
+  );
+}
+
+.bc-planner .pl-4d-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--color-surface-lowest);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
+}
+
+.bc-planner .pl-4d-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-surface-high);
+}
+
+.bc-planner .pl-4d-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
+.bc-planner .pl-4d-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-surface-lowest);
+  border: 2px solid var(--color-primary);
+}
+
+.bc-planner .pl-4d-phases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 4px;
+}
+
+.bc-planner .pl-4d-phases li {
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.bc-planner .pl-4d-phases button {
+  width: 100%;
+  min-height: 30px;
+  padding: 6px 0 0;
+  border: 0;
+  border-top: 3px solid var(--color-surface-high);
+  background: transparent;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.bc-planner .pl-4d-phases button[data-state="done"] {
+  border-top-color: var(--color-primary);
+}
+
+.bc-planner .pl-4d-phases button[data-state="current"] {
+  border-top-color: var(--color-primary);
+  color: var(--color-on-surface);
+  font-weight: 700;
+}
+
+.bc-planner .pl-4d-print {
+  display: none;
+}
+
+@media print {
+  .bc-planner .pl-4d-stage,
+  .bc-planner .pl-4d-timeline {
+    display: none !important;
+  }
+  .bc-planner .pl-4d-print {
+    display: block !important;
+  }
+}
+
+/* --- style photography ------------------------------------------------------ */
+
+.bc-planner .pl-style-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--color-surface-high);
+  background: var(--color-surface-lowest);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.bc-planner .pl-style-card:hover {
+  border-color: var(--color-primary-tint-border);
+}
+
+.bc-planner .pl-style-card[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.bc-planner .pl-style-photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-container);
+}
+
+.bc-planner .pl-style-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.bc-planner .pl-style-card[aria-pressed="true"] .pl-style-label {
+  font-weight: 700;
+}
+
+.bc-planner .pl-chip {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-primary-tint);
+  color: var(--color-primary-accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bc-planner .pl-inspo {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 10px;
+}
+
+.bc-planner .pl-inspo-photo {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-surface-container);
+}
+
+.bc-planner .pl-inspo-photo[data-lead="false"] {
+  aspect-ratio: auto;
+}
+
+/* ===========================================================================
+   Type, density and action colour — laptop-first scale.
+
+   --pl-fs multiplies every inline font size in the planner components (and the
+   Material icons); --pl-sp multiplies card padding. Phones stay at 1. Filled
+   primary actions are brass (site tokens --color-action*); the logo cyan stays
+   for selection, progress and links.
+   =========================================================================== */
+
+.bc-planner {
+  --pl-fs: 1;
+  --pl-sp: 1;
+  --pl-action: var(--color-action, #8a5a2b);
+  --pl-action-hover: var(--color-action-dark, #6f4720);
+  --pl-on-action: var(--color-on-action, #ffffff);
+}
+
+.bc-planner .pl-btn-primary,
+.bc-planner .pl-4d-play {
+  background: var(--pl-action);
+  color: var(--pl-on-action);
+}
+
+.bc-planner .pl-btn-primary:hover:not(:disabled),
+.bc-planner .pl-4d-play:hover {
+  background: var(--pl-action-hover);
+}
+
+@media (min-width: 1024px) {
+  .bc-planner {
+    --pl-fs: 1.14;
+    --pl-sp: 1.35;
+  }
+
+  /* header */
+  .bc-planner .pl-header-inner {
+    height: 76px;
+  }
+  .bc-planner .pl-brand-lockup {
+    height: 44px;
+  }
+  .bc-planner .pl-topnav {
+    gap: 6px;
+  }
+  .bc-planner .pl-topnav-link {
+    height: 46px;
+    padding: 0 16px;
+    gap: 8px;
+    font-size: 16px;
+  }
+  .bc-planner .pl-lang {
+    height: 42px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+  .bc-planner .pl-lang-sep,
+  .bc-planner .pl-lang-other {
+    font-size: 13px;
+  }
+  .bc-planner .pl-icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  /* frame */
+  .bc-planner .pl-body {
+    grid-template-columns: clamp(240px, 15vw, 300px) minmax(0, 1560px);
+    padding-top: 48px;
+  }
+  .bc-planner .pl-rail,
+  .bc-planner .pl-aside {
+    top: 124px;
+  }
+
+  /* rail */
+  .bc-planner .pl-rail-project {
+    font-size: 17px;
+  }
+  .bc-planner .pl-rail-link {
+    min-height: 50px;
+    font-size: 16px;
+    gap: 14px;
+  }
+  .bc-planner .pl-rail-num {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  /* step heading */
+  .bc-planner .pl-progress {
+    padding-bottom: 36px;
+  }
+  .bc-planner .pl-progress-meta {
+    font-size: 15px;
+    gap: 6px;
+  }
+  .bc-planner .pl-progress-title {
+    margin-top: 6px;
+    font-size: clamp(38px, 2.7vw, 52px);
+    letter-spacing: -0.025em;
+  }
+  .bc-planner .pl-progress-pct {
+    font-size: 15px;
+  }
+  .bc-planner .pl-progress-track {
+    height: 8px;
+  }
+
+  /* content */
+  .bc-planner .pl-content {
+    gap: 28px;
+  }
+  .bc-planner .pl-content[data-aside="true"] {
+    grid-template-columns: minmax(0, 1fr) clamp(360px, 30vw, 600px);
+  }
+  .bc-planner .pl-content[data-aside="false"] .pl-sections {
+    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    gap: 28px;
+  }
+  .bc-planner .pl-sections {
+    gap: 24px;
+  }
+
+  /* action bar */
+  .bc-planner .pl-footer-sub {
+    font-size: 15px;
+  }
+  .bc-planner .pl-btn {
+    height: 54px;
+    padding: 0 24px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+  .bc-planner .pl-btn-primary {
+    min-width: 240px;
+  }
+
+  /* 4D viewer */
+  .bc-planner .pl-4d-play {
+    width: 54px;
+    height: 54px;
+  }
+  .bc-planner .pl-4d-phase {
+    font-size: 18px;
+  }
+  .bc-planner .pl-4d-day {
+    font-size: 15px;
+  }
+  .bc-planner .pl-4d-phases button {
+    font-size: 13.5px;
+  }
+  .bc-planner .pl-4d-segment button {
+    height: 36px;
+    font-size: 15px;
+  }
+  .bc-planner .pl-4d-hint {
+    font-size: 13.5px;
+  }
+
+  /* style photography */
+  .bc-planner .pl-style-label {
+    min-height: 52px;
+    font-size: 16px;
+  }
+  .bc-planner .pl-chip {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .bc-planner {
+    --pl-fs: 1.22;
+    --pl-sp: 1.45;
+  }
+}
+
+/* ===========================================================================
+   Fit every laptop width. Grid children default to min-width:auto, so a wide
+   form row could force the content column past the viewport and push the side
+   panel off-screen; both columns may shrink. Below 1280px the side panel
+   stacks under the form instead of squeezing beside it, and type scales in
+   steps with the screen rather than jumping straight to large.
+   =========================================================================== */
+
+.bc-planner .pl-primary,
+.bc-planner .pl-aside,
+.bc-planner .pl-sections > * {
+  min-width: 0;
+}
+
+.bc-planner .pl-progress-title {
+  font-family: var(--font-marcellus), var(--font-hanken), serif;
+  font-weight: 400;
+}
+
+@media (min-width: 1024px) {
+  .bc-planner {
+    --pl-fs: 1.06;
+    --pl-sp: 1.2;
+  }
+  .bc-planner .pl-body {
+    overflow-x: clip;
+  }
+  .bc-planner .pl-progress-title {
+    letter-spacing: -0.01em;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .bc-planner .pl-content[data-aside="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bc-planner .pl-aside {
+    position: static;
+  }
+  .bc-planner .pl-content[data-aside="false"] .pl-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .bc-planner {
+    --pl-fs: 1.12;
+    --pl-sp: 1.3;
+  }
+}
+
+@media (min-width: 1600px) {
+  .bc-planner {
+    --pl-fs: 1.2;
+    --pl-sp: 1.45;
   }
 }
