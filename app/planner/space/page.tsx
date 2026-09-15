@@ -20,6 +20,10 @@ export default function SpaceStepPage() {
   return (
     <WizardShell
       subtitle={t.appSub}
+      progress={<ProgressBar badge={t.stepBadge} step={1} total={6} />}
+      // The live footprint sits beside the inputs, so every change is visible
+      // without scrolling away from the field being edited.
+      aside={ready ? <FootprintPreview /> : undefined}
       footer={
         <StepFooterCta
           label={t.s1CtaText}
@@ -29,19 +33,15 @@ export default function SpaceStepPage() {
         />
       }
     >
-      <ProgressBar badge={t.stepBadge} step={1} total={6} />
       {ready ? (
-        <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: 16 }}>
+        <div className="pl-sections">
           <NameSection />
           <DimensionsSection />
           <DoorWindowSection />
           <FixturesSection />
-          <FootprintPreview />
         </div>
       ) : (
-        <div style={{ padding: "40px 16px", textAlign: "center", color: "var(--color-on-surface-variant)", fontSize: 13 }}>
-          Loading…
-        </div>
+        <div className="pl-loading">Loading…</div>
       )}
     </WizardShell>
   );

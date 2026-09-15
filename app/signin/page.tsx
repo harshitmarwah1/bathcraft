@@ -61,7 +61,7 @@ function SignInPageInner() {
       <div className="relative">
         <Link
           href="/"
-          aria-label="Close and return to the BathCraft home page"
+          aria-label="Close and return to the Milagro Universe home page"
           className="absolute -top-2 right-0 z-10 flex h-10 w-10 items-center justify-center rounded-full text-body-soft transition-colors hover:bg-wash hover:text-ink max-sm:h-11 max-sm:w-11 lg:-top-6"
         >
           <Icon name="close" size={20} />

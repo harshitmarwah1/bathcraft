@@ -16,14 +16,13 @@ export default function HowItWorks() {
   const t = useT();
   return (
     <section id="how-it-works" className="bg-wash">
-      <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-6 lg:py-20">
+      <div className="mx-auto max-w-[1280px] 2xl:max-w-[1440px] px-5 py-16 sm:px-6 lg:py-20">
         <SectionHeading
           align="center"
-          eyebrow={t("How BathCraft works")}
           title={t("Plan. Visualize. Build. In 4 simple steps.")}
         />
 
-        <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-14 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map(({ n, title, body, visual }, i) => (
             <Reveal as="li" key={n} delay={i * 100} className="relative">
               <span className="absolute -top-3 -left-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-brand text-[13px] font-bold text-on-brand shadow-[0_4px_12px_rgb(7_140_200/0.35)]">
@@ -37,8 +36,8 @@ export default function HowItWorks() {
                 {visual === "materials" && <MaterialsVisual />}
               </div>
 
-              <h3 className="mt-4 text-[15px] font-semibold text-ink">{t(title)}</h3>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-body-soft">{t(body)}</p>
+              <h3 className="mt-5 text-[18px] font-semibold text-ink">{t(title)}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-body-soft">{t(body)}</p>
             </Reveal>
           ))}
         </ol>

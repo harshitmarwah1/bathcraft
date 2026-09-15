@@ -10,16 +10,16 @@ const PAD = 30; // inches of margin around the room for labels
 
 function fixtureColor(type: FixtureType, dark: boolean): { stroke: string; fill: string } {
   const light: Record<FixtureType, string> = {
-    wc: "#1d4ed8",
-    vanity: "#0f766e",
-    shower: "#4338ca",
-    almirah: "#0e7490",
+    wc: "#8a5a2b",
+    vanity: "#4f6b4a",
+    shower: "#4a4640",
+    almirah: "#8a4f35",
   };
   const darkC: Record<FixtureType, string> = {
-    wc: "#93c5fd",
-    vanity: "#5eead4",
-    shower: "#a5b4fc",
-    almirah: "#67e8f9",
+    wc: "#e0b98c",
+    vanity: "#b9cdb3",
+    shower: "#d9d5cf",
+    almirah: "#e2b8a4",
   };
   const stroke = dark ? darkC[type] : light[type];
   return { stroke, fill: dark ? `${stroke}22` : `${stroke}18` };
@@ -96,8 +96,8 @@ export function FloorPlanSvg({ room, plan }: { room: Room; plan: GeneratedPlan }
       {/* window: double line */}
       {win && (
         <>
-          <line x1={win.x1} y1={win.y1} x2={win.x2} y2={win.y2} stroke={dark ? "#93ccff" : "#006194"} strokeWidth={5} vectorEffect="non-scaling-stroke" strokeOpacity={0.25} />
-          <line x1={win.x1} y1={win.y1} x2={win.x2} y2={win.y2} stroke={dark ? "#93ccff" : "#006194"} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+          <line x1={win.x1} y1={win.y1} x2={win.x2} y2={win.y2} stroke={dark ? "#d9d5cf" : "#4a4640"} strokeWidth={5} vectorEffect="non-scaling-stroke" strokeOpacity={0.25} />
+          <line x1={win.x1} y1={win.y1} x2={win.x2} y2={win.y2} stroke={dark ? "#d9d5cf" : "#4a4640"} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
         </>
       )}
 

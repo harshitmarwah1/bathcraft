@@ -38,6 +38,7 @@ export type IconName =
   | "check"
   | "chevronDown"
   | "plus"
+  | "user"
   | "logout"
   | "bookmark"
   | "settings"
@@ -142,6 +143,12 @@ const PATHS: Record<IconName, React.ReactNode> = {
     <>
       <circle cx="11" cy="11" r="6" />
       <path d="m15.5 15.5 4 4" />
+    </>
+  ),
+  user: (
+    <>
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5 19.5c1.2-3.3 3.9-5 7-5s5.8 1.7 7 5" />
     </>
   ),
   play: <path d="M9 6.5 17.5 12 9 17.5z" />,

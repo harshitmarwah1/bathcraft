@@ -4,7 +4,6 @@ import FinalCTA from "@/components/site/FinalCTA";
 import Footer from "@/components/site/Footer";
 import Hero from "@/components/site/Hero";
 import HowItWorks from "@/components/site/HowItWorks";
-import MetricsBar from "@/components/site/MetricsBar";
 import Navbar from "@/components/site/Navbar";
 import PlannerDemo from "@/components/site/PlannerDemo";
 import StyleExplorer from "@/components/site/StyleExplorer";
@@ -25,7 +24,7 @@ export default function Home() {
         <HowItWorks />
 
         {/* Planner left, the three explore cards stacked right. */}
-        <section className="mx-auto max-w-[1280px] px-5 py-14 sm:px-6 lg:py-16">
+        <section className="mx-auto max-w-[1280px] 2xl:max-w-[1440px] px-5 py-14 sm:px-6 lg:py-16">
           {/* grid-cols-1 is doing real work on phones, not decoration. Without an
               explicit track the single implicit column is sized `auto`, whose
               floor is the content's min-content width — here 502px, inside a
@@ -43,7 +42,6 @@ export default function Home() {
           </div>
         </section>
 
-        <MetricsBar />
         <Testimonials />
         <FinalCTA />
       </main>

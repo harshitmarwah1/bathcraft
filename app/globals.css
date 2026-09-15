@@ -20,6 +20,18 @@
 --------------------------------------------------------------------------- */
 
 @theme {
+  /* Action: filled primary buttons only, in warm brass (echoes premium
+     fittings). Brand cyan stays for links, focus, selection and progress. */
+  --color-action: #8a5a2b;
+  --color-action-dark: #6f4720;
+  --color-on-action: #ffffff;
+
+  /* Signed-in ground: neutral stone tinted toward the logo slate, with a faint
+     architect's grid (see the bg-blueprint utility). Blue is kept for actions. */
+  --color-blueprint-ground: color-mix(in srgb, #4a5c72 5%, #f7f7f6);
+  --color-blueprint-fine: rgb(74 92 114 / 0.045);
+  --color-blueprint-major: rgb(74 92 114 / 0.075);
+
   /* The page, and anything raised off it. In light these are both white;
      splitting them is what makes a dark theme possible without a repaint. */
   --color-surface: #ffffff;
@@ -28,10 +40,12 @@
   --color-ink: #102b4e;
   --color-ink-soft: #1d3a61;
   --color-body: #42566f;
-  --color-body-soft: #6b7d94;
+  /* Soft copy and brand text both sit on white, wash and wash-deep; every
+     value here clears WCAG AA 4.5:1 on all three (see the audit, 2026-09-15). */
+  --color-body-soft: #5a6c83;
 
-  --color-brand: #078cc8;
-  --color-brand-dark: #0672a3;
+  --color-brand: #0672a3;
+  --color-brand-dark: #055a82;
   /* Foreground for anything sitting ON the brand colour. */
   --color-on-brand: #ffffff;
   --color-brand-soft: #7cc9e8;
@@ -45,7 +59,7 @@
   --color-danger-dark: #a33c34;
 
   --font-sans:
-    var(--font-inter), var(--font-devanagari), ui-sans-serif, system-ui, -apple-system,
+    var(--font-hanken), var(--font-devanagari), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", sans-serif;
   --font-hand: var(--font-caveat), "Segoe Script", cursive;
 
@@ -75,13 +89,21 @@
     @media (prefers-color-scheme: dark) {
       color-scheme: dark;
 
+      --color-action: #c8955c;
+      --color-action-dark: #d9a970;
+      --color-on-action: #1a1208;
+
+      --color-blueprint-ground: #0c1b2f;
+      --color-blueprint-fine: rgb(255 255 255 / 0.025);
+      --color-blueprint-major: rgb(255 255 255 / 0.045);
+
       --color-surface: #0c1b2f;
       --color-surface-raised: #13273f;
 
       --color-ink: #e8f1f8;
       --color-ink-soft: #c6d8e8;
       --color-body: #a6bbd0;
-      --color-body-soft: #7d93aa;
+      --color-body-soft: #879cb2;
 
       /* #078CC8 is too dark to read on a dark ground; lift it and let the
          hover state go lighter rather than darker. */
@@ -106,13 +128,21 @@
   :root[data-theme="dark"] {
     color-scheme: dark;
 
+    --color-action: #c8955c;
+    --color-action-dark: #d9a970;
+    --color-on-action: #1a1208;
+
+    --color-blueprint-ground: #0c1b2f;
+    --color-blueprint-fine: rgb(255 255 255 / 0.025);
+    --color-blueprint-major: rgb(255 255 255 / 0.045);
+
     --color-surface: #0c1b2f;
     --color-surface-raised: #13273f;
 
     --color-ink: #e8f1f8;
     --color-ink-soft: #c6d8e8;
     --color-body: #a6bbd0;
-    --color-body-soft: #7d93aa;
+    --color-body-soft: #879cb2;
 
     --color-brand: #3fa9dd;
     --color-brand-dark: #63bee9;
@@ -157,9 +187,9 @@
   --color-ink: #102b4e;
   --color-ink-soft: #1d3a61;
   --color-body: #42566f;
-  --color-body-soft: #6b7d94;
-  --color-brand: #078cc8;
-  --color-brand-dark: #0672a3;
+  --color-body-soft: #5a6c83;
+  --color-brand: #0672a3;
+  --color-brand-dark: #055a82;
   --color-brand-soft: #7cc9e8;
   --color-on-brand: #ffffff;
   --color-wash: #f3fafe;
@@ -199,6 +229,20 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  /* One net under every component: hover fades, panel slides, the coverflow
+     and any keyframe collapse to an instant change. Components that need a
+     different reduced path (the logo animations swap to a static mark) already
+     hide their motion layer, so shortening durations here cannot strand them
+     mid-sequence. Delays are left alone so staggered content still lands in
+     order. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
   }
 }
 
@@ -314,4 +358,106 @@ body {
   textarea {
     cursor: text;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Signed-in ground. The app side of the product (My Bathrooms, onboarding, the
+   planner) sits on a quiet stone surface with a faint blueprint grid — the
+   brand's "from blueprint to life" idea, at a strength text never competes with.
+--------------------------------------------------------------------------- */
+@utility bg-blueprint {
+  background-color: var(--color-blueprint-ground);
+  background-image:
+    linear-gradient(var(--color-blueprint-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-blueprint-major) 1px, transparent 1px),
+    linear-gradient(var(--color-blueprint-fine) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-blueprint-fine) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+}
+
+/* ---------------------------------------------------------------------------
+   Headlines. Page and section titles (h1, h2) set in Marcellus — Roman
+   inscriptional capitals, stone and architecture — against Hanken Grotesk for
+   everything people read and operate. Marcellus ships one weight, so weight
+   synthesis is off: a bold utility on a heading never produces a faux bold.
+   Devanagari falls through to Noto Sans Devanagari. Applied everywhere —
+   landing, sign-in and every signed-in page — so the product reads as one.
+--------------------------------------------------------------------------- */
+@layer base {
+  h1,
+  h2 {
+    font-family: var(--font-marcellus), var(--font-devanagari), var(--font-hanken), serif;
+    font-synthesis-weight: none;
+    letter-spacing: -0.01em;
+  }
+
+}
+
+/* ---------------------------------------------------------------------------
+   Signed-in app theme. After login nothing is blue except the logo (which
+   carries its own fixed colours): brand accents become brass, and the bluish
+   greys and navy ink become neutral stone and charcoal. Applied to the planner,
+   My Bathrooms and onboarding via `.app-theme`. Tokens only — every component
+   that reads them follows.
+--------------------------------------------------------------------------- */
+.app-theme {
+  /* Re-resolve inherited text colour inside the theme; body's was computed
+     from the site palette before these tokens applied. */
+  color: var(--color-body);
+  --color-brand: var(--color-action);
+  --color-brand-dark: var(--color-action-dark);
+  --color-on-brand: var(--color-on-action);
+  --color-brand-soft: color-mix(in srgb, var(--color-action) 40%, #ffffff);
+
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-ink: #1d2024;
+  --color-ink-soft: #2e3237;
+  --color-body: #4e545a;
+  --color-body-soft: #62686e;
+  --color-wash: #f3f3f2;
+  --color-wash-deep: #e9e9e7;
+  --color-hairline: #e3e3e1;
+  --color-field: #e6e6e4;
+
+  --color-blueprint-ground: #efefed;
+  --color-blueprint-fine: rgb(40 36 30 / 0.045);
+  --color-blueprint-major: rgb(40 36 30 / 0.075);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .app-theme {
+    --color-brand-soft: color-mix(in srgb, var(--color-action) 45%, #121416);
+    --color-surface: #121416;
+    --color-surface-raised: #1b1e21;
+    --color-ink: #eceff1;
+    --color-ink-soft: #d0d4d7;
+    --color-body: #b4b9bd;
+    --color-body-soft: #989ea3;
+    --color-wash: #1f2225;
+    --color-wash-deep: #272b2f;
+    --color-hairline: #2d3135;
+    --color-field: #353a3f;
+    --color-blueprint-ground: #121416;
+    --color-blueprint-fine: rgb(255 255 255 / 0.025);
+    --color-blueprint-major: rgb(255 255 255 / 0.045);
+  }
+}
+
+:root[data-theme="dark"] .app-theme {
+  --color-brand-soft: color-mix(in srgb, var(--color-action) 45%, #121416);
+  --color-surface: #121416;
+  --color-surface-raised: #1b1e21;
+  --color-ink: #eceff1;
+  --color-ink-soft: #d0d4d7;
+  --color-body: #b4b9bd;
+  --color-body-soft: #989ea3;
+  --color-wash: #1f2225;
+  --color-wash-deep: #272b2f;
+  --color-hairline: #2d3135;
+  --color-field: #353a3f;
+  --color-blueprint-ground: #121416;
+  --color-blueprint-fine: rgb(255 255 255 / 0.025);
+  --color-blueprint-major: rgb(255 255 255 / 0.045);
 }

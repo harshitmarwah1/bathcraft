@@ -42,10 +42,10 @@ export default function StyleExplorer() {
 
   return (
     <Reveal id="styles" as="section">
-      <h2 className="text-[21px] font-bold tracking-[-0.01em] text-ink">
+      <h2 className="text-[26px] font-bold tracking-[-0.02em] text-ink lg:text-[30px]">
         {t("Explore styles for every home")}
       </h2>
-      <p className="mt-2 max-w-md text-[13.5px] leading-relaxed text-body">
+      <p className="mt-2 max-w-md text-[15px] leading-relaxed text-body lg:text-[16px]">
         {t("From modern to traditional, we have ideas for every taste and budget.")}
       </p>
 
@@ -100,7 +100,7 @@ export default function StyleExplorer() {
                   </span>
                   <span
                     className={[
-                      "mt-2 block text-center text-[12.5px] font-semibold transition-colors duration-300",
+                      "mt-2 block text-center text-[14px] font-semibold transition-colors duration-300",
                       isActive ? "text-ink" : "text-body-soft",
                     ].join(" ")}
                   >
@@ -114,7 +114,9 @@ export default function StyleExplorer() {
       </div>
 
       {/* Indicators. Same pill language as the hero's rail. */}
-      <div className="mt-4 flex items-center justify-center gap-2">
+      {/* Each button is a 44px hit area around a 3px pill — the pill is what
+          you see, the box is what a finger or an unsteady pointer finds. */}
+      <div className="mt-2 flex items-center justify-center">
         {STYLES.map(({ label }, i) => (
           <button
             key={label}
@@ -122,7 +124,7 @@ export default function StyleExplorer() {
             onClick={() => setActive(i)}
             aria-label={`${t("Explore")} ${t(label)} ${t("bathrooms")}`}
             aria-current={i === active ? "true" : undefined}
-            className="group flex h-6 items-center px-0.5"
+            className="group flex h-11 min-w-11 items-center justify-center px-1"
           >
             <span
               className={[

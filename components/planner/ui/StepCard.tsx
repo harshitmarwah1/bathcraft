@@ -13,7 +13,7 @@ export function StepCard({
       style={{
         background: "var(--color-surface-lowest)",
         borderRadius: 16,
-        padding: 16,
+        padding: "calc(16px * var(--pl-sp, 1))",
         boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
         border: "1px solid var(--color-card-border)",
         ...style,

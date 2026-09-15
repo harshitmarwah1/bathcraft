@@ -1,53 +1,16 @@
 "use client";
 
-import { createContext, useContext, useSyncExternalStore } from "react";
+import { createContext, useContext } from "react";
 import type { Theme } from "@/lib/planner/types";
+import { setTheme as setSiteTheme } from "@/lib/theme";
+import { useResolvedTheme } from "@/lib/useTheme";
 
-const STORAGE_KEY = "bathcraft.theme";
-
-/* ── Module-level store, read via useSyncExternalStore ──
- * The planner is scoped to a `.bc-planner` wrapper (see PlannerFrame); that
- * element carries `data-theme`, so this store only tracks the value + persists
- * it — it never touches the document root, keeping the landing's theme intact. */
-
-let current: Theme | null = null;
-const listeners = new Set<() => void>();
-
-function readInitial(): Theme {
-  if (typeof window === "undefined") return "light";
-  try {
-    const saved = window.localStorage.getItem(STORAGE_KEY) as Theme | null;
-    if (saved === "light" || saved === "dark") return saved;
-    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) return "dark";
-  } catch {
-    /* ignore */
-  }
-  return "light";
-}
-
-function getSnapshot(): Theme {
-  if (current === null) current = readInitial();
-  return current;
-}
-
-function getServerSnapshot(): Theme {
-  return "light";
-}
-
-function subscribe(cb: () => void): () => void {
-  listeners.add(cb);
-  return () => listeners.delete(cb);
-}
-
-function setThemeValue(theme: Theme) {
-  current = theme;
-  try {
-    window.localStorage.setItem(STORAGE_KEY, theme);
-  } catch {
-    /* ignore */
-  }
-  listeners.forEach((cb) => cb());
-}
+/*
+ * The planner follows the site's single theme (lib/theme.ts): same storage key,
+ * same root attribute, same "system" default. It used to keep its own copy,
+ * which only wrote storage and never the root attribute, so the site tokens the
+ * planner now reads would not repaint when it was toggled here.
+ */
 
 interface ThemeContextValue {
   theme: Theme;
@@ -58,11 +21,11 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const theme = useResolvedTheme();
   const value: ThemeContextValue = {
     theme,
-    setTheme: setThemeValue,
-    toggleTheme: () => setThemeValue(theme === "dark" ? "light" : "dark"),
+    setTheme: (next) => setSiteTheme(next),
+    toggleTheme: () => setSiteTheme(theme === "dark" ? "light" : "dark"),
   };
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

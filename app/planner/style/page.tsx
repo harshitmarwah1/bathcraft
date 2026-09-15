@@ -17,6 +17,7 @@ export default function StyleStepPage() {
   return (
     <WizardShell
       subtitle={t.appSub2}
+      progress={<ProgressBar badge={t.step2Badge} step={2} total={6} icon="palette" />}
       footer={
         <StepFooterCta
           label={t.s2CtaText}
@@ -28,16 +29,13 @@ export default function StyleStepPage() {
         />
       }
     >
-      <ProgressBar badge={t.step2Badge} step={2} total={6} icon="palette" />
       {ready ? (
-        <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: 16 }}>
+        <div className="pl-sections">
           <StyleSection />
           <BudgetSection />
         </div>
       ) : (
-        <div style={{ padding: "40px 16px", textAlign: "center", color: "var(--color-on-surface-variant)", fontSize: 13 }}>
-          Loading…
-        </div>
+        <div className="pl-loading">Loading…</div>
       )}
     </WizardShell>
   );

@@ -1,0 +1,299 @@
+/* ---------------------------------------------------------------------------
+   "From blueprint to life" — icon animation timeline (15s).
+
+   Every duration and delay is calc(var(--d) * Nms). `--d` is the single speed
+   knob; PLAY_MS in the component reads it back, so keep it a plain number.
+
+     0.0 – 0.5s   empty white canvas
+     0.5 – 2.4s   guide marks: registration, corners, extension lines
+     1.3 – 4.2s   blueprint: overlapping squares, then interior geometry
+     3.6 – 6.2s   structure: navy frame, then cyan frame, in real ink
+     5.8 – 9.4s   connection: diagonals → drop → faucet → plumbing; ink saturates
+     8.8 – 10.8s  blueprint fades; icon locks 97% → 100%
+    10.6 – 13.9s  one droplet forms, falls, one ripple
+    13.9 – 15.0s  the original icon, held
+
+   Only transform, opacity and stroke-dashoffset animate.
+--------------------------------------------------------------------------- */
+
+.stage {
+  --d: 1;
+  --mi-slate: #4a5c72;
+  --mi-blue: #038fc2;
+  --mi-guide: #b8d9ee;
+
+  /* Slow, even strokes: quick to start, long gentle arrival. */
+  --draw: cubic-bezier(0.45, 0.05, 0.25, 1);
+  /* Lock-in: decelerates to rest, never overshoots. */
+  --lock: cubic-bezier(0.33, 0, 0.2, 1);
+  --gravity: cubic-bezier(0.5, 0, 0.9, 0.5);
+  --spread: cubic-bezier(0.2, 0.6, 0.35, 1);
+
+  position: relative;
+  width: 100%;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  aspect-ratio: 437 / 440;
+  overflow: visible;
+}
+
+/* --- masks & line defaults ----------------------------------------------- */
+
+.maskInk path {
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.guides path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Round caps still paint a dot at dashoffset 1, so a stroke waiting for its
+   delay would show as a speck. Hidden until its own draw begins. */
+.maskInk path,
+.extensions path {
+  opacity: 0;
+}
+
+@keyframes mi-draw {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  2% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes mi-in {
+  to { opacity: 1; }
+}
+
+/* --- SHOT 1: guide marks ------------------------------------------------- */
+
+.guides {
+  opacity: 0;
+}
+
+.guides path {
+  stroke: var(--mi-guide);
+  stroke-width: 1;
+}
+
+.registration,
+.corners,
+.dims {
+  opacity: 0;
+}
+
+.extensions path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  stroke-opacity: 0.7;
+}
+
+.dims path {
+  stroke-opacity: 0.8;
+}
+
+.diagGuide {
+  stroke-dasharray: 3 5;
+  stroke-opacity: 0.55;
+}
+
+/* Envelope: arrives faintly, holds while construction happens, then leaves. */
+@keyframes mi-guides {
+  0% { opacity: 0; }
+  14% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* --- SHOT 2: blueprint --------------------------------------------------- */
+
+/* The lines are the icon's traced outline, pre-rendered as PNGs by
+   scripts/gen-logo-blueprint.mjs; only their reveal masks animate. */
+.blueprint {
+  opacity: 1;
+}
+
+@keyframes mi-fade-out {
+  to { opacity: 0; }
+}
+
+/* --- SHOTS 3–5: ink ------------------------------------------------------- */
+
+.mark {
+  transform-box: view-box;
+  /* The icon's own centre, in viewBox units offset by the canvas origin. */
+  transform-origin: 218.5px 220px;
+  transform: scale(0.97);
+}
+
+@keyframes mi-lock {
+  to { transform: scale(1); }
+}
+
+/* Ink starts as a pale wash over the blueprint and deepens to full brand
+   colour. Opacity over white, so the hue itself is never altered. */
+.ink {
+  opacity: 0.42;
+}
+
+@keyframes mi-saturate {
+  to { opacity: 1; }
+}
+
+.settledIcon {
+  opacity: 0;
+}
+
+/* --- SHOT 6: water ------------------------------------------------------- */
+
+.dropletForm {
+  transform-box: fill-box;
+  /* Swells from the outlet, as a real drop gathers before it lets go. */
+  transform-origin: 50% 0%;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.dropletFall {
+  transform-box: view-box;
+}
+
+@keyframes mi-droplet-form {
+  0% { opacity: 0; transform: scale(0.1, 0.1); }
+  25% { opacity: 1; }
+  70% { opacity: 1; transform: scale(0.92, 0.96); }
+  100% { opacity: 1; transform: scale(0.94, 1.12); }
+}
+
+/* Gravity: slow off the lip, accelerating. Stretches slightly as it falls and
+   is absorbed at the surface — no splash. */
+@keyframes mi-droplet-fall {
+  0% { transform: translateY(0); opacity: 1; }
+  92% { opacity: 1; }
+  100% { transform: translateY(140px); opacity: 0; }
+}
+
+.rippleA,
+.rippleB {
+  fill: none;
+  stroke: var(--mi-blue);
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0.06);
+}
+
+.rippleA { stroke-width: 1.4; }
+.rippleB { stroke-width: 1; }
+
+/* 0% must be transparent: fill-mode `both` holds it through the delay. */
+@keyframes mi-ripple {
+  0% { opacity: 0; transform: scale(0.06); }
+  12% { opacity: 0.6; }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes mi-ripple-soft {
+  0% { opacity: 0; transform: scale(0.06); }
+  14% { opacity: 0.32; }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+/* =========================================================================
+   The sequence. Applied once .run lands on the stage.
+   ========================================================================= */
+
+/* SHOT 1 */
+.run .guides { animation: mi-guides calc(var(--d) * 9800ms) linear calc(var(--d) * 500ms) both; }
+.run .registration { animation: mi-in calc(var(--d) * 900ms) ease-out calc(var(--d) * 600ms) both; }
+.run .corners { animation: mi-in calc(var(--d) * 1100ms) ease-out calc(var(--d) * 900ms) both; }
+.run .extTop { animation: mi-draw calc(var(--d) * 1500ms) var(--draw) calc(var(--d) * 1000ms) both; }
+.run .extLeft { animation: mi-draw calc(var(--d) * 1500ms) var(--draw) calc(var(--d) * 1150ms) both; }
+.run .extBottom { animation: mi-draw calc(var(--d) * 1500ms) var(--draw) calc(var(--d) * 1300ms) both; }
+.run .extRight { animation: mi-draw calc(var(--d) * 1500ms) var(--draw) calc(var(--d) * 1450ms) both; }
+.run .extBlueTop { animation: mi-draw calc(var(--d) * 1400ms) var(--draw) calc(var(--d) * 1900ms) both; }
+.run .extBlueLeft { animation: mi-draw calc(var(--d) * 1400ms) var(--draw) calc(var(--d) * 2050ms) both; }
+.run .dims { animation: mi-in calc(var(--d) * 1200ms) ease-out calc(var(--d) * 1700ms) both; }
+
+/* SHOT 2 — squares first, drawn like a pen round the page, then the interior. */
+.run .bpFrameSlate { animation: mi-draw calc(var(--d) * 1900ms) var(--draw) calc(var(--d) * 1300ms) both; }
+.run .bpFrameBlue { animation: mi-draw calc(var(--d) * 1800ms) var(--draw) calc(var(--d) * 2000ms) both; }
+.run .bpDiagA { animation: mi-draw calc(var(--d) * 900ms) var(--draw) calc(var(--d) * 2700ms) both; }
+.run .bpDiagBlue { animation: mi-draw calc(var(--d) * 700ms) var(--draw) calc(var(--d) * 2950ms) both; }
+.run .bpDiagB { animation: mi-draw calc(var(--d) * 900ms) var(--draw) calc(var(--d) * 3050ms) both; }
+.run .bpDropBowl { animation: mi-draw calc(var(--d) * 1200ms) var(--draw) calc(var(--d) * 3100ms) both; }
+.run .bpSpout { animation: mi-draw calc(var(--d) * 900ms) var(--draw) calc(var(--d) * 3300ms) both; }
+.run .bpRiser { animation: mi-draw calc(var(--d) * 700ms) var(--draw) calc(var(--d) * 3450ms) both; }
+.run .bpBarA { animation: mi-draw calc(var(--d) * 800ms) var(--draw) calc(var(--d) * 3550ms) both; }
+.run .bpBarB { animation: mi-draw calc(var(--d) * 700ms) var(--draw) calc(var(--d) * 3650ms) both; }
+.run .bpSupply { animation: mi-draw calc(var(--d) * 700ms) var(--draw) calc(var(--d) * 3700ms) both; }
+.run .bpDropCrescent { animation: mi-draw calc(var(--d) * 500ms) var(--draw) calc(var(--d) * 3700ms) both; }
+.run .bpFaucetCrescent { animation: mi-draw calc(var(--d) * 500ms) var(--draw) calc(var(--d) * 3750ms) both; }
+.run .bpSpoutInner { animation: mi-draw calc(var(--d) * 500ms) var(--draw) calc(var(--d) * 3700ms) both; }
+.run .bpLegLink { animation: mi-draw calc(var(--d) * 400ms) var(--draw) calc(var(--d) * 3900ms) both; }
+.run .bpBarMid { animation: mi-draw calc(var(--d) * 450ms) var(--draw) calc(var(--d) * 3900ms) both; }
+.run .bpBarLow { animation: mi-draw calc(var(--d) * 500ms) var(--draw) calc(var(--d) * 3950ms) both; }
+.run .bpCorner { animation: mi-draw calc(var(--d) * 400ms) var(--draw) calc(var(--d) * 4000ms) both; }
+
+/* SHOT 3 — the blueprint becomes the logo: navy structure, then the cyan frame. */
+.run .inkFrameSlate { animation: mi-draw calc(var(--d) * 1900ms) var(--draw) calc(var(--d) * 3600ms) both; }
+.run .inkFrameBlue { animation: mi-draw calc(var(--d) * 1800ms) var(--draw) calc(var(--d) * 4400ms) both; }
+
+/* SHOT 4 — diagonals → water drop → faucet → plumbing → connecting geometry. */
+.run .inkDiagA { animation: mi-draw calc(var(--d) * 900ms) var(--draw) calc(var(--d) * 5800ms) both; }
+.run .inkDiagBlue { animation: mi-draw calc(var(--d) * 700ms) var(--draw) calc(var(--d) * 6150ms) both; }
+.run .inkDiagB { animation: mi-draw calc(var(--d) * 900ms) var(--draw) calc(var(--d) * 6250ms) both; }
+.run .inkDropBowl { animation: mi-draw calc(var(--d) * 1300ms) var(--draw) calc(var(--d) * 6600ms) both; }
+.run .inkDropCrescent { animation: mi-draw calc(var(--d) * 600ms) var(--draw) calc(var(--d) * 7500ms) both; }
+.run .inkFaucetCrescent { animation: mi-draw calc(var(--d) * 600ms) var(--draw) calc(var(--d) * 7500ms) both; }
+.run .inkSpout { animation: mi-draw calc(var(--d) * 1000ms) var(--draw) calc(var(--d) * 7600ms) both; }
+.run .inkSpoutInner { animation: mi-draw calc(var(--d) * 600ms) var(--draw) calc(var(--d) * 8000ms) both; }
+.run .inkRiser { animation: mi-draw calc(var(--d) * 800ms) var(--draw) calc(var(--d) * 8050ms) both; }
+.run .inkBarA { animation: mi-draw calc(var(--d) * 800ms) var(--draw) calc(var(--d) * 8250ms) both; }
+.run .inkBarB { animation: mi-draw calc(var(--d) * 700ms) var(--draw) calc(var(--d) * 8450ms) both; }
+.run .inkLegLink { animation: mi-draw calc(var(--d) * 400ms) var(--draw) calc(var(--d) * 8750ms) both; }
+.run .inkSupply { animation: mi-draw calc(var(--d) * 800ms) var(--draw) calc(var(--d) * 8600ms) both; }
+.run .inkBarMid { animation: mi-draw calc(var(--d) * 500ms) var(--draw) calc(var(--d) * 8800ms) both; }
+.run .inkBarLow { animation: mi-draw calc(var(--d) * 550ms) var(--draw) calc(var(--d) * 8850ms) both; }
+.run .inkCorner { animation: mi-draw calc(var(--d) * 400ms) var(--draw) calc(var(--d) * 9000ms) both; }
+
+.run .ink { animation: mi-saturate calc(var(--d) * 3600ms) ease-in-out calc(var(--d) * 5800ms) both; }
+
+/* SHOT 5 — blueprint leaves, the original raster settles in underneath, lock. */
+.run .blueprint { animation: mi-fade-out calc(var(--d) * 1900ms) ease-in-out calc(var(--d) * 8800ms) both; }
+.run .settledIcon { animation: mi-in calc(var(--d) * 700ms) ease-out calc(var(--d) * 9400ms) both; }
+.run .mark { animation: mi-lock calc(var(--d) * 1500ms) var(--lock) calc(var(--d) * 9300ms) both; }
+
+/* SHOT 6 — one drop, one ripple (with a fainter echo of the same ring). */
+.run .dropletForm { animation: mi-droplet-form calc(var(--d) * 1100ms) ease-in-out calc(var(--d) * 10600ms) both; }
+.run .dropletFall { animation: mi-droplet-fall calc(var(--d) * 700ms) var(--gravity) calc(var(--d) * 11700ms) both; }
+.run .rippleA { animation: mi-ripple calc(var(--d) * 1900ms) var(--spread) calc(var(--d) * 12350ms) both; }
+.run .rippleB { animation: mi-ripple-soft calc(var(--d) * 2100ms) var(--spread) calc(var(--d) * 12600ms) both; }
+
+/* SHOT 7 — nothing animates. The original icon holds until 15s. */
+
+/* =========================================================================
+   Reduced motion: no drawing, no water. The finished icon fades in.
+   ========================================================================= */
+
+.reducedIcon {
+  display: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion { display: none; }
+  .reducedIcon { display: block; }
+  .run .reducedIcon { animation: mi-in 240ms linear both; }
+}

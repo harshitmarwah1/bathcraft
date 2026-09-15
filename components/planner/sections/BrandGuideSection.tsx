@@ -23,10 +23,10 @@ export function BrandGuideSection() {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <MaterialIcon name="verified" size={20} color="var(--color-primary-accent)" />
         <div>
-          <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+          <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
             {t.brandGuideTitle}
           </h2>
-          <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.brandGuideSub}</p>
+          <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.brandGuideSub}</p>
         </div>
       </div>
 
@@ -37,13 +37,13 @@ export function BrandGuideSection() {
         return (
           <div key={band} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.4px", textTransform: "uppercase", color: "var(--color-on-surface-variant)" }}>
+              <span style={{ fontSize: "calc(11px * var(--pl-fs, 1))", fontWeight: 800, letterSpacing: "0.4px", textTransform: "uppercase", color: "var(--color-on-surface-variant)" }}>
                 {bandLabel[band]}
               </span>
               {isRec && (
                 <span
                   style={{
-                    fontSize: 10,
+                    fontSize: "calc(10px * var(--pl-fs, 1))",
                     fontWeight: 700,
                     padding: "2px 8px",
                     borderRadius: 999,
@@ -70,14 +70,14 @@ export function BrandGuideSection() {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                    <span style={{ fontWeight: 800, fontSize: 13, color: "var(--color-on-surface)", letterSpacing: "0.2px" }}>
+                    <span style={{ fontWeight: 800, fontSize: "calc(13px * var(--pl-fs, 1))", color: "var(--color-on-surface)", letterSpacing: "0.2px" }}>
                       {b.name}
                     </span>
-                    <span style={{ fontSize: 10, color: "var(--color-primary-accent)", fontWeight: 600, textAlign: "right" }}>
+                    <span style={{ fontSize: "calc(10px * var(--pl-fs, 1))", color: "var(--color-primary-accent)", fontWeight: 600, textAlign: "right" }}>
                       {b.categories.join(" · ")}
                     </span>
                   </div>
-                  <span style={{ fontSize: 11, color: "var(--color-on-surface-variant)", lineHeight: 1.35 }}>{b.note}</span>
+                  <span style={{ fontSize: "calc(11px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)", lineHeight: 1.35 }}>{b.note}</span>
                 </div>
               ))}
             </div>

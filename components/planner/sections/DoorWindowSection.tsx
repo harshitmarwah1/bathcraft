@@ -28,10 +28,10 @@ export function DoorWindowSection() {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <MaterialIcon name="sensor_door" size={20} color="var(--color-primary-accent)" />
         <div>
-          <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+          <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
             {t.doorWindowTitle}
           </h2>
-          <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>
+          <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>
             {t.doorWindowSub}
           </p>
         </div>
@@ -100,7 +100,7 @@ function OpeningRow({
         >
           <MaterialIcon name={icon} size={18} />
         </div>
-        <span style={{ fontWeight: 700, fontSize: 12, color: "var(--color-on-surface)" }}>{label}</span>
+        <span style={{ fontWeight: 700, fontSize: "calc(12px * var(--pl-fs, 1))", color: "var(--color-on-surface)" }}>{label}</span>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
@@ -113,7 +113,7 @@ function OpeningRow({
               style={{
                 padding: "6px 4px",
                 borderRadius: 8,
-                fontSize: 11,
+                fontSize: "calc(11px * var(--pl-fs, 1))",
                 fontWeight: active ? 700 : 600,
                 background: active ? "var(--color-primary)" : "var(--color-surface-lowest)",
                 color: active ? "var(--color-on-primary)" : "var(--color-on-surface)",

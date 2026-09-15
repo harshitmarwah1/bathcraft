@@ -60,18 +60,18 @@ export default function Navbar() {
     >
       <nav
         aria-label="Main"
-        className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-6 px-5 sm:px-6"
+        className="mx-auto flex h-[72px] max-w-[1280px] 2xl:max-w-[1440px] items-center gap-6 px-5 sm:px-6"
       >
-        <Link href="#top" aria-label={t("BathCraft — home")} className="shrink-0">
+        <Link href="#top" aria-label={t("Milagro Universe — home")} className="shrink-0">
           <BathCraftLogoAnimation variant="navbar" />
         </Link>
 
-        <ul className="mx-auto hidden items-center gap-7 lg:flex">
+        <ul className="mx-auto hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map(({ label, href }) => (
             <li key={label}>
               <Link
                 href={href}
-                className="text-[13.5px] font-medium text-body transition-colors hover:text-brand"
+                className="text-[15.5px] font-medium text-body transition-colors hover:text-brand"
               >
                 {t(label)}
               </Link>
@@ -83,9 +83,9 @@ export default function Navbar() {
           <button
             type="button"
             aria-label={t("Search")}
-            className="hidden h-9 w-9 items-center justify-center rounded-full text-body transition-colors hover:bg-wash hover:text-brand sm:inline-flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full text-body transition-colors hover:bg-wash hover:text-brand sm:inline-flex"
           >
-            <Icon name="search" size={18} />
+            <Icon name="search" size={20} />
           </button>
 
           <LanguageToggle />
@@ -95,7 +95,7 @@ export default function Navbar() {
           {/* Hold the slot until the stored profile has been read, so the
               signed-out pair never flashes in front of a signed-in user. */}
           {!ready ? (
-            <span className="hidden h-9 w-[168px] sm:block" aria-hidden="true" />
+            <span className="hidden h-10 w-[190px] sm:block" aria-hidden="true" />
           ) : user ? (
             <UserMenu />
           ) : (
@@ -105,9 +105,16 @@ export default function Navbar() {
                   same layer are resolved by Tailwind's output order rather than
                   by the order they appear here — so "hidden" lost and these
                   stayed visible on phones, pushing the menu button off screen. */}
-              <Button href="/signin" variant="outline" size="sm" className="max-sm:hidden">
-                {t("Sign in")}
-              </Button>
+              {/* Sign in is an icon, like the search and theme controls beside it.
+                  The link keeps "Sign in" as its accessible name. */}
+              <Link
+                href="/signin"
+                aria-label={t("Sign in")}
+                title={t("Sign in")}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-hairline text-body transition-colors hover:border-brand hover:text-brand max-sm:hidden"
+              >
+                <Icon name="user" size={20} />
+              </Link>
               <Button
                 href={getStartedHref}
                 variant="primary"
@@ -142,13 +149,13 @@ export default function Navbar() {
           open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >
-        <ul className="mx-auto max-w-[1280px] px-5 py-4">
+        <ul className="mx-auto max-w-[1280px] 2xl:max-w-[1440px] px-5 py-4">
           {NAV_LINKS.map(({ label, href }) => (
             <li key={label}>
               <Link
                 href={href}
                 onClick={() => setOpen(false)}
-                className="block border-b border-hairline py-3 text-[15px] font-medium text-ink last:border-0"
+                className="block border-b border-hairline py-3 text-[16px] font-medium text-ink last:border-0"
               >
                 {t(label)}
               </Link>
@@ -161,9 +168,14 @@ export default function Navbar() {
               </Button>
             ) : (
               <>
-                <Button href="/signin" variant="outline" size="md" className="flex-1">
-                  {t("Sign in")}
-                </Button>
+                <Link
+                  href="/signin"
+                  aria-label={t("Sign in")}
+                  title={t("Sign in")}
+                  className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-hairline text-body transition-colors hover:border-brand hover:text-brand"
+                >
+                  <Icon name="user" size={22} />
+                </Link>
                 <Button href={getStartedHref} variant="primary" size="md" className="flex-1">
                   {t("Get Started")}
                 </Button>

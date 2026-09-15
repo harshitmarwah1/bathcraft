@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/i18n/useT";
 import { useResolvedTheme } from "@/lib/useTheme";
+import BrandLockup, { WORDMARK, BRAND_SLATE, BRAND_BLUE, Wordmark } from "@/components/brand/BrandLockup";
 import styles from "./BathCraftLogoAnimation.module.css";
 
 /**
- * "From blueprint to BathCraft" — the hero logo animation.
+ * "From blueprint to Milagro Universe" — the hero logo animation.
  *
  * The supplied logo is a flat raster, so nothing here draws the mark. Instead
  * `scripts/gen-logo-layers.js` slices the original PNG into four disjoint,
@@ -64,18 +65,8 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
    * lifting lightness without touching hue, to ~7:1.
    */
   const icon = (name: string) => `/logo/${name}${dark ? "-dark" : ""}.png`;
-  /**
-   * Light mode uses the *-alpha* set, not the supplied originals. Those are ink
-   * on an OPAQUE white rectangle, which only disappears while whatever sits
-   * behind them is also pure white — and the navbar is not: once scrolled it is
-   * bg-surface/90 with a backdrop blur, so the bar picks up the hero through it
-   * while the logo's own white stays at 100% and reads as a box.
-   * scripts/gen-logo-alpha.mjs rebuilds the same colours with a real alpha
-   * channel; recompositing it over white is byte-identical to the original.
-   */
-  const lockupSrc = dark ? "/logo/logo-white.png" : "/logo/logo-full-alpha.png";
-  const bathSrc = dark ? "/logo/wordmark-bath-white.png" : "/logo/wordmark-bath-alpha.png";
-  const craftSrc = dark ? "/logo/wordmark-craft-white.png" : "/logo/wordmark-craft-alpha.png";
+  /** The wordmark is live text (see components/brand/BrandLockup), white on the dark theme. */
+  const wordTone = dark ? "white" : "brand";
   const stageRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -159,14 +150,7 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
             __html: "[data-bc-anim]{display:none!important}",
           }}
         />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/logo/logo-full-alpha.png"
-          alt="BathCraft"
-          width={846}
-          height={272}
-          style={{ width: "100%", maxWidth: isNavbar ? "150px" : "30rem" }}
-        />
+        <BrandLockup tone={wordTone} className="block h-auto w-full" />
       </noscript>
 
       <div
@@ -181,7 +165,7 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
           className={styles.svg}
           viewBox="0 0 846 272"
           role="img"
-          aria-label="BathCraft"
+          aria-label="Milagro Universe"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
@@ -272,14 +256,10 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
           </defs>
 
           {/* Reduced-motion path: the finished lockup, faded in. Nothing draws. */}
-          <image
-            className={styles.reducedLogo}
-            href={lockupSrc}
-            x="0"
-            y="0"
-            width="846"
-            height="272"
-          />
+          <g className={styles.reducedLogo}>
+            <image href={icon("icon-icon")} x="0" y="0" width="297" height="272" />
+            <Wordmark tone={wordTone} />
+          </g>
 
           <g className={styles.motion}>
             <rect
@@ -384,12 +364,19 @@ export default function BathCraftLogoAnimation({ variant = "inline" }: Props) {
               />
             </g>
 
-            {/* Two coordinated halves, cut at the blank column between "Bath"
-                and "Craft". Each slice runs full height to the canvas edge so
-                icon + bath + craft tile the lockup with no seam. */}
-            <g className={styles.wordmark}>
-              <image className={styles.bath} href={bathSrc} x="297" y="0" width="277" height="272" />
-              <image className={styles.craft} href={craftSrc} x="574" y="0" width="272" height="272" />
+            {/* Two coordinated lines — "Milagro" then "Universe" — never per-letter. */}
+            <g
+              className={styles.wordmark}
+              fontSize={WORDMARK.fontSize}
+              letterSpacing={WORDMARK.letterSpacing}
+              style={WORDMARK.style}
+            >
+              <text className={styles.bath} x={WORDMARK.x} y={WORDMARK.line1.y} fill={dark ? "#fff" : BRAND_SLATE}>
+                {WORDMARK.line1.text}
+              </text>
+              <text className={styles.craft} x={WORDMARK.x} y={WORDMARK.line2.y} fill={dark ? "#fff" : BRAND_BLUE}>
+                {WORDMARK.line2.text}
+              </text>
             </g>
           </g>
         </svg>

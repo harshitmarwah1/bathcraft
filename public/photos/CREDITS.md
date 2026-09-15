@@ -1,6 +1,6 @@
 # Photography
 
-Eleven photographs, all from **Unsplash**, downloaded and committed here rather
+Fifteen photographs, all from **Unsplash**, downloaded and committed here rather
 than hotlinked so the page has no third-party runtime dependency.
 
 **Licence:** the [Unsplash License](https://unsplash.com/license) — free to use
@@ -26,8 +26,14 @@ minimal clutter — not because they depict BathCraft projects. They do not.
 | `testimonial-1.jpg` | `1765745518752-68a289300789` | Testimonial — Priya S. |
 | `testimonial-2.jpg` | `1638799869566-b17fa794c4de` | Testimonial — Rahul M. |
 | `testimonial-3.jpg` | `1765745518673-b562b7304a53` | Testimonial — Ananya K. |
+| `inspo-modern.jpg` | `1754522711595-84428937b07a` (page `vYqFeeM2XPk`, Ela De Pure) | Planner: style inspiration — Modern |
+| `inspo-luxury.jpg` | `1754788358645-d6e6cca12e25` (page `GqlosWVi5zo`, Ela De Pure) | Planner: style inspiration — Luxury |
+| `inspo-traditional.jpg` | `1764551164990-298160bcea48` (page `2zKDLJb8ZiI`, Tsuyoshi Kozu) | Planner: style inspiration — Traditional |
+| `inspo-minimal.jpg` | `1771929662486-f793e08f0f16` (page `Ies-rhvusTs`, Smart Renovations) | Planner: style inspiration — Minimal |
 
-Source URL shape: `https://images.unsplash.com/photo-<id>`
+Source URL shape: `https://images.unsplash.com/photo-<id>`. The four `inspo-*` files were
+downloaded through each photo page's free download link (Unsplash+ photos, which
+are not free, have none) and resized to 1200px wide.
 
 The testimonial images are stock interiors, **not** photographs of the people
 quoted — who are themselves placeholders. See the warning at the top of

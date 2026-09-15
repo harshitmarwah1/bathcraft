@@ -4,6 +4,7 @@
    Every duration and delay is written as calc(var(--d) * Nms). `--d` is the one
    knob, and no keyframe is ever re-authored to change pace:
 
+     navbar  0.22 (1.07s) — a header mark must be there almost at once
      inline  desktop 1     (4.85s)   mobile 0.62  (3.0s)
      splash  desktop 1.75  (8.5s)    mobile 1.1   (5.3s)   <- slow motion
 
@@ -44,21 +45,22 @@
   text-align: center;
 }
 
-/* Navbar: a logo that introduces itself once, in about two seconds, and is
-   then just a logo. No tagline, no replay control, no blueprint furniture. */
+/* Navbar: a logo that introduces itself once, in about a second, and is then
+   just a logo. No tagline, no replay control, no blueprint furniture. */
 .navbar {
-  width: 150px;
-  max-width: 150px;
+  width: 190px;
+  max-width: 190px;
   gap: 0;
 }
 
 .navbar .stage {
-  /* 0.25x speed. The sequence was authored at 0.42 (~2.0s) for the header;
-     four times that is 1.68, or ~8.1s.
+  /* 4850ms x 0.22 = ~1.07s. The header was at 1.68 (~8.1s), which left the
+     page with no logo for a second and no wordmark for five — a navbar mark
+     has to be present almost immediately.
      Still a plain number, never calc() — the component parseFloats this back
      to set its own completion timer, and calc() would resolve to a token
      stream rather than a number and silently desync it. */
-  --d: 1.68;
+  --d: 0.22;
   padding: 0;
 }
 

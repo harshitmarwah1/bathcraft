@@ -7,7 +7,8 @@ import { ProgressBar } from "@/components/planner/shell/ProgressBar";
 import { StepFooterCta } from "@/components/planner/sections/StepFooterCta";
 import { StepCard } from "@/components/planner/ui/StepCard";
 import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
-import { FloorPlanSvg } from "@/components/planner/sections/FloorPlanSvg";
+import { Plan4DViewer } from "@/components/planner/plan3d/Plan4DViewer";
+import { StyleInspiration } from "@/components/planner/sections/StyleInspiration";
 import { useI18n } from "@/lib/planner/i18n/provider";
 import { useEnsureProject } from "@/lib/planner/store/use-ensure-project";
 import { useProjectStore } from "@/lib/planner/store/project-store";
@@ -27,10 +28,12 @@ export default function PlanStepPage() {
   }, [ready]);
 
   const plan = project?.plan ?? null;
+  const loaded = ready && project && plan;
 
   return (
     <WizardShell
       subtitle={t.appSub4}
+      progress={<ProgressBar badge={t.step4Badge} step={4} total={6} icon="view_in_ar" />}
       footer={
         <StepFooterCta
           label={t.s4CtaText}
@@ -42,77 +45,74 @@ export default function PlanStepPage() {
         />
       }
     >
-      <ProgressBar badge={t.step4Badge} step={4} total={6} icon="draw" />
-      {ready && project && plan ? (
-        <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: 16 }}>
-          <StepCard style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      {loaded ? (
+        <div className="pl-sections">
+          {/* The 4D plan spans both columns; the checks and inspiration pair up below it. */}
+          <StepCard style={{ display: "flex", flexDirection: "column", gap: 12, gridColumn: "1 / -1" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <MaterialIcon name="draw" size={20} color="var(--color-primary-accent)" />
+                <MaterialIcon name="view_in_ar" size={20} color="var(--color-primary-accent)" />
                 <div>
-                  <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
-                    {t.planTitle}
+                  <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
+                    {t.plan4dTitle}
                   </h2>
-                  <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>
-                    {t.planSub}
+                  <p style={{ fontSize: "calc(12px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>
+                    {t.plan4dSub}
                   </p>
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => generatePlan()}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 4,
-                  padding: "6px 10px",
+                  height: 36,
+                  padding: "0 12px",
                   borderRadius: 999,
                   background: "var(--color-surface-low)",
                   border: "1px solid var(--color-surface-high)",
                   color: "var(--color-primary-accent)",
                   fontWeight: 700,
-                  fontSize: 11,
+                  fontSize: "calc(12px * var(--pl-fs, 1))",
                   cursor: "pointer",
                   fontFamily: "inherit",
                 }}
               >
-                <MaterialIcon name="refresh" size={14} color="var(--color-primary-accent)" />
+                <MaterialIcon name="refresh" size={15} color="var(--color-primary-accent)" />
                 {t.regenerate}
               </button>
             </div>
 
-            <FloorPlanSvg room={project.room} plan={plan} />
-
-            <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, color: "var(--color-on-surface-variant)" }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--color-primary)" }} />
-              <span>{t.planLegend}</span>
-            </div>
+            <Plan4DViewer project={project} plan={plan} />
           </StepCard>
 
           <StepCard style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <MaterialIcon name="rule" size={20} color="var(--color-primary-accent)" />
-              <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
-                {t.clearancesTitle}
-              </h2>
-            </div>
-            {plan.warnings.length === 0 ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--color-on-surface-variant)", fontSize: 12.5 }}>
-                <MaterialIcon name="check_circle" size={18} color="#16a34a" />
-                <span>{t.allClear}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <MaterialIcon name="rule" size={20} color="var(--color-primary-accent)" />
+                <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
+                  {t.clearancesTitle}
+                </h2>
               </div>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {plan.warnings.map((w, i) => (
-                  <WarningRow key={i} warning={w} />
-                ))}
-              </div>
-            )}
-          </StepCard>
+              {plan.warnings.length === 0 ? (
+                <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--color-on-surface-variant)", fontSize: "calc(13px * var(--pl-fs, 1))" }}>
+                  <MaterialIcon name="check_circle" size={18} color="#16a34a" />
+                  <span>{t.allClear}</span>
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {plan.warnings.map((w, i) => (
+                    <WarningRow key={i} warning={w} />
+                  ))}
+                </div>
+              )}
+            </StepCard>
+
+          <StyleInspiration />
         </div>
       ) : (
-        <div style={{ padding: "40px 16px", textAlign: "center", color: "var(--color-on-surface-variant)", fontSize: 13 }}>
-          Loading…
-        </div>
+        <div className="pl-loading">Loading…</div>
       )}
     </WizardShell>
   );
@@ -134,7 +134,7 @@ function WarningRow({ warning }: { warning: ClearanceWarning }) {
       }}
     >
       <MaterialIcon name={isError ? "error" : "warning"} size={18} color={color} style={{ flexShrink: 0, marginTop: 1 }} />
-      <span style={{ fontSize: 12, color: "var(--color-on-surface)", lineHeight: 1.4 }}>{warning.message}</span>
+      <span style={{ fontSize: "calc(13px * var(--pl-fs, 1))", color: "var(--color-on-surface)", lineHeight: 1.4 }}>{warning.message}</span>
     </div>
   );
 }

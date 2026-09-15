@@ -1,4 +1,5 @@
 import { MaterialIcon } from "@/components/planner/ui/MaterialIcon";
+import { splitBadge } from "./StepRail";
 
 interface ProgressBarProps {
   badge: string;
@@ -7,61 +8,35 @@ interface ProgressBarProps {
   icon?: string;
 }
 
-/** Wizard progress row: step badge + percent + fill bar. */
+/**
+ * Step heading: "Step n of 6" + the step's title as the page's h1, then the
+ * progress track. The fill animates with transform, not width, so it never
+ * triggers layout.
+ */
 export function ProgressBar({ badge, step, total, icon = "straighten" }: ProgressBarProps) {
-  const pct = Math.round((step / total) * 100);
+  const [meta, title] = splitBadge(badge);
+  const ratio = step / total;
   return (
-    <div style={{ padding: "8px 16px" }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          fontSize: 12,
-          fontWeight: 700,
-          marginBottom: 6,
-        }}
-      >
-        <span
-          style={{
-            color: "var(--color-primary-accent)",
-            textTransform: "uppercase",
-            letterSpacing: "0.5px",
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            minWidth: 0,
-          }}
-        >
-          <MaterialIcon name={icon} size={14} style={{ flexShrink: 0 }} />
-          <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{badge}</span>
-        </span>
-        <span
-          style={{ color: "var(--color-on-surface-variant)", fontWeight: 800, flexShrink: 0, marginLeft: 6 }}
-        >
-          {pct}%
-        </span>
+    <div className="pl-progress">
+      <div className="pl-progress-row">
+        <div className="pl-progress-text">
+          <p className="pl-progress-meta">
+            <MaterialIcon name={icon} size={15} />
+            {meta}
+          </p>
+          <h1 className="pl-progress-title">{title}</h1>
+        </div>
+        <span className="pl-progress-pct">{Math.round(ratio * 100)}%</span>
       </div>
       <div
-        style={{
-          width: "100%",
-          height: 6,
-          borderRadius: 999,
-          background: "var(--color-surface-high)",
-          overflow: "hidden",
-        }}
+        className="pl-progress-track"
+        role="progressbar"
+        aria-label={meta}
+        aria-valuemin={0}
+        aria-valuemax={total}
+        aria-valuenow={step}
       >
-        <div
-          style={{
-            height: "100%",
-            width: `${pct}%`,
-            borderRadius: 999,
-            background: "var(--color-primary)",
-            transition: "width 0.3s ease",
-          }}
-        />
+        <div className="pl-progress-fill" style={{ transform: `scaleX(${ratio})` }} />
       </div>
     </div>
   );

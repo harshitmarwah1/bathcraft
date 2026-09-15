@@ -2,17 +2,17 @@ import type { ReactNode } from "react";
 import Reveal from "./Reveal";
 
 /**
- * Eyebrow + heading + optional lede. The eyebrow is always uppercase, tracked
- * and brand blue; the heading is always ink navy. Centred or left, nothing else.
+ * Heading + optional lede. There is deliberately no eyebrow slot: a tracked
+ * uppercase kicker above every section is template grammar, and the landing's
+ * one kicker belongs to the hero. The heading is always ink navy. Centred or
+ * left, nothing else.
  */
 export default function SectionHeading({
-  eyebrow,
   title,
   lede,
   align = "left",
   className = "",
 }: {
-  eyebrow?: string;
   title: ReactNode;
   lede?: ReactNode;
   align?: "left" | "center";
@@ -21,15 +21,9 @@ export default function SectionHeading({
   const centred = align === "center";
   return (
     <Reveal className={[centred ? "text-center" : "", className].join(" ")}>
-      {eyebrow && (
-        <p className="mb-3 text-[11px] font-semibold tracking-[0.18em] text-brand uppercase">
-          {eyebrow}
-        </p>
-      )}
       <h2
         className={[
-          "font-bold tracking-[-0.02em] text-balance text-ink",
-          centred ? "text-[28px] sm:text-[34px]" : "text-[30px] leading-[1.15] sm:text-[38px]",
+          "font-bold text-balance text-ink text-[clamp(2.25rem,1.6rem+1.6vw,3.5rem)] leading-[1.08] tracking-[-0.03em]",
         ].join(" ")}
       >
         {title}
@@ -37,8 +31,8 @@ export default function SectionHeading({
       {lede && (
         <p
           className={[
-            "mt-3 text-[15px] leading-relaxed text-body",
-            centred ? "mx-auto max-w-xl" : "max-w-lg",
+            "mt-4 text-[16px] leading-relaxed text-body lg:text-[18px]",
+            centred ? "mx-auto max-w-2xl" : "max-w-xl",
           ].join(" ")}
         >
           {lede}

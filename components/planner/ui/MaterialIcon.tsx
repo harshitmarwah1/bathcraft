@@ -8,13 +8,14 @@ interface MaterialIconProps {
   style?: CSSProperties;
 }
 
-/** Renders a Material Symbols Outlined glyph. The font is loaded in layout.tsx. */
+/** Renders a Material Symbols Outlined glyph. The font is loaded in layout.tsx.
+ *  Scales with the planner's type multiplier so icons keep pace with text. */
 export function MaterialIcon({ name, size = 24, color, className, style }: MaterialIconProps) {
   return (
     <span
       className={`msi${className ? ` ${className}` : ""}`}
       aria-hidden="true"
-      style={{ fontSize: size, color, ...style }}
+      style={{ fontSize: `calc(${size}px * var(--pl-fs, 1))`, color, ...style }}
     >
       {name}
     </span>

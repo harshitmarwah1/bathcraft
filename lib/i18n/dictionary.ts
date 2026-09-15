@@ -7,7 +7,7 @@
  * broken token in front of a user.
  *
  * What is deliberately NOT translated:
- *   • "BathCraft" and the brand names (Jaquar, CERA, Hindware, KOHLER, GROHE) —
+ *   • "Milagro Universe" and the brand names (Jaquar, CERA, Hindware, KOHLER, GROHE) —
  *     these are trademarks and read the same in both languages.
  *   • Numerals and units in the prototype figures (10K+, 4.8/5, 8.0 ft).
  *   • Customer names in the testimonials.
@@ -124,18 +124,18 @@ export const hi: Record<string, string> = {
   "Signing in…": "साइन इन हो रहा है…",
   "Continue with Google": "Google से जारी रखें",
   "Connecting to Google…": "Google से जुड़ रहे हैं…",
-  "New to BathCraft?": "बाथक्राफ्ट पर नए हैं?",
+  "New to Milagro Universe?": "Milagro Universe पर नए हैं?",
   "Create an account": "खाता बनाएँ",
   "Show password": "पासवर्ड दिखाएँ",
   "Hide password": "पासवर्ड छिपाएँ",
   "We couldn't sign you in.": "हम आपको साइन इन नहीं कर सके।",
   "Please check your email and password and try again.":
     "कृपया अपना ईमेल और पासवर्ड जाँचें और फिर कोशिश करें।",
-  "We couldn't reach BathCraft. Check your connection and try again.":
-    "हम बाथक्राफ्ट तक नहीं पहुँच सके। अपना कनेक्शन जाँचें और फिर कोशिश करें।",
+  "We couldn't reach Milagro Universe. Check your connection and try again.":
+    "हम Milagro Universe तक नहीं पहुँच सके। अपना कनेक्शन जाँचें और फिर कोशिश करें।",
   "We couldn't sign you in with Google.": "हम आपको Google से साइन इन नहीं कर सके।",
 
-  "Create your BathCraft account": "अपना बाथक्राफ्ट खाता बनाएँ",
+  "Create your Milagro Universe account": "अपना Milagro Universe खाता बनाएँ",
   "Start planning your bathroom with clarity and confidence.":
     "स्पष्टता और आत्मविश्वास के साथ अपने बाथरूम की योजना बनाना शुरू करें।",
   "First name": "पहला नाम",
@@ -156,9 +156,9 @@ export const hi: Record<string, string> = {
   "We couldn't create your account.": "हम आपका खाता नहीं बना सके।",
   "An account with that email already exists.": "इस ईमेल से पहले से एक खाता मौजूद है।",
 
-  "Your BathCraft account is ready.": "आपका बाथक्राफ्ट खाता तैयार है।",
+  "Your Milagro Universe account is ready.": "आपका Milagro Universe खाता तैयार है।",
   "Start My First Bathroom": "मेरा पहला बाथरूम शुरू करें",
-  "Explore BathCraft": "बाथक्राफ्ट देखें",
+  "Explore Milagro Universe": "Milagro Universe देखें",
 
   "Plan better.": "बेहतर योजना बनाएँ।",
   "Build with confidence.": "आत्मविश्वास से बनाएँ।",
@@ -185,7 +185,9 @@ export const hi: Record<string, string> = {
   "Avoid renovation mistakes": "नवीनीकरण की गलतियों से बचें",
   "Create a premium bathroom": "एक प्रीमियम बाथरूम बनाएँ",
   "Continue": "आगे बढ़ें",
-  "Start Planning": "योजना शुरू करें",
+  "Start planning": "योजना शुरू करें",
+  "About you": "आपके बारे में",
+  "Next, you’ll plan": "आगे, आप योजना बनाएँगे",
   "Saving…": "सहेजा जा रहा है…",
   "Onboarding progress": "प्रक्रिया की प्रगति",
 
@@ -204,14 +206,14 @@ export const hi: Record<string, string> = {
   "New bathroom": "नया बाथरूम",
   "Pick up any plan, or start a new one.": "कोई भी प्लान जारी रखें, या नया शुरू करें।",
   "No measurements yet": "अभी कोई माप नहीं",
-  "Start with a name and a few measurements — BathCraft takes it from there.":
-    "एक नाम और कुछ माप से शुरू करें — आगे बाथक्राफ्ट सँभाल लेगा।",
+  "Start with a name and a few measurements — Milagro Universe takes it from there.":
+    "एक नाम और कुछ माप से शुरू करें — आगे Milagro Universe सँभाल लेगा।",
   "Create Your First Bathroom": "अपना पहला बाथरूम बनाएँ",
 
   /* ── errors ─────────────────────────────────────────────────────────── */
   "Try Again": "फिर कोशिश करें",
-  "This email already has a BathCraft account.":
-    "इस ईमेल से पहले से एक बाथक्राफ्ट खाता मौजूद है।",
+  "This email already has a Milagro Universe account.":
+    "इस ईमेल से पहले से एक Milagro Universe खाता मौजूद है।",
   "Google sign-in was cancelled.": "Google साइन-इन रद्द कर दिया गया।",
   "Your session has expired.": "आपका सत्र समाप्त हो गया है।",
   "Google sign-in isn't set up yet.": "Google साइन-इन अभी सेट नहीं किया गया है।",
@@ -227,8 +229,8 @@ Object.assign(hi, {
   "Your bathroom, your way": "आपका बाथरूम, आपके तरीके से",
   "A simpler way": "एक आसान तरीका",
   "to plan your bathroom": "अपने बाथरूम की योजना बनाने का",
-  "Whether you're renovating or building new, BathCraft helps you make better decisions with clear plans, real products and accurate estimates.":
-    "चाहे आप नवीनीकरण कर रहे हों या नया बना रहे हों, बाथक्राफ्ट स्पष्ट योजनाओं, असली उत्पादों और सटीक अनुमानों के साथ बेहतर निर्णय लेने में मदद करता है।",
+  "Whether you're renovating or building new, Milagro Universe helps you make better decisions with clear plans, real products and accurate estimates.":
+    "चाहे आप नवीनीकरण कर रहे हों या नया बना रहे हों, Milagro Universe स्पष्ट योजनाओं, असली उत्पादों और सटीक अनुमानों के साथ बेहतर निर्णय लेने में मदद करता है।",
   "Start Your Plan": "अपनी योजना शुरू करें",
   "Your measurements": "आपके माप",
   "Your dream": "आपका सपनों का",
@@ -252,7 +254,7 @@ Object.assign(hi, {
 });
 
 Object.assign(hi, {
-  "How BathCraft works": "बाथक्राफ्ट कैसे काम करता है",
+  "How Milagro Universe works": "Milagro Universe कैसे काम करता है",
   "Plan. Visualize. Build. In 4 simple steps.":
     "योजना। कल्पना। निर्माण। 4 आसान चरणों में।",
   "Bathroom": "बाथरूम",
@@ -264,8 +266,8 @@ Object.assign(hi, {
 
 Object.assign(hi, {
   /* auth layout + forgot password */
-  "BathCraft — home": "बाथक्राफ्ट — होम",
-  "BathCraft — back to home": "बाथक्राफ्ट — होम पर वापस",
+  "Milagro Universe — home": "Milagro Universe — होम",
+  "Milagro Universe — back to home": "Milagro Universe — होम पर वापस",
   "Plan · Visualize · Build": "योजना · कल्पना · निर्माण",
   "Save your bathroom plans, compare ideas, track materials and continue your renovation journey from anywhere.":
     "अपनी बाथरूम योजनाएँ सहेजें, विचारों की तुलना करें, सामग्री पर नज़र रखें और कहीं से भी अपना नवीनीकरण जारी रखें।",
@@ -308,7 +310,7 @@ Object.assign(hi, {
   /* hero + planner + video */
   "A warm, softly lit bathroom with a freestanding stone bath, a glass shower and a timber vanity":
     "एक गर्म, मुलायम रोशनी वाला बाथरूम जिसमें अलग खड़ा पत्थर का टब, काँच का शॉवर और लकड़ी की वैनिटी है",
-  "Watch BathCraft renovation video": "बाथक्राफ्ट नवीनीकरण वीडियो देखें",
+  "Watch Milagro Universe renovation video": "Milagro Universe नवीनीकरण वीडियो देखें",
   "Take Control of Your Bathroom Renovation":
     "अपने बाथरूम के नवीनीकरण की कमान सँभालें",
   "Close video": "वीडियो बंद करें",
@@ -336,4 +338,30 @@ Object.assign(hi, {
   "Watch Again": "फिर देखें",
   "See it. Plan it. Build it.": "देखें। योजना बनाएँ। बनाएँ।",
   "Without renovation regrets.": "बिना किसी पछतावे के।",
+
+  /* ── My Bathrooms dashboard ────────────────────────────────────────── */
+  "Budget friendly": "बजट के अनुकूल",
+  "Cost effective": "किफ़ायती",
+  "Good quality": "अच्छी गुणवत्ता",
+  "Top of the line": "सबसे बेहतरीन",
+  "Shared with contractor": "ठेकेदार के साथ साझा किया गया",
+  "Brief saved": "ब्रीफ सेव हो गया",
+  "Estimate ready": "अनुमान तैयार",
+  "4D plan ready": "4D प्लान तैयार",
+  "Measurements added": "माप जोड़े गए",
+  "Start a new bathroom": "नया बाथरूम शुरू करें",
+  "Plan a guest bath, a kids' bath or a powder room alongside this one.": "इसके साथ गेस्ट बाथ, बच्चों का बाथ या पाउडर रूम भी प्लान करें।",
+  "Finish level": "फ़िनिश स्तर",
+  "Estimate": "अनुमान",
+  "Not yet": "अभी नहीं",
+  "Measure & choose a style": "नाप लें और स्टाइल चुनें",
+  "Enter the room size, place the door and window, and pick the look you want.": "कमरे का आकार डालें, दरवाज़ा और खिड़की रखें, और अपना पसंदीदा लुक चुनें।",
+  "Open measurements": "माप खोलें",
+  "See it in 4D": "इसे 4D में देखें",
+  "Walk around your bathroom in 3D and play the build, day by day.": "अपने बाथरूम को 3D में घूमकर देखें और दिन-ब-दिन निर्माण चलाएं।",
+  "Open the 4D plan": "4D प्लान खोलें",
+  "Get the estimate & share": "अनुमान पाएं और साझा करें",
+  "Check materials and cost, then send the brief to your contractor.": "सामग्री और लागत देखें, फिर ब्रीफ अपने ठेकेदार को भेजें।",
+  "Open the brief": "ब्रीफ खोलें",
+  "Make the most of your plan": "अपने प्लान का पूरा फ़ायदा उठाएं",
 });

@@ -33,10 +33,10 @@ export function DimensionsSection() {
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <MaterialIcon name="straighten" size={20} color="var(--color-primary-accent)" />
           <div>
-            <h2 style={{ fontWeight: 700, fontSize: 14, margin: 0, color: "var(--color-on-surface)" }}>
+            <h2 style={{ fontWeight: 700, fontSize: "calc(17px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)" }}>
               {t.dimTitle}
             </h2>
-            <p style={{ fontSize: 11, margin: 0, color: "var(--color-on-surface-variant)" }}>
+            <p style={{ fontSize: "calc(11px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>
               {t.dimSub}
             </p>
           </div>
@@ -87,10 +87,10 @@ export function DimensionsSection() {
                 <MaterialIcon name={row.icon} size={18} />
               </div>
               <div style={{ minWidth: 0 }}>
-                <p style={{ fontWeight: 700, fontSize: 12, margin: 0, color: "var(--color-on-surface)", whiteSpace: "nowrap" }}>
+                <p style={{ fontWeight: 700, fontSize: "calc(12px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface)", whiteSpace: "nowrap" }}>
                   {row.label}
                 </p>
-                <p style={{ fontSize: 10, margin: 0, color: "var(--color-on-surface-variant)", whiteSpace: "nowrap" }}>
+                <p style={{ fontSize: "calc(10px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)", whiteSpace: "nowrap" }}>
                   {row.sub}
                 </p>
               </div>
@@ -98,10 +98,10 @@ export function DimensionsSection() {
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <StepBtn icon="remove" ariaLabel="Decrease" onClick={() => adjustDim(row.key, -DIM_BOUNDS[row.key].step)} />
               <div style={{ minWidth: 80, textAlign: "center" }}>
-                <span style={{ fontWeight: 700, fontSize: 12, display: "block", color: "var(--color-on-surface)" }}>
+                <span style={{ fontWeight: 700, fontSize: "calc(12px * var(--pl-fs, 1))", display: "block", color: "var(--color-on-surface)" }}>
                   {primaryDim(row.value, unit)}
                 </span>
-                <span style={{ fontSize: 10, fontWeight: 600, display: "block", color: "var(--color-primary-accent)" }}>
+                <span style={{ fontSize: "calc(10px * var(--pl-fs, 1))", fontWeight: 600, display: "block", color: "var(--color-primary-accent)" }}>
                   {secondaryDim(row.value, unit)}
                 </span>
               </div>
@@ -141,13 +141,13 @@ export function DimensionsSection() {
           </div>
           <div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 6, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: "var(--color-primary-accent)", textTransform: "uppercase", letterSpacing: "0.4px" }}>
+              <span style={{ fontSize: "calc(11px * var(--pl-fs, 1))", fontWeight: 700, color: "var(--color-primary-accent)", textTransform: "uppercase", letterSpacing: "0.4px" }}>
                 {t.areaCalc}
               </span>
-              <span style={{ fontWeight: 700, fontSize: 14, color: "var(--color-on-surface)" }}>{sqft} sq.ft</span>
-              <span style={{ fontSize: 11, color: "var(--color-on-surface-variant)" }}>({sqm} m²)</span>
+              <span style={{ fontWeight: 700, fontSize: "calc(14px * var(--pl-fs, 1))", color: "var(--color-on-surface)" }}>{sqft} sq.ft</span>
+              <span style={{ fontSize: "calc(11px * var(--pl-fs, 1))", color: "var(--color-on-surface-variant)" }}>({sqm} m²)</span>
             </div>
-            <p style={{ fontSize: 10, margin: 0, color: "var(--color-on-surface-variant)" }}>{t.spaceVerdict}</p>
+            <p style={{ fontSize: "calc(10px * var(--pl-fs, 1))", margin: 0, color: "var(--color-on-surface-variant)" }}>{t.spaceVerdict}</p>
           </div>
         </div>
         <div
@@ -161,7 +161,7 @@ export function DimensionsSection() {
             alignItems: "center",
             justifyContent: "center",
             fontWeight: 700,
-            fontSize: 11,
+            fontSize: "calc(11px * var(--pl-fs, 1))",
             color: "var(--color-primary-accent)",
             flexShrink: 0,
           }}
@@ -181,7 +181,7 @@ function UnitButton({ label, active, onClick }: { label: string; active: boolean
         padding: "4px 10px",
         borderRadius: 8,
         fontWeight: active ? 700 : 600,
-        fontSize: 12,
+        fontSize: "calc(12px * var(--pl-fs, 1))",
         background: active ? "var(--color-primary)" : "transparent",
         color: active ? "var(--color-on-primary)" : "var(--color-on-surface-variant)",
         border: "none",

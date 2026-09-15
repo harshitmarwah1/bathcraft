@@ -5,7 +5,7 @@ import Icon from "@/components/ui/Icon";
 import { useT } from "@/lib/i18n/useT";
 
 const BASE_INPUT =
-  "h-[52px] w-full rounded-[12px] border bg-surface-raised px-4 text-[14.5px] text-ink " +
+  "h-[54px] w-full rounded-[12px] border bg-surface-raised px-4 text-[16px] text-ink " +
   "placeholder:text-body-soft/70 transition-[border-color,box-shadow] duration-200 " +
   "focus:outline-none focus:border-brand focus:ring-4 focus:ring-brand/12";
 
@@ -29,7 +29,7 @@ export function TextField({
 
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-[13.5px] font-semibold text-ink">
+      <label htmlFor={id} className="mb-2 block text-[15px] font-semibold text-ink">
         {label}
       </label>
       <input
@@ -40,7 +40,7 @@ export function TextField({
         {...rest}
       />
       {hint && !error && (
-        <p id={hintId} className="mt-1.5 text-[12px] text-body-soft">
+        <p id={hintId} className="mt-1.5 text-[13.5px] text-body-soft">
           {hint}
         </p>
       )}
@@ -71,7 +71,7 @@ export function PasswordField({
 
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-[13.5px] font-semibold text-ink">
+      <label htmlFor={id} className="mb-2 block text-[15px] font-semibold text-ink">
         {label}
       </label>
       <div className="relative">
@@ -94,7 +94,7 @@ export function PasswordField({
         </button>
       </div>
       {hint && !error && (
-        <p id={hintId} className="mt-1.5 text-[12px] text-body-soft">
+        <p id={hintId} className="mt-1.5 text-[13.5px] text-body-soft">
           {hint}
         </p>
       )}
@@ -105,7 +105,7 @@ export function PasswordField({
 
 export function FieldError({ id, children }: { id?: string; children: ReactNode }) {
   return (
-    <p id={id} className="mt-1.5 flex items-start gap-1.5 text-[12.5px] text-danger">
+    <p id={id} className="mt-1.5 flex items-start gap-1.5 text-[14px] text-danger">
       <Icon name="warning" size={14} className="mt-px shrink-0" />
       {children}
     </p>
@@ -138,7 +138,7 @@ export function Checkbox({
           ].join(" ")}
           {...rest}
         />
-        <label htmlFor={id} className="cursor-pointer text-[13px] leading-snug text-body">
+        <label htmlFor={id} className="cursor-pointer text-[14.5px] leading-snug text-body">
           {label}
         </label>
       </div>
@@ -158,8 +158,8 @@ export function AuthAlert({ title, body }: { title: string; body?: string }) {
         <Icon name="warning" size={16} />
       </span>
       <div>
-        <p className="text-[13.5px] font-semibold text-danger-dark">{title}</p>
-        {body && <p className="mt-0.5 text-[12.5px] text-danger-dark/80">{body}</p>}
+        <p className="text-[15px] font-semibold text-danger-dark">{title}</p>
+        {body && <p className="mt-0.5 text-[14px] text-danger-dark/80">{body}</p>}
       </div>
     </div>
   );
@@ -179,7 +179,7 @@ export function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-brand text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
+      className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-action text-[16px] font-semibold text-on-action shadow-[0_6px_18px_rgb(138_90_43/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-action-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
     >
       {pending ? (
         <>
@@ -210,7 +210,7 @@ export function OrRule() {
   return (
     <div className="my-5 flex items-center gap-4" aria-hidden="true">
       <span className="h-px flex-1 bg-field" />
-      <span className="text-[11.5px] font-medium tracking-[0.08em] text-body-soft">OR</span>
+      <span className="text-[13px] font-medium tracking-[0.08em] text-body-soft">OR</span>
       <span className="h-px flex-1 bg-field" />
     </div>
   );
@@ -231,7 +231,7 @@ export function SocialButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex h-[52px] w-full items-center justify-center gap-3 rounded-[14px] border border-field bg-surface-raised text-[14.5px] font-semibold text-ink transition-[background-color,transform,border-color] duration-200 hover:-translate-y-px hover:bg-wash disabled:opacity-60 motion-reduce:hover:translate-y-0"
+      className="flex h-[52px] w-full items-center justify-center gap-3 rounded-[14px] border border-field bg-surface-raised text-[16px] font-semibold text-ink transition-[background-color,transform,border-color] duration-200 hover:-translate-y-px hover:bg-wash disabled:opacity-60 motion-reduce:hover:translate-y-0"
     >
       {children}
     </button>

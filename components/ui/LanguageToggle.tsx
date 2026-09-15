@@ -28,7 +28,7 @@ export default function LanguageToggle({ className = "" }: { className?: string 
       title={label}
       lang={next}
       className={[
-        "flex h-9 min-w-9 items-center justify-center rounded-full px-2.5",
+        "flex h-10 min-w-10 items-center justify-center rounded-full px-2.5",
         "text-[12.5px] font-semibold text-body transition-colors hover:bg-wash hover:text-brand",
         "max-sm:h-11 max-sm:min-w-11",
         className,

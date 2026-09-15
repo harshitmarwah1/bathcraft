@@ -43,10 +43,10 @@ export default function BriefStepPage() {
     const sqft = areaSqft(project.room.lengthInches, project.room.widthInches);
     const total = project.estimate ? formatInr(project.estimate.totalCostInr) : "—";
     const days = project.estimate ? project.estimate.timeDays : "—";
-    const text = `${project.room.name} — BathCraft plan\n${sqft} sq.ft · Est. ${total} · ~${days} days`;
+    const text = `${project.room.name} — Milagro Universe plan\n${sqft} sq.ft · Est. ${total} · ~${days} days`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: `${project.room.name} — BathCraft`, text });
+        await navigator.share({ title: `${project.room.name} — Milagro Universe`, text });
         return;
       }
     } catch {
@@ -65,9 +65,25 @@ export default function BriefStepPage() {
     showToast(t.savedToast);
   }
 
+  const loaded = ready && project;
+
   return (
     <WizardShell
       subtitle={t.appSub6}
+      progress={<ProgressBar badge={t.step6Badge} step={6} total={6} icon="description" />}
+      // What to do with the finished brief sits beside it.
+      aside={
+        loaded ? (
+          <>
+            <div className="no-print" style={{ display: "flex", gap: 8 }}>
+              <ActionButton icon="print" label={t.printBrief} onClick={() => window.print()} />
+              <ActionButton icon="share" label={t.shareBrief} onClick={onShare} />
+            </div>
+            <InviteExpert />
+            <BrandGuideSection />
+          </>
+        ) : undefined
+      }
       footer={
         <StepFooterCta
           label={t.saveToProfile}
@@ -80,50 +96,16 @@ export default function BriefStepPage() {
         />
       }
     >
-      <ProgressBar badge={t.step6Badge} step={6} total={6} icon="description" />
-      {ready && project ? (
-        <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: 16 }}>
+      {loaded ? (
+        <div className="pl-sections">
           <ProjectBriefSummary project={project} />
-
-          {/* actions (not printed) */}
-          <div className="no-print" style={{ display: "flex", gap: 8 }}>
-            <ActionButton icon="print" label={t.printBrief} onClick={() => window.print()} />
-            <ActionButton icon="share" label={t.shareBrief} onClick={onShare} />
-          </div>
-
-          <InviteExpert />
-
-          <BrandGuideSection />
         </div>
       ) : (
-        <div style={{ padding: "40px 16px", textAlign: "center", color: "var(--color-on-surface-variant)", fontSize: 13 }}>
-          Loading…
-        </div>
+        <div className="pl-loading">Loading…</div>
       )}
 
       {toast && (
-        <div
-          className="no-print"
-          style={{
-            position: "absolute",
-            top: 80,
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 50,
-            background: "var(--color-inverse-surface)",
-            color: "var(--color-inverse-on-surface)",
-            padding: "10px 16px",
-            borderRadius: 999,
-            fontWeight: 700,
-            fontSize: 12,
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
-            whiteSpace: "nowrap",
-            animation: "bounceIn 0.35s ease-out",
-          }}
-        >
+        <div className="pl-toast no-print" role="status">
           <MaterialIcon name="verified" size={16} color="var(--color-primary-fixed-dim)" />
           <span>{toast}</span>
         </div>
@@ -135,6 +117,7 @@ export default function BriefStepPage() {
 function ActionButton({ icon, label, onClick }: { icon: string; label: string; onClick: () => void }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       style={{
         flex: 1,
@@ -144,7 +127,7 @@ function ActionButton({ icon, label, onClick }: { icon: string; label: string; o
         border: "1px solid var(--color-surface-high)",
         color: "var(--color-on-surface)",
         fontWeight: 700,
-        fontSize: 13,
+        fontSize: "calc(13px * var(--pl-fs, 1))",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import BrandLockup from "@/components/brand/BrandLockup";
 import Icon from "@/components/ui/Icon";
 import { Annotation, CurvedArrow } from "@/components/ui/Annotation";
 import { useT } from "@/lib/i18n/useT";
@@ -38,26 +39,20 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
         {/* Compact on mobile: just the logo over the strip. */}
         <div className="relative z-10 flex h-full flex-col p-6 sm:p-8 lg:p-12">
-          <Link href="/" aria-label={t("BathCraft — back to home")} className="w-fit">
-            <Image
-              src="/logo/logo-white.png"
-              alt="BathCraft"
-              width={846}
-              height={272}
-              className="h-8 w-auto lg:h-10"
-            />
+          <Link href="/" aria-label={t("Milagro Universe — back to home")} className="w-fit">
+            <BrandLockup tone="white" className="h-8 w-auto lg:h-10" />
           </Link>
-          <p className="mt-3 hidden text-[11px] font-semibold tracking-[0.26em] text-white/70 uppercase lg:block">
+          <p className="mt-4 hidden text-[16px] font-medium text-white/75 lg:block">
             {t("Plan · Visualize · Build")}
           </p>
 
           <div className="mt-auto hidden lg:block">
-            <h2 className="max-w-md text-[40px] leading-[1.1] font-semibold tracking-[-0.02em] text-white">
+            <h2 className="max-w-lg text-[clamp(2.5rem,1.5rem+2vw,3.75rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-white">
               {t("Plan better.")}
               <br />
               {t("Build with confidence.")}
             </h2>
-            <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/75">
+            <p className="mt-6 max-w-md text-[17px] leading-relaxed text-white/75">
               {t(
                 "Save your bathroom plans, compare ideas, track materials and continue your renovation journey from anywhere.",
               )}
@@ -80,7 +75,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               ].map(({ icon, a, b }) => (
                 <li key={a} className="flex items-center gap-2.5">
                   <Icon name={icon as "home"} size={22} />
-                  <span className="text-[12.5px] leading-tight">
+                  <span className="text-[14px] leading-tight">
                     {a}
                     <br />
                     {b}
@@ -94,7 +89,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
       {/* ---------------- Right: the form ---------------- */}
       <main className="flex flex-1 items-center justify-center px-5 py-10 sm:px-8 lg:px-12 lg:py-16">
-        <div className="w-full max-w-[440px]">{children}</div>
+        <div className="w-full max-w-[480px]">{children}</div>
       </main>
     </div>
   );

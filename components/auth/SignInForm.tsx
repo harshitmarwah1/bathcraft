@@ -61,7 +61,7 @@ export default function SignInForm({
       markAuthIntent({ kind: "signin", provider: "credentials" });
       onSignedIn(continueUrl);
     } catch {
-      setFormError(t("We couldn't reach BathCraft. Check your connection and try again."));
+      setFormError(t("We couldn't reach Milagro Universe. Check your connection and try again."));
     } finally {
       setPending(false);
     }
@@ -88,10 +88,10 @@ export default function SignInForm({
 
   return (
     <div>
-      <h1 className="text-[32px] leading-[1.15] font-bold tracking-[-0.02em] text-balance text-ink">
+      <h1 className="text-[36px] leading-[1.1] font-bold tracking-[-0.03em] text-balance text-ink lg:text-[40px]">
         {t("Let’s bring your bathroom to life.")}
       </h1>
-      <p className="mt-3 text-[14.5px] leading-relaxed text-body">
+      <p className="mt-3 text-[16px] leading-relaxed text-body">
         {t("Sign in to continue planning, comparing and designing.")}
       </p>
 
@@ -128,7 +128,7 @@ export default function SignInForm({
           <button
             type="button"
             onClick={onForgotPassword}
-            className="text-[13px] font-semibold text-brand hover:underline"
+            className="text-[14.5px] font-semibold text-brand hover:underline"
           >
             {t("Forgot password?")}
           </button>
@@ -158,8 +158,8 @@ export default function SignInForm({
         )}
       </SocialButton>
 
-      <p className="mt-7 text-center text-[13.5px] text-body">
-        {t("New to BathCraft?")}{" "}
+      <p className="mt-7 text-center text-[15px] text-body">
+        {t("New to Milagro Universe?")}{" "}
         <button
           type="button"
           onClick={onCreateAccount}

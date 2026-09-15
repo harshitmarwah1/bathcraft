@@ -11,7 +11,7 @@ type Variant = "primary" | "white" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-brand text-on-brand hover:bg-brand-dark shadow-[0_6px_18px_rgb(7_140_200/0.28)]",
+  primary: "bg-action text-on-action hover:bg-action-dark shadow-[0_6px_18px_rgb(138_90_43/0.28)]",
   // on-light: this variant only ever sits on a photograph. See globals.css.
   white: "on-light bg-white text-ink hover:bg-white shadow-[0_8px_24px_rgb(16_43_78/0.18)]",
   outline: "bg-surface-raised text-brand border border-brand/45 hover:border-brand hover:bg-wash",
@@ -19,9 +19,9 @@ const VARIANTS: Record<Variant, string> = {
 };
 
 const SIZES: Record<Size, string> = {
-  sm: "h-9 px-4 text-[13px]",
-  md: "h-11 px-5 text-sm",
-  lg: "h-[52px] px-7 text-[15px]",
+  sm: "h-10 px-5 text-[14px]",
+  md: "h-12 px-6 text-[15px]",
+  lg: "h-14 px-8 text-[16px]",
 };
 
 type Props = {

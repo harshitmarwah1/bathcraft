@@ -12,12 +12,12 @@ import { useT } from "@/lib/i18n/useT";
  */
 const MESSAGES: Record<string, { title: string; body: string }> = {
   AccountExists: {
-    title: "This email already has a BathCraft account.",
+    title: "This email already has a Milagro Universe account.",
     body:
       "It was created with a password. Sign in with your password below, then use Continue with Google — we'll link the two.",
   },
   OAuthAccountNotLinked: {
-    title: "This email already has a BathCraft account.",
+    title: "This email already has a Milagro Universe account.",
     body:
       "Sign in the way you did originally, then use Continue with Google to link it.",
   },

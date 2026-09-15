@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import { useT } from "@/lib/i18n/useT";
+import { listProjectsAction } from "@/app/planner/actions";
+import { useProjectStore } from "@/lib/planner/store/project-store";
 import { useAuth } from "./AuthProvider";
 import { TextField } from "./fields";
 
@@ -22,10 +24,18 @@ const PRIORITIES: { id: string; label: string; icon: IconName }[] = [
   { id: "premium", label: "Create a premium bathroom", icon: "sparkle" },
 ];
 
-/** Three questions, one at a time, with the answers kept in the auth store. */
+/**
+ * Three questions, one at a time, with the answers kept in the auth store.
+ *
+ * Finishing hands straight into the planner: the bathroom named in step 1 is
+ * created through the same store action as "Create Your First Bathroom", so the
+ * user never lands on an empty list or types the name a second time.
+ */
 export default function OnboardingFlow() {
   const router = useRouter();
   const { completeOnboarding } = useAuth();
+  const newProject = useProjectStore((s) => s.newProject);
+  const loadProject = useProjectStore((s) => s.loadProject);
   const t = useT();
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
@@ -57,7 +67,18 @@ export default function OnboardingFlow() {
     setSaving(true);
     try {
       await completeOnboarding({ bathroomName: name.trim(), intent, priorities });
-      router.push("/bathrooms");
+      // An interrupted onboarding can be re-run after a bathroom already exists;
+      // reopen that one rather than creating a duplicate.
+      const existing = await listProjectsAction().catch(() => []);
+      let opened = false;
+      if (existing[0]) {
+        await loadProject(existing[0].id);
+        opened = true;
+      } else {
+        opened = Boolean(await newProject(name.trim()));
+      }
+      // If creation failed, My Bathrooms still offers the empty-state button.
+      router.push(opened ? "/planner/space" : "/bathrooms");
       router.refresh();
     } finally {
       setSaving(false);
@@ -65,10 +86,12 @@ export default function OnboardingFlow() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[560px] px-5 py-12 sm:py-16">
+    <div className="mx-auto w-full max-w-[640px] px-5 py-12 sm:py-20">
       <div className="mb-8">
-        <p className="text-[11px] font-semibold tracking-[0.2em] text-brand uppercase">
-          {t("Step")} {step} {t("of")} 3
+        {/* "About you", not "Step": the planner has its own step counter next,
+            and two counters that both start at 1 read as a restart. */}
+        <p className="text-[14px] font-medium text-body">
+          {t("About you")} · {step} {t("of")} 3
         </p>
         <div
           className="mt-3 flex gap-1.5"
@@ -93,10 +116,10 @@ export default function OnboardingFlow() {
       <div key={step} className="animate-[panel-in_260ms_ease-out_both] motion-reduce:animate-none">
         {step === 1 && (
           <>
-            <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
+            <h1 className="text-[34px] leading-[1.1] font-bold tracking-[-0.03em] text-balance text-ink sm:text-[42px]">
               {t("Let’s create your first bathroom.")}
             </h1>
-            <p className="mt-3 text-[15px] text-body">
+            <p className="mt-4 text-[17px] text-body">
               {t("What would you like to call this bathroom?")}
             </p>
             <form
@@ -120,7 +143,7 @@ export default function OnboardingFlow() {
 
         {step === 2 && (
           <>
-            <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
+            <h1 className="text-[34px] leading-[1.1] font-bold tracking-[-0.03em] text-balance text-ink sm:text-[42px]">
               {t("What are you planning?")}
             </h1>
             <ul className="mt-7 space-y-3">
@@ -141,10 +164,10 @@ export default function OnboardingFlow() {
 
         {step === 3 && (
           <>
-            <h1 className="text-[30px] leading-tight font-bold tracking-[-0.02em] text-ink">
+            <h1 className="text-[34px] leading-[1.1] font-bold tracking-[-0.03em] text-balance text-ink sm:text-[42px]">
               {t("What matters most to you?")}
             </h1>
-            <p className="mt-3 text-[15px] text-body">{t("Choose as many as you like.")}</p>
+            <p className="mt-4 text-[17px] text-body">{t("Choose as many as you like.")}</p>
             <ul className="mt-7 grid gap-3 sm:grid-cols-2">
               {PRIORITIES.map(({ id, label, icon }) => (
                 <li key={id}>
@@ -162,12 +185,18 @@ export default function OnboardingFlow() {
         )}
       </div>
 
-      <div className="mt-9 flex items-center gap-4">
+      {step === 3 && name.trim() && (
+        <p className="mt-9 text-[15px] text-body">
+          {t("Next, you’ll plan")} <span className="font-semibold text-ink">{name.trim()}</span>
+        </p>
+      )}
+
+      <div className={step === 3 && name.trim() ? "mt-4 flex items-center gap-4" : "mt-9 flex items-center gap-4"}>
         {step > 1 && (
           <button
             type="button"
             onClick={() => setStep((s) => s - 1)}
-            className="text-[13.5px] font-semibold text-body transition-colors hover:text-brand"
+            className="text-[15px] font-semibold text-body transition-colors hover:text-brand"
           >
             {t("← Back")}
           </button>
@@ -176,9 +205,9 @@ export default function OnboardingFlow() {
           type="button"
           onClick={next}
           disabled={saving}
-          className="ml-auto flex h-[52px] items-center justify-center gap-2 rounded-[14px] bg-brand px-7 text-[15px] font-semibold text-on-brand shadow-[0_6px_18px_rgb(7_140_200/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
+          className="ml-auto flex h-[52px] items-center justify-center gap-2 rounded-[14px] bg-action px-8 text-[16px] font-semibold text-on-action shadow-[0_6px_18px_rgb(138_90_43/0.28)] transition-[transform,background-color,opacity] duration-200 hover:-translate-y-px hover:bg-action-dark disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 motion-reduce:hover:translate-y-0"
         >
-          {saving ? t("Saving…") : step === 3 ? t("Start Planning") : t("Continue")}
+          {saving ? t("Saving…") : step === 3 ? t("Start planning") : t("Continue")}
           <Icon name="arrowRight" size={16} />
         </button>
       </div>
@@ -219,7 +248,7 @@ function ChoiceCard({
       >
         <Icon name={icon} size={20} />
       </span>
-      <span className="text-[14.5px] font-medium text-ink">{label}</span>
+      <span className="text-[16px] font-medium text-ink">{label}</span>
       <span
         className={[
           "ml-auto flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors duration-200",

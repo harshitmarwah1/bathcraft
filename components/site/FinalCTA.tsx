@@ -24,15 +24,15 @@ export default function FinalCTA() {
         className="absolute inset-0 bg-[linear-gradient(95deg,rgb(9_17_29/0.30),rgb(9_17_29/0.86)_44%,rgb(9_17_29/0.82))]"
       />
 
-      <div className="relative z-10 mx-auto max-w-[1280px] px-5 py-16 sm:px-6 lg:py-20">
-        <Reveal className="mx-auto max-w-xl text-center">
-          <p className="text-[11px] font-semibold tracking-[0.22em] text-white/65 uppercase">
+      <div className="relative z-10 mx-auto max-w-[1280px] 2xl:max-w-[1440px] px-5 py-16 sm:px-6 lg:py-20">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-[17px] font-medium text-white/75">
             {t("Ready to plan your bathroom?")}
           </p>
-          <h2 className="mt-4 text-[28px] leading-[1.15] font-semibold tracking-[-0.02em] text-balance text-white sm:text-[36px]">
+          <h2 className="mt-3 font-semibold text-balance text-white text-[clamp(2.25rem,1.6rem+1.6vw,3.5rem)] leading-[1.08] tracking-[-0.03em]">
             {t("Let's build a better bathroom, together.")}
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-[14.5px] text-white/75">
+          <p className="mx-auto mt-5 max-w-lg text-[17px] text-white/75 lg:text-[18px]">
             {t("Less confusion. Better choices. A smoother renovation journey.")}
           </p>
           <Button href="#planner" variant="white" size="lg" withArrow className="mt-8">

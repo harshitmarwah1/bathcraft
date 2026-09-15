@@ -15,33 +15,32 @@ export default function BathroomPlanningSection() {
   const t = useT();
   return (
     <section id="about" className="bg-surface">
-      <div className="mx-auto grid max-w-[1280px] items-center gap-12 px-5 py-16 sm:px-6 lg:grid-cols-[45fr_55fr] lg:gap-14 lg:py-24">
+      <div className="mx-auto grid max-w-[1280px] 2xl:max-w-[1440px] items-center gap-12 px-5 py-16 sm:px-6 lg:grid-cols-[45fr_55fr] lg:gap-14 lg:py-24">
         <div>
           <Reveal>
-            <p className="mb-3 text-[11px] font-semibold tracking-[0.18em] text-brand uppercase">
-              {t("Your bathroom, your way")}
-            </p>
-            <h2 className="text-[32px] leading-[1.14] font-bold tracking-[-0.02em] text-ink sm:text-[42px]">
+            <h2 className="font-bold text-ink text-[clamp(2.25rem,1.6rem+1.6vw,3.5rem)] leading-[1.08] tracking-[-0.03em]">
               {t("A simpler way")}
               <br />
               {t("to plan your bathroom")}
             </h2>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-body">
+            <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-body lg:text-[18px]">
               {t(
-                "Whether you're renovating or building new, BathCraft helps you make better decisions with clear plans, real products and accurate estimates.",
+                "Whether you're renovating or building new, Milagro Universe helps you make better decisions with clear plans, real products and accurate estimates.",
               )}
             </p>
-            <Button href="#planner" variant="primary" size="md" withArrow className="mt-7">
+            <Button href="#planner" variant="primary" size="lg" withArrow className="mt-8">
               {t("Start Your Plan")}
             </Button>
           </Reveal>
 
           <Reveal delay={140}>
-            <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-6">
+            {/* The one stats row on the page, next to the argument it backs.
+                #metrics keeps the navbar's anchor landing somewhere real. */}
+            <dl id="metrics" className="mt-10 flex scroll-mt-28 flex-wrap gap-x-12 gap-y-6">
               {HERO_METRICS.map(({ value, label }) => (
                 <div key={label}>
-                  <dt className="text-[22px] font-bold text-brand">{value}</dt>
-                  <dd className="mt-0.5 text-[12.5px] text-body-soft">{t(label)}</dd>
+                  <dt className="text-[30px] font-bold tracking-[-0.02em] text-brand">{value}</dt>
+                  <dd className="mt-1 text-[14px] text-body-soft">{t(label)}</dd>
                 </div>
               ))}
             </dl>

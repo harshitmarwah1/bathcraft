@@ -91,14 +91,14 @@ export default function PlannerDemo() {
       />
 
       <div className="relative z-10 flex h-full flex-col justify-center p-7 sm:p-10 lg:max-w-[58%] lg:p-12">
-        <h2 className="text-[34px] leading-[1.08] font-semibold tracking-[-0.02em] text-white sm:text-[44px]">
+        <h2 className="text-[38px] leading-[1.06] font-semibold tracking-[-0.03em] text-white sm:text-[52px]">
           {tr("See it.")}
           <br />
           {tr("Change it.")}
           <br />
           {tr("Perfect it.")}
         </h2>
-        <p className="mt-5 max-w-sm text-[14.5px] leading-relaxed text-white/80">
+        <p className="mt-5 max-w-sm text-[16.5px] leading-relaxed text-white/80">
           {tr(
             "Drag, drop and explore different layouts, fittings, tiles and colours before you start building.",
           )}
