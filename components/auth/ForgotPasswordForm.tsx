@@ -21,8 +21,16 @@ export default function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
     if (next) return;
 
     setPending(true);
-    await requestPasswordReset(email);
+    const result = await requestPasswordReset(email);
     setPending(false);
+
+    // The action answers the same way whether or not the address is registered,
+    // so a success here is not a hint that an account exists. It only fails when
+    // the mail transport itself is down — which is worth telling the user about.
+    if (!result.ok) {
+      setError(result.message);
+      return;
+    }
     setSentTo(email.trim());
   }
 

@@ -43,9 +43,23 @@ export type Account = {
   createdAt: string;
 };
 
+/**
+ * A single, time-limited permission to set a new password for one user.
+ * Only the SHA-256 hash of the token is ever stored — see lib/auth/reset-token.ts.
+ */
+export type PasswordReset = {
+  /** SHA-256 of the raw token, hex. The primary key. */
+  tokenHash: string;
+  userId: string;
+  /** ISO timestamp. Past this instant the token is dead. */
+  expiresAt: string;
+  createdAt: string;
+};
+
 export type Database = {
   users: User[];
   accounts: Account[];
+  passwordResets: PasswordReset[];
 };
 
 /* ---------------------------------------------------------------------------
@@ -65,7 +79,30 @@ export interface UserStore {
   linkAccount(userId: string, account: NewAccount): Promise<void>;
   updateProfile(userId: string, patch: ProfilePatch): Promise<User | null>;
   setOnboarding(userId: string, answers: OnboardingAnswers): Promise<User | null>;
+
+  /* ── password reset ──────────────────────────────────────────────────────
+     Issuing a reset first clears any earlier tokens for the user, so a person
+     who requests two links can only use the newest. Consuming one deletes it,
+     which is what makes a link single-use. */
+
+  /** Store a freshly minted token, replacing any the user already had. */
+  createPasswordReset(reset: NewPasswordReset): Promise<void>;
+  /** Look a token up by its hash. Null if unknown; expiry is the caller's check. */
+  findPasswordReset(tokenHash: string): Promise<PasswordReset | null>;
+  /** Delete one token by hash — how a used or superseded link is retired. */
+  deletePasswordReset(tokenHash: string): Promise<void>;
+  /**
+   * Set the password on the user's credentials account. Returns false when the
+   * user has no such account (e.g. Google-only), so nothing was changed.
+   */
+  setCredentialsPassword(userId: string, passwordHash: string): Promise<boolean>;
 }
+
+export type NewPasswordReset = {
+  tokenHash: string;
+  userId: string;
+  expiresAt: string;
+};
 
 export type NewUser = {
   email: string;

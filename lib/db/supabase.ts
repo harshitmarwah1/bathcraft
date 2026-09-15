@@ -4,8 +4,10 @@ import type {
   Account,
   AuthProviderId,
   NewAccount,
+  NewPasswordReset,
   NewUser,
   OnboardingAnswers,
+  PasswordReset,
   ProfilePatch,
   User,
   UserStore,
@@ -43,6 +45,13 @@ type AccountRow = {
   created_at: string;
 };
 
+type PasswordResetRow = {
+  token_hash: string;
+  user_id: string;
+  expires_at: string;
+  created_at: string;
+};
+
 const toUser = (r: UserRow): User => ({
   id: r.id,
   email: r.email,
@@ -61,8 +70,16 @@ const toAccount = (r: AccountRow): Account => ({
   createdAt: r.created_at,
 });
 
+const toPasswordReset = (r: PasswordResetRow): PasswordReset => ({
+  tokenHash: r.token_hash,
+  userId: r.user_id,
+  expiresAt: r.expires_at,
+  createdAt: r.created_at,
+});
+
 const USER_COLS = "id, email, first_name, last_name, image, onboarding, created_at";
 const ACCOUNT_COLS = "user_id, provider, provider_account_id, password_hash, created_at";
+const RESET_COLS = "token_hash, user_id, expires_at, created_at";
 
 /** Postgres unique-violation. The one error here that is a normal outcome. */
 const UNIQUE_VIOLATION = "23505";
@@ -195,5 +212,53 @@ export const supabaseStore: UserStore = {
       .maybeSingle();
     if (error) throw error;
     return data ? toUser(data as UserRow) : null;
+  },
+
+  async createPasswordReset(reset: NewPasswordReset) {
+    const supabase = db();
+    // One live link per user: drop any earlier ones before issuing a new one, so
+    // requesting a second reset silently retires the first.
+    const cleared = await supabase
+      .from("password_reset_tokens")
+      .delete()
+      .eq("user_id", reset.userId);
+    if (cleared.error) throw cleared.error;
+
+    const { error } = await supabase.from("password_reset_tokens").insert({
+      token_hash: reset.tokenHash,
+      user_id: reset.userId,
+      expires_at: reset.expiresAt,
+    });
+    if (error) throw error;
+  },
+
+  async findPasswordReset(tokenHash) {
+    const { data, error } = await db()
+      .from("password_reset_tokens")
+      .select(RESET_COLS)
+      .eq("token_hash", tokenHash)
+      .maybeSingle();
+    if (error) throw error;
+    return data ? toPasswordReset(data as PasswordResetRow) : null;
+  },
+
+  async deletePasswordReset(tokenHash) {
+    const { error } = await db()
+      .from("password_reset_tokens")
+      .delete()
+      .eq("token_hash", tokenHash);
+    if (error) throw error;
+  },
+
+  async setCredentialsPassword(userId, passwordHash) {
+    const { data, error } = await db()
+      .from("accounts")
+      .update({ password_hash: passwordHash })
+      .eq("user_id", userId)
+      .eq("provider", "credentials")
+      .select("user_id");
+    if (error) throw error;
+    // No credentials row to update (e.g. a Google-only account) → nothing changed.
+    return (data?.length ?? 0) > 0;
   },
 };

@@ -38,7 +38,7 @@ export type { UserStore, NewUser, NewAccount, ProfilePatch };
 /* ── file-backed implementation ─────────────────────────────────────────── */
 
 const FILE = process.env.BATHCRAFT_DATA_FILE ?? join(process.cwd(), ".data", "bathcraft.json");
-const EMPTY: Database = { users: [], accounts: [] };
+const EMPTY: Database = { users: [], accounts: [], passwordResets: [] };
 
 /**
  * Every mutation runs through one promise chain. Node is single-threaded but
@@ -58,7 +58,11 @@ async function read(): Promise<Database> {
   try {
     const raw = await readFile(FILE, "utf8");
     const parsed = JSON.parse(raw) as Partial<Database>;
-    return { users: parsed.users ?? [], accounts: parsed.accounts ?? [] };
+    return {
+      users: parsed.users ?? [],
+      accounts: parsed.accounts ?? [],
+      passwordResets: parsed.passwordResets ?? [],
+    };
   } catch {
     // Missing or corrupt: an empty database is the correct starting point.
     return { ...EMPTY };
@@ -164,6 +168,42 @@ const fileStore: UserStore = {
       user.onboarding = answers;
       await write(db);
       return user;
+    });
+  },
+
+  createPasswordReset(reset) {
+    return serialise(async () => {
+      const db = await read();
+      // One live link per user — drop earlier ones, then add the new token.
+      db.passwordResets = db.passwordResets.filter((r) => r.userId !== reset.userId);
+      db.passwordResets.push({ ...reset, createdAt: new Date().toISOString() });
+      await write(db);
+    });
+  },
+
+  async findPasswordReset(tokenHash) {
+    const db = await read();
+    return db.passwordResets.find((r) => r.tokenHash === tokenHash) ?? null;
+  },
+
+  deletePasswordReset(tokenHash) {
+    return serialise(async () => {
+      const db = await read();
+      db.passwordResets = db.passwordResets.filter((r) => r.tokenHash !== tokenHash);
+      await write(db);
+    });
+  },
+
+  setCredentialsPassword(userId, passwordHash) {
+    return serialise(async () => {
+      const db = await read();
+      const account = db.accounts.find(
+        (a) => a.userId === userId && a.provider === "credentials",
+      );
+      if (!account) return false;
+      account.passwordHash = passwordHash;
+      await write(db);
+      return true;
     });
   },
 };

@@ -289,6 +289,23 @@ Object.assign(hi, {
   "Send Reset Link": "रीसेट लिंक भेजें",
   "Loading your account…": "आपका खाता लोड हो रहा है…",
 
+  /* reset password (from the emailed link) */
+  "Choose a new password": "नया पासवर्ड चुनें",
+  "Pick a strong password you don't use anywhere else.":
+    "एक मज़बूत पासवर्ड चुनें जिसे आप कहीं और इस्तेमाल न करते हों।",
+  "New password": "नया पासवर्ड",
+  "Confirm new password": "नए पासवर्ड की पुष्टि करें",
+  "Update Password": "पासवर्ड अपडेट करें",
+  "Updating…": "अपडेट हो रहा है…",
+  "We couldn't reset your password.": "हम आपका पासवर्ड रीसेट नहीं कर सके।",
+  "Password updated": "पासवर्ड अपडेट हो गया",
+  "Your password has been changed. You can now sign in with your new password.":
+    "आपका पासवर्ड बदल दिया गया है। अब आप अपने नए पासवर्ड से साइन इन कर सकते हैं।",
+  "Go to Sign In": "साइन इन पर जाएँ",
+  "This link isn't valid": "यह लिंक मान्य नहीं है",
+  "The reset link is missing or incomplete. Request a new one and we'll email you a fresh link.":
+    "रीसेट लिंक गायब या अधूरा है। नया अनुरोध करें और हम आपको एक नया लिंक ईमेल कर देंगे।",
+
   /* forms */
   "Please accept the Terms of Service to continue.":
     "जारी रखने के लिए कृपया सेवा की शर्तें स्वीकार करें।",
